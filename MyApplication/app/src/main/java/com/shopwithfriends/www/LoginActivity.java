@@ -1,9 +1,15 @@
 package com.shopwithfriends.www;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class LoginActivity extends Activity {
@@ -13,7 +19,6 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -32,5 +37,29 @@ public class LoginActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void checkLogin(View view) {
+
+        Intent intent = new Intent(this, HomeActivity.class);
+        EditText uField = (EditText) findViewById(R.id.user_field);
+        String uName = uField.getText().toString();
+        EditText passField = (EditText) findViewById(R.id.passField);
+        String uPass = passField.getText().toString();
+        if (uName.equals(R.string.userName) && uPass.equals(R.string.password)) {
+                startActivity(intent);
+        } else {
+            Context context = getApplicationContext();
+            CharSequence text = "Login Failed";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
+            toast.show();
+        }
+
+    }
+
+    public void register(View view) {
+        // Do something in response to button
     }
 }
