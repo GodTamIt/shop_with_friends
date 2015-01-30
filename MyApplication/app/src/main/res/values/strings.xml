@@ -2,7 +2,12 @@
 <resources>
 
     <string name="app_name">shop with friends</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="uLabel">User Name</string>
+    <string name="passLabel">Password</string>
     <string name="action_settings">Settings</string>
+    <string name="UserName">user</string>
+    <string name="password">pass</string>
+
+
 
 </resources>
