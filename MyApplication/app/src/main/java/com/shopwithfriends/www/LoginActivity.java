@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
+    //String userName = "user";
+    //String password = "pass";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,9 @@ public class LoginActivity extends Activity {
         String uName = uField.getText().toString();
         EditText passField = (EditText) findViewById(R.id.passField);
         String uPass = passField.getText().toString();
-        if (uName.equals(R.string.userName) && uPass.equals(R.string.password)) {
+        System.out.println(uName);
+        System.out.println(uPass);
+        if (uName.equals(getString(R.string.userName)) && uPass.equals(getString(R.string.password))) {
                 startActivity(intent);
         } else {
             Context context = getApplicationContext();
