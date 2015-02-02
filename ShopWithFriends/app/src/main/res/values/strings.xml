@@ -8,5 +8,7 @@
     <string name="password_activity_login">Password</string>
     <string name="google_activity_login">Sign in with Google</string>
     <string name="signin_activity_login">Sign In</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
