@@ -55,7 +55,7 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void checkLogin(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         EditText uField = (EditText) findViewById(R.id.emailField);
         String uName = uField.getText().toString();
         EditText passField = (EditText) findViewById(R.id.passField);
@@ -73,6 +73,11 @@ public class LoginActivity extends ActionBarActivity {
             toast.show();
         }
 
+    }
+
+    public void cancelLogin(View view) {
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        startActivity(intent);
     }
 
     public void register(View view) {
