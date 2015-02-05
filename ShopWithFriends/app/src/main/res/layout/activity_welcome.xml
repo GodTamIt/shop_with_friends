@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/loginButtonSplash"
+                android:background="@color/primaryColor"
                 android:layout_weight="1"
                 android:text="login"
                 android:onClick="goToLogin"/>
@@ -31,6 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/primaryColor"
                 android:text="register"
                 android:id="@+id/registerButtonSplash"
                 android:onClick="gotToRegister"/>
