@@ -1,12 +1,15 @@
 package www.shopwithfriends.com.shopwithfriends;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class WelcomeActivity extends ActionBarActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,4 +39,21 @@ public class WelcomeActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void goToLogin(View view) {
+        Intent loginPage = new Intent(this, LoginActivity.class);
+        Intent registerPage = new Intent(this, RegisterActivity.class);
+        switch(view.getId())
+        {
+            case R.id.loginButtonSplash:
+                startActivity(loginPage);
+            case R.id.registerButtonSplash:
+                startActivity(registerPage);
+            default:
+                throw new RuntimeException("Unknow button ID");
+        }
+
+    }
+
+
 }

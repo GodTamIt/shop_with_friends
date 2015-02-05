@@ -1,15 +1,21 @@
 package www.shopwithfriends.com.shopwithfriends;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
+    private String userName = "user";
+    private String password = "pass";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,5 +51,31 @@ public class LoginActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void checkLogin(View view) {
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        EditText uField = (EditText) findViewById(R.id.user_field);
+        String uName = uField.getText().toString();
+        EditText passField = (EditText) findViewById(R.id.passField);
+        String uPass = passField.getText().toString();
+        System.out.println(uName);
+        System.out.println(uPass);
+        if (uName.equals(getString(R.string.userName)) && uPass.equals(getString(R.string.password))) {
+            startActivity(intent);
+        } else {
+            Context context = getApplicationContext();
+            CharSequence text = "Login Failed";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
+            toast.show();
+        }
+
+    }
+
+    public void register(View view) {
+        // Do something in response to button
     }
 }

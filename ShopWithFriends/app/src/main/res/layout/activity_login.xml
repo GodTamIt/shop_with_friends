@@ -49,11 +49,21 @@
                 android:layout_width="120dp"
                 android:layout_height="48dp"
                 android:text="@string/signin_activity_login"
-                android:id="@+id/button"
+                android:id="@+id/signInButton"
                 android:layout_marginTop="10dp"
                 android:background="@color/primaryColor"
                 android:clickable="true"
                 android:elegantTextHeight="true" />
+
+            <Button
+                    android:layout_width="120dp"
+                    android:layout_height="48dp"
+                    android:text="@string/signin_activity_login"
+                    android:id="@+id/cancel"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/primaryColor"
+                    android:clickable="true"
+                    android:elegantTextHeight="true" />
         </LinearLayout>
 
         <LinearLayout
