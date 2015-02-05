@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,15 +55,14 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void checkLogin(View view) {
-
         Intent intent = new Intent(this, LoginActivity.class);
-        EditText uField = (EditText) findViewById(R.id.user_field);
+        EditText uField = (EditText) findViewById(R.id.emailField);
         String uName = uField.getText().toString();
         EditText passField = (EditText) findViewById(R.id.passField);
         String uPass = passField.getText().toString();
         System.out.println(uName);
         System.out.println(uPass);
-        if (uName.equals(getString(R.string.userName)) && uPass.equals(getString(R.string.password))) {
+        if (uName.equals(userName) && uPass.equals(password)) {
             startActivity(intent);
         } else {
             Context context = getApplicationContext();
