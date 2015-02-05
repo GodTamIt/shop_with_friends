@@ -47,8 +47,10 @@ public class WelcomeActivity extends ActionBarActivity {
         {
             case R.id.loginButtonSplash:
                 startActivity(loginPage);
+                break;
             case R.id.registerButtonSplash:
                 startActivity(registerPage);
+                break;
             default:
                 throw new RuntimeException("Unknow button ID");
         }
