@@ -16,23 +16,63 @@
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:hint="Create a Username"/>
+                  android:layout_marginTop="5dp"
+                  android:hint="Create a Username"
+                  android:id="@+id/reg_uname"/>
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:hint="Create a password"/>
+                  android:layout_marginTop="5dp"
+                  android:hint="Create a Password"
+                  android:id="@+id/reg_pass"/>
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:hint="Confirm password"/>
+                  android:hint="Confirm Password"
+                  android:layout_marginTop="5dp"/>
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:hint="Enter your email address"/>
+                  android:hint="Enter your Email"
+                  android:layout_marginTop="5dp"
+                  android:id="@+id/reg_email"/>
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:hint="Confirm email"/>
+                  android:hint="Confirm Email"
+                  android:layout_marginTop="5dp"/>
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="20dp"
+                      android:layout_marginTop="10dp"
+                      android:text="Admin account?"/>
+            <CheckBox android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="10dp"
+                      android:layout_marginStart="10dp"/>
+        </LinearLayout>
 
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginTop="20dp">
+
+                      <Button android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="submit"
+                              android:background="@color/primaryColor"/>
+                      <Button android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:background="@color/primaryColor"
+                              android:text="+photo"
+                              android:layout_marginStart="10dp"/>
+                      <Button android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:background="@color/google"
+                              android:layout_marginStart="10dp"
+                              android:text="cancel"/>
+                      </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
