@@ -52,7 +52,7 @@ public class WelcomeActivity extends ActionBarActivity {
                 startActivity(registerPage);
                 break;
             default:
-                throw new RuntimeException("Unknow button ID");
+                throw new RuntimeException("Unknown button ID");
         }
 
     }
