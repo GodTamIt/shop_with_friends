@@ -11,15 +11,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:id="@+id/logoImage"/>
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            </LinearLayout>
-        </LinearLayout>
+        <ImageView android:layout_width="match_parent"
+                   android:layout_height="200dp"/>
+
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Create a Username"/>
+
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Create a password"/>
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Confirm password"/>
+
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Enter your email address"/>
+
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Confirm email"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
