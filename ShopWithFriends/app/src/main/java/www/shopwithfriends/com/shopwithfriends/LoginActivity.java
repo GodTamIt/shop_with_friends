@@ -60,8 +60,6 @@ public class LoginActivity extends ActionBarActivity {
         String uName = uField.getText().toString();
         EditText passField = (EditText) findViewById(R.id.passField);
         String uPass = passField.getText().toString();
-        System.out.println(uName);
-        System.out.println(uPass);
         if (uName.equals(userName) && uPass.equals(password)) {
             startActivity(intent);
         } else {
@@ -72,7 +70,6 @@ public class LoginActivity extends ActionBarActivity {
             toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
             toast.show();
         }
-
     }
 
     public void cancelLogin(View view) {

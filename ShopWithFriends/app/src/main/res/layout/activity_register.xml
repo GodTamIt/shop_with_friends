@@ -28,7 +28,8 @@
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:hint="Confirm Password"
-                  android:layout_marginTop="5dp"/>
+                  android:layout_marginTop="5dp"
+                android:id="@+id/reg_confpass"/>
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -54,18 +55,20 @@
                       android:layout_marginTop="20dp">
 
                       <Button android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
+                              android:layout_height="50dp"
                               android:text="submit"
+                              android:onClick="submitRegistration"
                               android:background="@color/primaryColor"/>
                       <Button android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
+                              android:layout_height="50dp"
                               android:background="@color/primaryColor"
                               android:text="+photo"
                               android:layout_marginStart="10dp"/>
                       <Button android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
+                              android:layout_height="50dp"
                               android:background="@color/google"
                               android:layout_marginStart="10dp"
+                              android:onClick="cancelRegistration"
                               android:text="cancel"/>
                       </LinearLayout>
     </LinearLayout>

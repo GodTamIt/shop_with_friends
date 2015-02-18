@@ -6,8 +6,16 @@ package models;
 public class User {
 
     private String userName;
-    private String password;
     private String email;
+    private String password;
+    private Boolean isAdmin;
+
+    public User(String userName, String email, String password, Boolean isAdmin) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.isAdmin = isAdmin;
+    }
 
     public String getEmail() {
         return email;

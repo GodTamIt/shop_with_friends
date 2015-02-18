@@ -35,7 +35,7 @@
                 android:background="@color/primaryColor"
                 android:text="register"
                 android:id="@+id/registerButtonSplash"
-                android:onClick="gotToRegister"/>
+                android:onClick="goToLogin"/>
             </LinearLayout>
     </LinearLayout>
 
