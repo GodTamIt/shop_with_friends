@@ -12,5 +12,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_friend_list">friendList</string>
+    <string name="title_friend_detail">friend Detail</string>
+    <string name="title_activity_friendlist">FriendlistActivity</string>
 
 </resources>

@@ -57,7 +57,7 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void checkLogin(View view) {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, FriendlistActivity.class);
         EditText uField = (EditText) findViewById(R.id.emailField);
         String uName = uField.getText().toString();
         EditText passField = (EditText) findViewById(R.id.passField);

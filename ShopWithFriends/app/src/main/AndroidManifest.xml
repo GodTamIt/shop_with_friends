@@ -28,6 +28,22 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
+        <activity
+            android:name=".friendListActivity"
+            android:label="@string/title_friend_list" >
+        </activity>
+        <activity
+            android:name=".friendDetailActivity"
+            android:label="@string/title_friend_detail"
+            android:parentActivityName=".friendListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="www.shopwithfriends.com.shopwithfriends.friendListActivity" />
+        </activity>
+        <activity
+            android:name=".FriendlistActivity"
+            android:label="@string/title_activity_friendlist" >
+        </activity>
     </application>
 
 </manifest>

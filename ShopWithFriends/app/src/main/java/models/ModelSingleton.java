@@ -10,7 +10,7 @@ import java.util.Random;
 public class ModelSingleton {
 
     private static ModelSingleton instance = new ModelSingleton();
-    private List<User> users = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
 
     private ModelSingleton( ) {
         makeModel();
@@ -38,7 +38,7 @@ public class ModelSingleton {
         return isaUser;
     }
 
-    public List<User> getUsers() {
+    public ArrayList<User> getUsers() {
         return users;
     }
 
