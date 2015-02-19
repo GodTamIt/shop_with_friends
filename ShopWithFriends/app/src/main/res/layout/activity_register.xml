@@ -60,14 +60,16 @@
                               android:layout_height="50dp"
                               android:text="submit"
                               android:onClick="submitRegistration"
-                              android:background="@color/primaryColor"/>
+                              android:background="@color/primaryColor"
+                          android:id="@+id/submit" />
 
             <Button android:layout_width="wrap_content"
                               android:layout_height="50dp"
                               android:background="@color/google"
                               android:layout_marginStart="10dp"
                               android:onClick="cancelRegistration"
-                              android:text="cancel"/>
+                              android:text="cancel"
+                android:id="@+id/cancel" />
                       </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

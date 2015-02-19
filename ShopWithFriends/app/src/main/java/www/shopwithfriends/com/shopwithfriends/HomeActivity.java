@@ -40,6 +40,11 @@ public class HomeActivity extends ActionBarActivity {
             startActivity(intent);
         }
 
+        else if (id == R.id.friend_list) {
+            Intent intent = new Intent(this, FriendListActivity.class);
+            startActivity(intent);
+        }
+
         else if (id == R.id.logout) {
             Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);

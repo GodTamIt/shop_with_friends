@@ -36,6 +36,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="www.shopwithfriends.com.shopwithfriends.HomeActivity" />
         </activity>
+        <activity
+            android:name=".FriendListActivity"
+            android:label="@string/title_activity_friend_list"
+            android:parentActivityName=".HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="www.shopwithfriends.com.shopwithfriends.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

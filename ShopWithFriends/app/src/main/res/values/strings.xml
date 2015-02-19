@@ -16,5 +16,6 @@
     <string name="add_friend_activity_username">Username</string>
     <string name="add_friend_activity_email">E-mail</string>
     <string name="add_friend_activity_add_button">Add</string>
+    <string name="title_activity_friend_list">FriendListActivity</string>
 
 </resources>
