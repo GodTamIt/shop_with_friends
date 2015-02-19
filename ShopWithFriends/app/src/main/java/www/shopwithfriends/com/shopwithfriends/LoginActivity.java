@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import models.ModelSingleton;
+
 public class LoginActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
@@ -60,7 +62,8 @@ public class LoginActivity extends ActionBarActivity {
         String uName = uField.getText().toString();
         EditText passField = (EditText) findViewById(R.id.passField);
         String uPass = passField.getText().toString();
-        if (uName.equals(userName) && uPass.equals(password)) {
+        if (ModelSingleton.getInstance().checkIfUser(uName,uPass)) {
+            //if (uName.equals(userName) && uPass.equals(password)) {
             startActivity(intent);
         } else {
             Context context = getApplicationContext();

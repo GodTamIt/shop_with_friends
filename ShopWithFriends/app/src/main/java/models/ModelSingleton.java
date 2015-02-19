@@ -28,13 +28,14 @@ public class ModelSingleton {
         }
     }
 
-    public Boolean checkIfUser(String email, String password) {
+    public Boolean checkIfUser(String userName, String password) {
+        boolean isaUser = false;
         for (User i : users) {
-            if (i.getEmail().equals(email) && i.getPassword().equals(password)) {
-                return true;
+            if (i.getUserName().equals(userName) && i.getPassword().equals(password)) {
+                isaUser = true;
             }
         }
-        return false;
+        return isaUser;
     }
 
     public List<User> getUsers() {
