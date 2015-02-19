@@ -1,9 +1,14 @@
 package models;
 
+import java.io.Serializable;
+
 /**
  * TODO: create header comment
  */
-public class User {
+public class User implements Serializable {
+
+
+    private static final long serialVersionUID = -7060210544600464481L;
 
     private String userName;
     private String email;
@@ -16,6 +21,8 @@ public class User {
         this.password = password;
         this.isAdmin = isAdmin;
     }
+
+
 
     public String getEmail() {
         return email;

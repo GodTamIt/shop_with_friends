@@ -1,5 +1,6 @@
 package www.shopwithfriends.com.shopwithfriends;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,6 +33,16 @@ public class HomeActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        else if (id == R.id.add_friend) {
+            Intent intent = new Intent(this, AddFriendActivity.class);
+            startActivity(intent);
+        }
+
+        else if (id == R.id.logout) {
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

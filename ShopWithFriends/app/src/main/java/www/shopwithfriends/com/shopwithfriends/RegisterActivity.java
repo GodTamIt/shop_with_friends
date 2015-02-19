@@ -8,8 +8,13 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import models.ModelSingleton;
 import models.User;
@@ -46,8 +51,9 @@ public class RegisterActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void submitRegistration(View view) {
-        //Boolean isAdmin;
+    public void submitRegistration(View view) throws IOException {
+
+        CheckBox isAdminCheck = (CheckBox) findViewById(R.id.reg_is_admin);
         EditText uField = (EditText) findViewById(R.id.reg_uname);
         EditText emailField = (EditText) findViewById(R.id.reg_email);
         EditText passField = (EditText) findViewById(R.id.reg_pass);
@@ -56,6 +62,9 @@ public class RegisterActivity extends ActionBarActivity {
         String email = emailField.getText().toString();
         String pass = passField.getText().toString();
         String confpass = confPassField.getText().toString();
+        Boolean isAdmin = isAdminCheck.isChecked();
+        String FILENAME = "registered_users_file";
+        User user = new User(uName, email, pass, isAdmin);
 
         Toast toast;
         Context context = getApplicationContext();
@@ -63,7 +72,14 @@ public class RegisterActivity extends ActionBarActivity {
         int duration = Toast.LENGTH_SHORT;
 
         if (uName != null && email != null && pass != null && confpass != null && pass.equals(confpass)) {
-            ModelSingleton.getInstance().addUser(new User(uName, email, pass, false));
+
+            //ModelSingleton.getInstance().addUser(new User(uName, email, pass, false));
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(user);
+            os.close();
+            fos.close();
+
             text = "Welcome " + uName + "! Please login";
             toast = Toast.makeText(context, text, duration);
             toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);

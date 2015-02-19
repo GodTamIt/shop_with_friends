@@ -13,19 +13,18 @@ public class ModelSingleton {
     private List<User> users = new ArrayList<>();
 
     private ModelSingleton( ) {
-        makeModel();
+
+        //makeModel();
     }
 
     public static ModelSingleton getInstance() {
+
         return instance;
     }
 
-    private void makeModel() {
-        Random rand = new Random();
-        for (int i = 0; i < 10; i++) {
-            //User u = new User ("User " + i, rand.nextInt(10));
-            //users.add(u);
-        }
+    private void makeModel(String userName, String email, String password, Boolean isAdmin) {
+        User u = new User(userName,email,password,isAdmin);
+        users.add(u);
     }
 
     public Boolean checkIfUser(String email, String password) {
@@ -42,6 +41,8 @@ public class ModelSingleton {
     }
 
     public void addUser(User freshUser) {
+
         users.add(freshUser);
     }
+
 }

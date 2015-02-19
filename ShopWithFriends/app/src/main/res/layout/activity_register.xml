@@ -8,11 +8,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="false">
+
         <ImageView android:layout_width="match_parent"
-                   android:layout_height="200dp"/>
+                   android:layout_height="150dp" />
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -46,7 +47,8 @@
                       android:text="Admin account?"/>
             <CheckBox android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:layout_marginStart="10dp"/>
+                      android:layout_marginStart="10dp"
+                android:id="@+id/reg_is_admin" />
         </LinearLayout>
 
         <LinearLayout android:layout_width="match_parent"
@@ -59,12 +61,8 @@
                               android:text="submit"
                               android:onClick="submitRegistration"
                               android:background="@color/primaryColor"/>
-                      <Button android:layout_width="wrap_content"
-                              android:layout_height="50dp"
-                              android:background="@color/primaryColor"
-                              android:text="+photo"
-                              android:layout_marginStart="10dp"/>
-                      <Button android:layout_width="wrap_content"
+
+            <Button android:layout_width="wrap_content"
                               android:layout_height="50dp"
                               android:background="@color/google"
                               android:layout_marginStart="10dp"
