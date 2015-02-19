@@ -66,6 +66,9 @@ public class LoginActivity extends ActionBarActivity {
         String uName = uField.getText().toString();
         EditText passField = (EditText) findViewById(R.id.passField);
         String uPass = passField.getText().toString();
+
+
+
         if (uName.equals(userName) && uPass.equals(password)) {
             startActivity(intent);
         } else {

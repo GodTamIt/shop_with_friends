@@ -1,5 +1,4 @@
 package www.shopwithfriends.com.shopwithfriends;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -143,7 +142,6 @@ public class RegisterActivity extends Activity implements OnClickListener
 
     public void onClick(View v)
     {
-
         switch(v.getId()){
 
             case R.id.cancel:
@@ -158,39 +156,26 @@ public class RegisterActivity extends Activity implements OnClickListener
                 String email = mEmail.getText().toString();
                 String uname = mUsername.getText().toString();
 
-                boolean invalid = false;
-
-
-
                 if(uname.equals(""))
                 {
-                    invalid = true;
                     Toast.makeText(getApplicationContext(), "Please enter your Username", Toast.LENGTH_SHORT).show();
                 }
-                else
-
-
-                if(pass.equals(""))
+                else if(pass.equals(""))
                 {
-                    invalid = true;
                     Toast.makeText(getApplicationContext(), "Please enter your Password", Toast.LENGTH_SHORT).show();
 
                 }
-                else
-                if(email.equals(""))
+                else if(email.equals(""))
                 {
-                    invalid = true;
                     Toast.makeText(getApplicationContext(), "Please enter your Email ID", Toast.LENGTH_SHORT).show();
                 }
                 else
-                if(invalid == false)
                 {
                     addEntry(uname, pass, email);
                     Intent i_register = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(i_register);
                     //finish();
                 }
-
                 break;
         }
     }

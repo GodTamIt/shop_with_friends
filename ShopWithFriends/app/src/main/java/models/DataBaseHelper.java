@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 public class DataBaseHelper extends SQLiteOpenHelper
-
-
 {
     private SQLiteDatabase db;
     public static final String KEY_ROWID = "_id";
@@ -29,7 +27,6 @@ public class DataBaseHelper extends SQLiteOpenHelper
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                     "username TEXT NOT NULL, password TEXT NOT NULL, email TEXT NOT NULL);";
     public DataBaseHelper(Context context) {
-
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         System.out.println("In constructor");
     }
@@ -74,7 +71,6 @@ public class DataBaseHelper extends SQLiteOpenHelper
 
 
     public void open() {
-
         getWritableDatabase();
     }
 
