@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-public class DataBaseHelper extends SQLiteOpenHelper
+public class OLD_DataBaseHelper extends SQLiteOpenHelper
 {
     private SQLiteDatabase db;
     public static final String KEY_ROWID = "_id";
@@ -17,7 +17,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
 
 
 
-    DataBaseHelper DB = null;
+    OLD_DataBaseHelper DB = null;
     private static final String DATABASE_NAME = "users.db";
     private static final int DATABASE_VERSION = 2;
     public static final String DATABASE_TABLE_NAME = "users";
@@ -26,7 +26,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
             "CREATE TABLE " + DATABASE_TABLE_NAME + "(" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                     "username TEXT NOT NULL, password TEXT NOT NULL, email TEXT NOT NULL);";
-    public DataBaseHelper(Context context) {
+    public OLD_DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         System.out.println("In constructor");
     }

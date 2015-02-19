@@ -1,6 +1,5 @@
 package www.shopwithfriends.com.shopwithfriends;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,11 +11,10 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import models.DataBaseHelper;
+import models.DBHelper;
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -67,9 +65,16 @@ public class LoginActivity extends ActionBarActivity {
         EditText passField = (EditText) findViewById(R.id.passField);
         String uPass = passField.getText().toString();
 
+        SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
 
+        // Remember to clean value
+        Cursor cursor = db.rawQuery(
+                String.format("SELECT 1 FROM %s WHERE %s=? AND %s=?",
+                        DBHelper.USERS_TABLE.NAME,
+                        DBHelper.USERS_TABLE.KEY_EMAIL,
+                        DBHelper.USERS_TABLE.KEY_PASSWORD), new String[] {uName, uPass});
 
-        if (uName.equals(userName) && uPass.equals(password)) {
+        if (cursor != null && cursor.getCount() > 0) {
             startActivity(intent);
         } else {
             Context context = getApplicationContext();
@@ -87,7 +92,7 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void register(View view) {
-        // Do something in response to button
+
     }
 }
 

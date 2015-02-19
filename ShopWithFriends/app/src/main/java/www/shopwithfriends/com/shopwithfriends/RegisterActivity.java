@@ -5,7 +5,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import models.DataBaseHelper;
+import models.DBHelper;
+import models.OLD_DataBaseHelper;
 
 
 /*public class RegisterActivity extends ActionBarActivity {
@@ -102,8 +103,6 @@ import android.widget.Spinner;
 
 
 public class RegisterActivity extends Activity implements OnClickListener
-
-
 {
     // Variable Declaration should be in onCreate()
     private Button mSubmit;
@@ -116,8 +115,6 @@ public class RegisterActivity extends Activity implements OnClickListener
     private EditText mEmail;
     private Spinner mGender;
     private String Gen;
-
-    protected DataBaseHelper DB = new DataBaseHelper(RegisterActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,15 +184,14 @@ public class RegisterActivity extends Activity implements OnClickListener
     public void onDestroy()
     {
         super.onDestroy();
-        DB.close();
     }
 
 
 
-    private void addEntry(String uname, String pass, String email)
+    private boolean addEntry(String uname, String pass, String email)
     {
 
-        SQLiteDatabase db = DB.getWritableDatabase();
+        SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -205,7 +201,7 @@ public class RegisterActivity extends Activity implements OnClickListener
 
         try
         {
-            db.insert(DataBaseHelper.DATABASE_TABLE_NAME, null, values);
+            db.insert(DBHelper.USERS_TABLE.NAME, null, values);
 
             Toast.makeText(getApplicationContext(), "your details submitted Successfully...", Toast.LENGTH_SHORT).show();
         }
@@ -216,7 +212,7 @@ public class RegisterActivity extends Activity implements OnClickListener
     }
 
     public void submitRegistration(View view) {
-        SQLiteDatabase db = DB.getWritableDatabase();
+        SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -234,7 +230,8 @@ public class RegisterActivity extends Activity implements OnClickListener
 
         try
         {
-            db.insert(DataBaseHelper.DATABASE_TABLE_NAME, null, values);
+            //db.insert(DataBaseHelper.DATABASE_TABLE_NAME, null, values);
+            db.insert(DBHelper.USERS_TABLE.NAME, null, values);
 
             Toast.makeText(getApplicationContext(), "your details submitted Successfully...", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, LoginActivity.class);

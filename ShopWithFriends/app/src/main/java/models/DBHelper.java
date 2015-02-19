@@ -7,20 +7,23 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by filoleg on 2/19/15.
  */
-public class DbHelper_byChris_not_currently_used extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper {
     // All Static variables
-    private static final DbHelper_byChris_not_currently_used instance = new DbHelper_byChris_not_currently_used(MyApplication.getAppContext());
+    private static DBHelper instance;
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
     private static final String DATABASE_NAME = "ShopWithFriends.db";
 
-    public static DbHelper_byChris_not_currently_used getInstance() {
+    public static DBHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new DBHelper(context);
+        }
         return instance;
     }
 
-    private static class USERS_TABLE {
+    public static class USERS_TABLE {
         // Contacts table name
         public static final String NAME = "users";
 
@@ -31,12 +34,12 @@ public class DbHelper_byChris_not_currently_used extends SQLiteOpenHelper {
         public static final String KEY_EMAIL = "email";
 
         // Creating Tables
-        public static final String CREATE = "CREATE TABLE " + NAME + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+        private static final String CREATE = "CREATE TABLE " + NAME + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_USERNAME + " TEXT," + KEY_PASSWORD + " TEXT,"
                 + KEY_EMAIL + " TEXT" + ")";
     }
 
-    private static class FRIENDS_TABLE {
+    public static class FRIENDS_TABLE {
         // Contacts table name
         public static final String NAME = "friends";
 
@@ -45,13 +48,13 @@ public class DbHelper_byChris_not_currently_used extends SQLiteOpenHelper {
         public static final String KEY_FRIEND_ID = "friend_id";
 
         // Creating Tables
-        public static final String CREATE = "CREATE TABLE " + NAME + "("
+        private static final String CREATE = "CREATE TABLE " + NAME + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," +
                 KEY_FRIEND_ID + " TEXT" + ")";
     }
 
 
-    public DbHelper_byChris_not_currently_used(Context context) {
+    public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
