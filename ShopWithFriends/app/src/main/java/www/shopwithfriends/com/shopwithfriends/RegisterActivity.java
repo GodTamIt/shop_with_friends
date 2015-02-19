@@ -209,6 +209,8 @@ public class RegisterActivity extends Activity implements OnClickListener
         {
             e.printStackTrace();
         }
+
+        return true;
     }
 
     public void submitRegistration(View view) {
