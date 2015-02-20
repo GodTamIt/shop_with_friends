@@ -20,32 +20,28 @@
                   android:layout_height="wrap_content"
                   android:layout_marginTop="10dp"
                   android:hint="@string/create_username_activity_register"
-                  android:id="@+id/register_txtUsername"
-            android:textColor="@color/textColorSecondary" />
+                  android:id="@+id/register_txtUsername" />
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="5dp"
                   android:hint="@string/create_password_activity_register"
                   android:id="@+id/register_txtPassword"
-            android:inputType="textPassword"
-            android:textColor="@color/textColorSecondary" />
+            android:inputType="textPassword" />
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:hint="@string/confirm_password_activity_register"
                   android:layout_marginTop="5dp"
                 android:id="@+id/register_txtConfPass"
-            android:inputType="textPassword"
-            android:textColor="@color/textColorSecondary" />
+            android:inputType="textPassword" />
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:hint="@string/enter_email_activity_register"
                   android:layout_marginTop="5dp"
                   android:id="@+id/register_txtEmail"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/textColorSecondary" />
+            android:inputType="textEmailAddress" />
 
         <CheckBox android:layout_width="wrap_content"
                   android:layout_height="wrap_content"

@@ -24,7 +24,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/user_email_activity_login"
-                android:textColor="@color/textColorSecondary"
                 android:inputType="textNoSuggestions" />
 
             <EditText
@@ -34,8 +33,7 @@
                 android:ems="10"
                 android:inputType="textPassword"
                 android:hint="@string/password"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/textColorSecondary" />
+                android:layout_marginTop="10dp" />
 
         <Button
             android:layout_width="match_parent"
@@ -62,7 +60,6 @@
                 android:id="@+id/btnGoogle"
                 android:background="@color/google"
                 android:elegantTextHeight="true"
-                android:textColor="@color/textColorPrimary"
                 android:drawableLeft="@drawable/googleplus"
                 android:textSize="14dp"
                 android:textAllCaps="false"
