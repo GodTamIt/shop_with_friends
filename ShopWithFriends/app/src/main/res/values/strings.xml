@@ -1,21 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ShopWithFriends</string>
+    <string name="app_name">Shop with Friends</string>
+
+    <!-- BEGIN: Common -->
+    <string name="password">Password</string>
+    <string name="unknown_error">An unknown error occurred.</string>
+    <!-- END: Common -->
+
+    <!-- BEGIN: Login Activity -->
     <string name="title_activity_login">Login</string>
-    <string name="action_settings">Settings</string>
-    <string name="email_activity_login">E-Mail Address</string>
-    <string name="password_activity_login">Password</string>
+    <string name="user_email_activity_login">Username or Email Address</string>
     <string name="google_activity_login">Sign in with Google</string>
-    <string name="signin_activity_login">Sign In</string>
+    <string name="sign_in_activity_login">Sign In</string>
+    <string name="invalid_input_activity_login">Please enter a valid username.</string>
+    <string name="failed_login_activity_login">The username and password combination is invalid.</string>
+    <!-- END: Login Activity -->
+
+
+    <!-- BEGIN: Actions -->
+    <string name="action_settings">Settings</string>
+    <!-- END: Actions -->
+
+    <!-- BEGIN: Welcome Activity -->
     <string name="title_activity_welcome">Welcome</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_register">RegisterActivity</string>
+    <!-- END: Welcome Activity -->
+
+    <!-- BEGIN: Register Activity -->
+    <string name="title_activity_register">Register</string>
+    <string name="successful_activity_register">Your account has been successfully registered.</string>
+    <!-- END: Register Activity -->
+
+    <!-- BEGIN: Home Activity -->
     <string name="title_activity_home">Home</string>
+    <!-- END: Home Activity -->
+
     <string name="title_activity_add_friend">Add Friend</string>
     <string name="add_friend_activity_username">Username</string>
     <string name="add_friend_activity_email">E-mail</string>
     <string name="add_friend_activity_add_button">Add</string>
     <string name="title_activity_friend_list">FriendListActivity</string>
 
+
+    <!-- BEGIN: Miscellaneous -->
+    <string name="hello_world">Hello world!</string>
+    <string name="admin_activity_register">Administrator Status</string>
+    <string name="create_username_activity_register">Create a Username</string>
+    <string name="create_password_activity_register">Create a Password</string>
+    <string name="confirm_password_activity_register">Confirm Password</string>
+    <string name="enter_email_activity_register">Enter Email Address</string>
+    <!-- END: Miscellaneous -->
 </resources>

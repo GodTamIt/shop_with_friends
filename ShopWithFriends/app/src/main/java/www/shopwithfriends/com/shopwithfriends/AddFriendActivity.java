@@ -54,8 +54,8 @@ public class AddFriendActivity extends ActionBarActivity {
         ContentValues values = new ContentValues();
         ContentValues values2 = new ContentValues();
 
-        EditText uField = (EditText) findViewById(R.id.reg_uname);
-        EditText emailField = (EditText) findViewById(R.id.reg_email);
+        EditText uField = (EditText) findViewById(R.id.register_txtUsername);
+        EditText emailField = (EditText) findViewById(R.id.register_txtEmail);
         String uname = uField.getText().toString();
         String email = emailField.getText().toString();
 

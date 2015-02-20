@@ -50,7 +50,7 @@
                 android:text="@string/add_friend_activity_add_button"
                 android:id="@+id/AddFriendButton"
                 android:layout_marginTop="10dp"
-                android:background="@color/primaryColor"
+                android:background="@color/colorPrimary"
                 android:clickable="true"
                 android:elegantTextHeight="true"
                 android:onClick="addFriend"
@@ -63,7 +63,7 @@
                 android:id="@+id/cancelButton"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:background="@color/primaryColor"
+                android:background="@color/colorPrimary"
                 android:clickable="true"
                 android:elegantTextHeight="true"
                 android:onClick="cancelAddFriend"/>

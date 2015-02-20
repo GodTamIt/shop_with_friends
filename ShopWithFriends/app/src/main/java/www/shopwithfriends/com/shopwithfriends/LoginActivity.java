@@ -4,42 +4,71 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import models.DBHelper;
+import models.Utility;
 
 public class LoginActivity extends ActionBarActivity {
 
-    private Toolbar toolbar;
-    private String userName = "user";
-    private String password = "pass";
+    private Button btnSignIn;
+    private EditText txtUserEmail;
+    private EditText txtPassword;
+
+    private TextWatcher textValidator = new TextWatcher() {
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            // Test if all fields are valid
+            boolean enabled = txtUserEmail.getText().length() != 0 && txtPassword.getText().length() != 0;
+
+            // Set enabled
+            btnSignIn.setEnabled(enabled);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Call superclass method
         super.onCreate(savedInstanceState);
+
+        // Show content
         setContentView(R.layout.activity_login);
 
-        //toolbar  = (Toolbar) findViewById(R.id.action_bar);
-        //setSupportActionBar(toolbar);
-    }
+        // Assign UI components
+        btnSignIn = (Button) findViewById(R.id.login_btnSignIn);
+        txtUserEmail = (EditText) findViewById(R.id.login_txtUserEmail);
+        txtPassword = (EditText) findViewById(R.id.login_txtPassword);
 
+        // Add validator
+        txtUserEmail.addTextChangedListener(textValidator);
+        txtPassword.addTextChangedListener(textValidator);
+
+        // Show 'up' icon
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        // inflate menu from xml
-
-        // Don't show menu
-        // getMenuInflater().inflate(R.menu.menu_login, menu);
-
+        getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
@@ -51,48 +80,72 @@ public class LoginActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void checkLogin(View view) {
-        Intent intent = new Intent(this, HomeActivity.class);
-        EditText uField = (EditText) findViewById(R.id.emailField);
-        String uName = uField.getText().toString();
-        EditText passField = (EditText) findViewById(R.id.passField);
-        String uPass = passField.getText().toString();
+    public void btnSignIn_Clicked(View view) {
+        AsyncTask<Context, Object, Integer> tskCheckLogin = new AsyncTask<Context, Object, Integer>() {
+            @Override
+            protected Integer doInBackground(Context... params) {
+                String userEmail = txtUserEmail.getText().toString();
+                String loginType;
 
-        SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
+                if (userEmail.contains("@")) {
+                    if (!Utility.validateEmail(userEmail)) return 1;
+                    loginType = DBHelper.USERS_TABLE.KEY_EMAIL;
+                } else {
+                    if (!Utility.validateUsername(userEmail)) return 1;
+                    loginType = DBHelper.USERS_TABLE.KEY_USERNAME;
+                }
 
-        // Remember to clean value
-        Cursor cursor = db.rawQuery(
-                String.format("SELECT 1 FROM %s WHERE %s=? AND %s=?",
+                SQLiteDatabase db = DBHelper.getInstance(params[0]).getReadableDatabase();
+
+                String query = String.format("SELECT 1 FROM %s WHERE %s=? AND %s=?",
                         DBHelper.USERS_TABLE.NAME,
-                        DBHelper.USERS_TABLE.KEY_EMAIL,
-                        DBHelper.USERS_TABLE.KEY_PASSWORD), new String[] {uName, uPass});
+                        loginType,
+                        DBHelper.USERS_TABLE.KEY_PASSWORD);
 
-        if (cursor != null && cursor.getCount() > 0) {
-            startActivity(intent);
-        } else {
-            Context context = getApplicationContext();
-            CharSequence text = "Login Failed";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
-            toast.show();
-        }
+                // Remember to clean SQL
+                Cursor cursor = db.rawQuery(query,
+                        new String[] {userEmail, txtPassword.getText().toString()});
+
+                return (cursor != null && cursor.getCount() > 0) ? 0 : 2;
+            }
+
+            @Override
+            protected void onPostExecute(Integer params) {
+                switch (params) {
+                    case 0:
+                        showHomeActivity();
+                        break;
+                    default:
+                        showLoginError(params);
+                        break;
+                }
+            }
+        };
+        tskCheckLogin.execute(this);
     }
 
-    public void cancelLogin(View view) {
-        Intent intent = new Intent(this, WelcomeActivity.class);
+    private void showHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 
-    public void register(View view) {
-
+    private void showLoginError(int error) {
+        switch (error) {
+            case 1:
+                Utility.showDialog(this, getResources().getString(R.string.invalid_input_activity_login));
+                break;
+            case 2:
+                Utility.showDialog(this, getResources().getString(R.string.failed_login_activity_login));
+                break;
+        }
     }
+
 }
 

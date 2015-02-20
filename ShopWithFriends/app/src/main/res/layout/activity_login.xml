@@ -20,54 +20,34 @@
         android:id="@+id/linearLayout">
 
             <EditText
-                android:id="@+id/emailField"
+                android:id="@+id/login_txtUserEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email_activity_login"
-                android:textColor="@color/textColorSecondary" />
+                android:hint="@string/user_email_activity_login"
+                android:textColor="@color/textColorSecondary"
+                android:inputType="textNoSuggestions" />
 
             <EditText
-                android:id="@+id/passField"
+                android:id="@+id/login_txtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:hint="@string/password_activity_login"
+                android:hint="@string/password"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/textColorSecondary" />
 
-            <LinearLayout
-                    android:id="@+id/linearLayout1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="30dp"
-                    android:orientation="horizontal"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true">
-
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="48dp"
-                android:text="@string/signin_activity_login"
-                android:id="@+id/signInButton"
-                android:layout_marginTop="10dp"
-                android:background="@color/primaryColor"
-                android:clickable="true"
-                android:elegantTextHeight="true"
-                android:onClick="checkLogin"/>
-
-            <Button
-                    android:layout_width="120dp"
-                    android:layout_height="48dp"
-                    android:text="cancel"
-                    android:id="@+id/cancelButton"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/primaryColor"
-                    android:clickable="true"
-                    android:elegantTextHeight="true"
-                    android:onClick="cancelLogin"/>
-        </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/sign_in_activity_login"
+            android:id="@+id/login_btnSignIn"
+            android:layout_marginTop="10dp"
+            android:background="@color/button_background"
+            android:clickable="true"
+            android:elegantTextHeight="true"
+            android:onClick="btnSignIn_Clicked"
+            android:enabled="false" />
 
         <LinearLayout
             android:orientation="vertical"

@@ -13,29 +13,32 @@
 
         <ImageView android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:id="@+id/logoImage"/>
+            android:id="@+id/logoImage"
+            android:layout_marginTop="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="2">
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/loginButtonSplash"
-                android:background="@color/primaryColor"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/welcome_btnLogin"
+                android:background="@color/button_background"
                 android:layout_weight="1"
                 android:text="login"
-                android:onClick="goToLogin"/>
+                android:onClick="onClick"
+                android:layout_marginTop="10dp" />
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:background="@color/primaryColor"
+                android:background="@color/button_background"
                 android:text="register"
-                android:id="@+id/registerButtonSplash"
-                android:onClick="goToLogin"/>
+                android:id="@+id/welcome_btnRegister"
+                android:onClick="onClick"
+                android:layout_marginTop="10dp" />
             </LinearLayout>
     </LinearLayout>
 

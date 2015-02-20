@@ -41,15 +41,15 @@ public class WelcomeActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void goToLogin(View view) {
-        Intent loginPage = new Intent(this, LoginActivity.class);
-        Intent registerPage = new Intent(this, RegisterActivity.class);
+    public void onClick(View view) {
         switch(view.getId())
         {
-            case R.id.loginButtonSplash:
+            case R.id.welcome_btnLogin:
+                Intent loginPage = new Intent(this, LoginActivity.class);
                 startActivity(loginPage);
                 break;
-            case R.id.registerButtonSplash:
+            case R.id.welcome_btnRegister:
+                Intent registerPage = new Intent(this, RegisterActivity.class);
                 startActivity(registerPage);
                 break;
             default:
