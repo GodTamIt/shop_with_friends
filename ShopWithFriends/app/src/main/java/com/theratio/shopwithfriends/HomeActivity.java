@@ -1,4 +1,4 @@
-package www.shopwithfriends.com.shopwithfriends;
+package com.theratio.shopwithfriends;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;

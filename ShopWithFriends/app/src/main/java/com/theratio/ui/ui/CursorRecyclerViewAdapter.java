@@ -1,4 +1,4 @@
-package www.shopwithfriends.com.ui;
+package com.theratio.ui.ui;
 
 import android.content.Context;
 import android.database.Cursor;

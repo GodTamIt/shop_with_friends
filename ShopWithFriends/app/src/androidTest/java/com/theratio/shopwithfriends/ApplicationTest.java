@@ -1,4 +1,4 @@
-package www.shopwithfriends.com.shopwithfriends;
+package com.theratio.shopwithfriends;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

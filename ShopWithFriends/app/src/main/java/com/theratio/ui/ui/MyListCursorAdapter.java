@@ -1,4 +1,4 @@
-package www.shopwithfriends.com.ui;
+package com.theratio.ui.ui;
 
 /**
  * Created by filoleg on 2/20/15.
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import models.User;
-import www.shopwithfriends.com.shopwithfriends.R;
+import com.theratio.shopwithfriends.R;
 
 
 public class MyListCursorAdapter extends CursorRecyclerViewAdapter<MyListCursorAdapter.ViewHolder> {

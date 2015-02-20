@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="www.shopwithfriends.com.shopwithfriends" >
+    package="com.theratio.shopwithfriends" >
 
     <application
         android:allowBackup="true"
@@ -24,7 +24,7 @@
             android:label="@string/title_activity_login" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="www.shopwithfriends.com.shopwithfriends.WelcomeActivity" />
+                android:value="com.theratio.shopwithfriends.WelcomeActivity" />
         </activity>
 
 
@@ -33,7 +33,7 @@
             android:label="@string/title_activity_register" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="www.shopwithfriends.com.shopwithfriends.WelcomeActivity" />
+                android:value="com.theratio.shopwithfriends.WelcomeActivity" />
         </activity>
 
 
@@ -49,7 +49,7 @@
             android:parentActivityName=".HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="www.shopwithfriends.com.shopwithfriends.HomeActivity" />
+                android:value="com.theratio.shopwithfriends.HomeActivity" />
         </activity>
 
 
@@ -59,7 +59,7 @@
             android:parentActivityName=".HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="www.shopwithfriends.com.shopwithfriends.HomeActivity" />
+                android:value="com.theratio.shopwithfriends.HomeActivity" />
         </activity>
     </application>
 

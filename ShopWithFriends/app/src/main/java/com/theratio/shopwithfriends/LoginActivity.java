@@ -1,4 +1,4 @@
-package www.shopwithfriends.com.shopwithfriends;
+package com.theratio.shopwithfriends;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
