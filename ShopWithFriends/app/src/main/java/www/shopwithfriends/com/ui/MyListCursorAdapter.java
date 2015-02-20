@@ -1,4 +1,4 @@
-package models;
+package www.shopwithfriends.com.ui;
 
 /**
  * Created by filoleg on 2/20/15.
@@ -9,14 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import java.util.List;
 
+import models.User;
 import www.shopwithfriends.com.shopwithfriends.R;
 
 
-public class MyListCursorAdapter extends CursorRecyclerViewAdapter<MyListCursorAdapter.ViewHolder>{
+public class MyListCursorAdapter extends CursorRecyclerViewAdapter<MyListCursorAdapter.ViewHolder> {
 
     public MyListCursorAdapter(Context context,Cursor cursor){
         super(context,cursor);

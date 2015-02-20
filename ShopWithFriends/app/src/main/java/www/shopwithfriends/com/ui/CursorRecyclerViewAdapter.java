@@ -1,4 +1,4 @@
-package models;
+package www.shopwithfriends.com.ui;
 
 import android.content.Context;
 import android.database.Cursor;
