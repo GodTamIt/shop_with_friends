@@ -1,12 +1,12 @@
 package com.theratio.shopwithfriends;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,7 +25,7 @@ import com.theratio.ShopWithFriends;
 import com.theratio.utilities.User;
 
 
-public class FriendListActivity extends Activity {
+public class FriendListActivity extends ActionBarActivity {
 
     protected RecyclerView mRecyclerView;
     protected FriendAdapter mAdapter;
