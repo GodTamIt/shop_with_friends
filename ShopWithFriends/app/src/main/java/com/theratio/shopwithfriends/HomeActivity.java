@@ -40,12 +40,7 @@ public class HomeActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        else if (id == R.id.add_friend) {
+        if (id == R.id.add_friend) {
             Intent intent = new Intent(this, AddFriendActivity.class);
             startActivity(intent);
         }
@@ -56,8 +51,15 @@ public class HomeActivity extends ActionBarActivity {
         }
 
         else if (id == R.id.logout) {
+            // Clear current user session
+            ((ShopWithFriends) getApplicationContext()).setCurrentUser(null);
+
+            // Show WelcomeActivity
             Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);
+
+            // Do not allow returning to this activity
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
