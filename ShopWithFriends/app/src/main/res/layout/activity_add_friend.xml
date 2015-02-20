@@ -23,24 +23,24 @@
             android:id="@+id/friendUsernameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/add_friend_activity_username" />
+            android:hint="@string/username" />
 
         <EditText
             android:id="@+id/friendEmailField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/add_friend_activity_email"
+            android:hint="@string/email"
             android:layout_marginTop="10dp"
             android:inputType="textEmailAddress" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="@string/add_friend_activity_add_button"
+            android:text="@string/add_friend_activity_add_friend"
             android:id="@+id/AddFriendButton"
             android:layout_marginTop="10dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_background"
             android:clickable="true"
             android:elegantTextHeight="true"
             android:onClick="addFriend"

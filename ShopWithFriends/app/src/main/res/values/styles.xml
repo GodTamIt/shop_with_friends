@@ -12,6 +12,7 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:colorControlHighlight">@color/colorControlHighlight</item>
 
         <!-- Separate theme for ActionBar -->
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>

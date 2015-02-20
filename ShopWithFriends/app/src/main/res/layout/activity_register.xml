@@ -54,7 +54,7 @@
             android:layout_height="fill_parent"
             android:text="Submit"
             android:onClick="btnSubmit_Clicked"
-            android:background="@color/button_background"
+            android:background="@drawable/button_background"
             android:id="@+id/register_btnSubmit"
             android:enabled="false"
             android:nestedScrollingEnabled="false"

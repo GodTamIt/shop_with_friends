@@ -4,6 +4,8 @@
     <string name="app_name">Shop with Friends</string>
 
     <!-- BEGIN: Common -->
+    <string name="email">Email</string>
+    <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="unknown_error">An unknown error occurred.</string>
     <!-- END: Common -->
@@ -43,13 +45,10 @@
     <!-- BEGIN: Add Friend -->
     <string name="added_friend_activity_add_friend">Successfully added friend.</string>
     <string name="failed_friend_activity_add_friend">Failed to add friend. Please check your input</string>
-    <!-- END: Add Friend -->
-
+    <string name="add_friend_activity_add_friend">Add Friend</string>
     <string name="title_activity_add_friend">Add Friend</string>
-    <string name="add_friend_activity_username">Username</string>
-    <string name="add_friend_activity_email">E-mail</string>
-    <string name="add_friend_activity_add_button">Add</string>
-    <string name="title_activity_friend_list">FriendListActivity</string>
+    <string name="title_activity_friend_list">Friend List</string>
+    <!-- END: Add Friend -->
 
 
     <!-- BEGIN: Miscellaneous -->
