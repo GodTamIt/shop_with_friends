@@ -10,12 +10,14 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = -7060210544600464481L;
 
+    private long id;
     private String userName;
     private String email;
     private String password;
     private Boolean isAdmin;
 
-    public User(String userName, String email, String password, Boolean isAdmin) {
+    public User(long id, String userName, String email, String password, Boolean isAdmin) {
+        this.id = id;
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -23,6 +25,7 @@ public class User implements Serializable {
     }
 
 
+    public long getID() { return id; }
 
     public String getEmail() {
         return email;

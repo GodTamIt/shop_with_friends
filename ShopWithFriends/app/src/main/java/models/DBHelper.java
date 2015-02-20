@@ -49,7 +49,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Creating Tables
         private static final String CREATE = "CREATE TABLE " + NAME + "("
-                + KEY_ID + " TEXT," +//" INTEGER PRIMARY KEY," +
+                + KEY_ID + " LONG PRIMARY KEY," +
                 KEY_FRIEND_ID + " TEXT" + ")";
     }
 

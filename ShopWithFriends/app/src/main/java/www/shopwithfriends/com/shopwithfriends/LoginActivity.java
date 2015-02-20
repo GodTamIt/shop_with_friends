@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -88,23 +90,24 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void btnSignIn_Clicked(View view) {
-        AsyncTask<Context, Object, Integer> tskCheckLogin = new AsyncTask<Context, Object, Integer>() {
+        AsyncTask<Context, Object, Long> tskCheckLogin = new AsyncTask<Context, Object, Long>() {
             @Override
-            protected Integer doInBackground(Context... params) {
+            protected Long doInBackground(Context... params) {
                 String userEmail = txtUserEmail.getText().toString();
                 String loginType;
 
                 if (userEmail.contains("@")) {
-                    if (!Utility.validateEmail(userEmail)) return 1;
+                    if (!Utility.validateEmail(userEmail)) return -1L;
                     loginType = DBHelper.USERS_TABLE.KEY_EMAIL;
                 } else {
-                    if (!Utility.validateUsername(userEmail)) return 1;
+                    if (!Utility.validateUsername(userEmail)) return -1L;
                     loginType = DBHelper.USERS_TABLE.KEY_USERNAME;
                 }
 
                 SQLiteDatabase db = DBHelper.getInstance(params[0]).getReadableDatabase();
 
-                String query = String.format("SELECT 1 FROM %s WHERE %s=? AND %s=?",
+                String query = String.format("SELECT %s FROM %s WHERE %s=? AND %s=?",
+                        DBHelper.USERS_TABLE.KEY_ID,
                         DBHelper.USERS_TABLE.NAME,
                         loginType,
                         DBHelper.USERS_TABLE.KEY_PASSWORD);
@@ -113,37 +116,38 @@ public class LoginActivity extends ActionBarActivity {
                 Cursor cursor = db.rawQuery(query,
                         new String[] {userEmail, txtPassword.getText().toString()});
 
-                return (cursor != null && cursor.getCount() > 0) ? 0 : 2;
+                if (cursor != null && cursor.getCount() > 0)
+                {
+                    cursor.moveToFirst();
+                    return cursor.getLong(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_ID));
+                }
+                else
+                    return -2L;
             }
 
             @Override
-            protected void onPostExecute(Integer params) {
-                switch (params) {
-                    case 0:
-                        showHomeActivity();
-                        break;
-                    default:
-                        showLoginError(params);
-                        break;
+            protected void onPostExecute(Long params) {
+                if (params != null) {
+                    showHomeActivity(params);
                 }
             }
         };
         tskCheckLogin.execute(this);
     }
 
-    private void showHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
+    private void showHomeActivity(long userID) {
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        intent.putExtra("USER_ID", userID);
         startActivity(intent);
     }
 
-    private void showLoginError(int error) {
-        switch (error) {
-            case 1:
-                Utility.showDialog(this, getResources().getString(R.string.invalid_input_activity_login));
-                break;
-            case 2:
-                Utility.showDialog(this, getResources().getString(R.string.failed_login_activity_login));
-                break;
+    private void showLoginError(long error) {
+        if (error == -1) {
+            Utility.showDialog(this, getResources().getString(R.string.invalid_input_activity_login));
+        }
+        else if (error == -2) {
+            Utility.showDialog(this, getResources().getString(R.string.failed_login_activity_login));
+
         }
     }
 

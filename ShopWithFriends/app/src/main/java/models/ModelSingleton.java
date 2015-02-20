@@ -22,10 +22,10 @@ public class ModelSingleton {
         return instance;
     }
 
-    private void makeModel(String userName, String email, String password, Boolean isAdmin) {
-        User u = new User(userName,email,password,isAdmin);
-        users.add(u);
-    }
+    //private void makeModel(String userName, String email, String password, Boolean isAdmin) {
+    //    User u = new User(userName,email,password,isAdmin);
+    //    users.add(u);
+    //}
 
     public Boolean checkIfUser(String email, String password) {
         for (User i : users) {

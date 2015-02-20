@@ -35,6 +35,11 @@
     <string name="title_activity_home">Home</string>
     <!-- END: Home Activity -->
 
+    <!-- BEGIN: Add Friend -->
+    <string name="added_friend_activity_add_friend">Successfully added friend.</string>
+    <string name="failed_friend_activity_add_friend">Failed to add friend. Please check your input</string>
+    <!-- END: Add Friend -->
+
     <string name="title_activity_add_friend">Add Friend</string>
     <string name="add_friend_activity_username">Username</string>
     <string name="add_friend_activity_email">E-mail</string>

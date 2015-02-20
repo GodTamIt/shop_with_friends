@@ -11,18 +11,32 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import models.DBHelper;
+import models.Utility;
 
 
 public class AddFriendActivity extends ActionBarActivity {
+    private Button btnAddFriend;
+    private EditText txtUserName;
+    private EditText txtUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
+
+        // Assign UI components
+        btnAddFriend = (Button) findViewById(R.id.AddFriendButton);
+        txtUserName = (EditText) findViewById(R.id.friendUsernameField);
+        txtUserEmail = (EditText) findViewById(R.id.friendEmailField);
+
+        // Show 'up' icon
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -49,55 +63,50 @@ public class AddFriendActivity extends ActionBarActivity {
     }
 
     public void addFriend(View view) {
-        SQLiteDatabase db = DBHelper.getInstance(this).getWritableDatabase();
+        String userEmail = txtUserEmail.getText().toString();
+        String userName = txtUserName.getText().toString();
 
-        ContentValues values = new ContentValues();
-        ContentValues values2 = new ContentValues();
+        SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
 
-        EditText uField = (EditText) findViewById(R.id.register_txtUsername);
-        EditText emailField = (EditText) findViewById(R.id.register_txtEmail);
-        String uname = uField.getText().toString();
-        String email = emailField.getText().toString();
+        String query = String.format("SELECT %s FROM %s WHERE %s=? AND %s=?",
+                DBHelper.USERS_TABLE.KEY_ID,
+                DBHelper.USERS_TABLE.NAME,
+                DBHelper.USERS_TABLE.KEY_USERNAME,
+                DBHelper.USERS_TABLE.KEY_EMAIL);
 
-        values.put("username", uname);
-        values.put("email", email);
+        Cursor cursor = db.rawQuery(query, new String[] {userName, userEmail});
 
-
-        SQLiteDatabase dbreadable = DBHelper.getInstance(this).getReadableDatabase();
-
-        // Remember to clean value
-        Cursor cursor = dbreadable.rawQuery(
-                String.format("SELECT 1 FROM %s WHERE %s=? AND %s=?",
-                        DBHelper.USERS_TABLE.NAME,
-                        DBHelper.USERS_TABLE.KEY_EMAIL,
-                        DBHelper.USERS_TABLE.KEY_PASSWORD), new String[] {uname, email});
 
         if (cursor != null && cursor.getCount() > 0) {
-            long id = cursor.getLong(cursor.getColumnIndex("id"));
-            values2.put("id", id);
-            values2.put("friend_id",uname);
+            // User exists
+
+            // Get Friend's ID from
+            cursor.moveToFirst();
+            long friendID = cursor.getLong(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_ID));
+
+            db = DBHelper.getInstance(this).getWritableDatabase();
+
+
+            // Create SQL entry
+            ContentValues values = new ContentValues();
+            values.put(DBHelper.FRIENDS_TABLE.KEY_ID, getIntent().getLongExtra("USER_ID", 0L));
+            values.put(DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID, friendID);
+
             try
             {
                 //db.insert(DataBaseHelper.DATABASE_TABLE_NAME, null, values);
-                db.insert(DBHelper.FRIENDS_TABLE.NAME, null, values2);
+                db.insert(DBHelper.FRIENDS_TABLE.NAME, null, values);
 
-                Toast.makeText(getApplicationContext(), "Friend is added!", Toast.LENGTH_SHORT).show();
-
+                Utility.showDialog(this, getResources().getString(R.string.added_friend_activity_add_friend));
+                return;
             }
             catch(Exception e)
             {
                 e.printStackTrace();
             }
-        } else {
-            Context context = getApplicationContext();
-            CharSequence text = "Friend not found";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
-            toast.show();
         }
 
-
+        Utility.showDialog(this, getResources().getString(R.string.failed_friend_activity_add_friend));
 
     }
 

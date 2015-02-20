@@ -37,6 +37,7 @@ public class HomeActivity extends ActionBarActivity {
 
         else if (id == R.id.add_friend) {
             Intent intent = new Intent(this, AddFriendActivity.class);
+            intent.putExtra("USER_ID", getIntent().getLongExtra("USER_ID", 0L));
             startActivity(intent);
         }
 

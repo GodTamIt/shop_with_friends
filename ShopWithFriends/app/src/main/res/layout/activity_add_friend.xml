@@ -20,14 +20,14 @@
         android:id="@+id/linearLayout">
 
         <EditText
-            android:id="@+id/FriendUsernameField"
+            android:id="@+id/friendUsernameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_friend_activity_username"
             android:textColor="@color/textColorSecondary" />
 
         <EditText
-            android:id="@+id/FriendEmailField"
+            android:id="@+id/friendEmailField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
