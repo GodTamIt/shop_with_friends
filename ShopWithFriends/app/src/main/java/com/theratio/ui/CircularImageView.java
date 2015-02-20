@@ -1,4 +1,4 @@
-package com.theratio.ui.ui;
+package com.theratio.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;

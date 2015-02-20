@@ -1,4 +1,4 @@
-package com.theratio.ui.ui;
+package com.theratio.ui;
 
 /**
  * Created by filoleg on 2/20/15.
