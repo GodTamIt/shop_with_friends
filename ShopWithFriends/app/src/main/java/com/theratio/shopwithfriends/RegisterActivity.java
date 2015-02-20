@@ -15,8 +15,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import models.DBHelper;
-import models.Utility;
+import com.theratio.utilities.DBHelper;
+import com.theratio.utilities.Utility;
 
 
 public class RegisterActivity extends ActionBarActivity implements OnClickListener {

@@ -23,8 +23,7 @@
             android:id="@+id/friendUsernameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/add_friend_activity_username"
-            android:textColor="@color/textColorSecondary" />
+            android:hint="@string/add_friend_activity_username" />
 
         <EditText
             android:id="@+id/friendEmailField"
@@ -33,42 +32,19 @@
             android:ems="10"
             android:hint="@string/add_friend_activity_email"
             android:layout_marginTop="10dp"
-            android:textColor="@color/textColorSecondary" />
+            android:inputType="textEmailAddress" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout1"
+        <Button
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="30dp"
-            android:orientation="horizontal"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true">
-
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="48dp"
-                android:text="@string/add_friend_activity_add_button"
-                android:id="@+id/AddFriendButton"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary"
-                android:clickable="true"
-                android:elegantTextHeight="true"
-                android:onClick="addFriend"
-                android:singleLine="true" />
-
-            <Button
-                android:layout_width="120dp"
-                android:layout_height="48dp"
-                android:text="cancel"
-                android:id="@+id/cancelButton"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:background="@color/colorPrimary"
-                android:clickable="true"
-                android:elegantTextHeight="true"
-                android:onClick="cancelAddFriend"/>
-        </LinearLayout>
-
+            android:layout_height="fill_parent"
+            android:text="@string/add_friend_activity_add_button"
+            android:id="@+id/AddFriendButton"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:elegantTextHeight="true"
+            android:onClick="addFriend"
+            android:singleLine="true" />
 
 
     </LinearLayout>

@@ -14,7 +14,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "ShopWithFriends.db";
+    private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
 
     public static DBHelper getInstance(Context context) {
         if (instance == null) {
@@ -49,7 +49,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Creating Tables
         private static final String CREATE = "CREATE TABLE " + NAME + "("
-                + KEY_ID + " LONG PRIMARY KEY," +
+                + KEY_ID + " LONG," +
                 KEY_FRIEND_ID + " TEXT" + ")";
     }
 

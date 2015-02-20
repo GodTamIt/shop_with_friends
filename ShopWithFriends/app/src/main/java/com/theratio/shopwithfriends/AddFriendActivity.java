@@ -12,8 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import models.DBHelper;
-import models.Utility;
+import com.theratio.utilities.DBHelper;
+import com.theratio.ShopWithFriends;
+import com.theratio.utilities.Utility;
 
 
 public class AddFriendActivity extends ActionBarActivity {
@@ -74,19 +75,20 @@ public class AddFriendActivity extends ActionBarActivity {
         Cursor cursor = db.rawQuery(query, new String[] {userName, userEmail});
 
 
-        if (cursor != null && cursor.getCount() > 0) {
-            // User exists
-
-            // Get Friend's ID from
+        if (cursor.moveToFirst()) {
+            // User exists - get Friend's ID from
             cursor.moveToFirst();
             long friendID = cursor.getLong(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_ID));
+
+            // Close cursor
+            cursor.close();
 
             db = DBHelper.getInstance(this).getWritableDatabase();
 
 
             // Create SQL entry
             ContentValues values = new ContentValues();
-            values.put(DBHelper.FRIENDS_TABLE.KEY_ID, getIntent().getLongExtra("USER_ID", 0L));
+            values.put(DBHelper.FRIENDS_TABLE.KEY_ID, ((ShopWithFriends) getApplicationContext()).getCurrentUser().getID());
             values.put(DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID, friendID);
 
             try

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import models.User;
+import com.theratio.utilities.User;
 import com.theratio.shopwithfriends.R;
 
 

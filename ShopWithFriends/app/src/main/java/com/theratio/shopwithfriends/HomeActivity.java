@@ -3,16 +3,26 @@ package com.theratio.shopwithfriends;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.theratio.ShopWithFriends;
+import com.theratio.utilities.DBHelper;
+import com.theratio.utilities.User;
+
 
 public class HomeActivity extends ActionBarActivity {
+
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        currentUser = ((ShopWithFriends) getApplicationContext()).getCurrentUser();
+        Log.d("Home Activity", String.format("Displaying home for user %s", currentUser.getUserName()));
     }
 
 
@@ -37,13 +47,11 @@ public class HomeActivity extends ActionBarActivity {
 
         else if (id == R.id.add_friend) {
             Intent intent = new Intent(this, AddFriendActivity.class);
-            intent.putExtra("USER_ID", getIntent().getLongExtra("USER_ID", 0L));
             startActivity(intent);
         }
 
         else if (id == R.id.friend_list) {
             Intent intent = new Intent(this, FriendListActivity.class);
-            intent.putExtra("USER_ID", getIntent().getLongExtra("USER_ID", 0L));
             startActivity(intent);
         }
 
