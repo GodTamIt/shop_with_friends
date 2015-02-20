@@ -1,5 +1,7 @@
 package models;
 
+import android.database.Cursor;
+
 import java.io.Serializable;
 
 /**
@@ -13,15 +15,17 @@ public class User implements Serializable {
     private long id;
     private String userName;
     private String email;
-    private String password;
     private Boolean isAdmin;
+    private int rating;
+    private int salesReportsNum;
 
-    public User(long id, String userName, String email, String password, Boolean isAdmin) {
+    public User(long id, String userName, String email,Boolean isAdmin) {
         this.id = id;
         this.userName = userName;
         this.email = email;
-        this.password = password;
         this.isAdmin = isAdmin;
+        this.rating = 0;//placeholders
+        this.salesReportsNum = 0;//placeholders yo
     }
 
 
@@ -35,19 +39,19 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getUserName() {
         return userName;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public static User fromCursor(Cursor cursor) {
+        cursor.moveToFirst();
+        String uname = (cursor.getString(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_USERNAME)));
+        String email = (cursor.getString(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_EMAIL)));
+        Long id = (cursor.getLong(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_ID)));
+        return new User(id, uname, email, false);
     }
 }
