@@ -37,6 +37,9 @@ public class FriendListActivity extends Activity {
         // Call superclass constructor
         super.onCreate(savedInstanceState);
 
+        // Get current user
+        currentUser = ((ShopWithFriends) getApplicationContext()).getCurrentUser();
+
         // Show layout
         setContentView(R.layout.activity_friends_list);
 
@@ -49,11 +52,11 @@ public class FriendListActivity extends Activity {
         //llm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
         // Attach adapter to RecyclerView
         mAdapter = new FriendAdapter(this, getFriends());
         mRecyclerView.setAdapter(mAdapter);
 
-        currentUser = ((ShopWithFriends) getApplicationContext()).getCurrentUser();
         Log.d("Home Activity", String.format("Displaying home for user %s", currentUser.getUserName()));
     }
 
@@ -61,6 +64,64 @@ public class FriendListActivity extends Activity {
         // Give an empty list for friends
         mFriends = new ArrayList();
 
+        SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
+
+        // Get all friends of current user
+        String query = String.format("SELECT %s FROM %s WHERE %s=?",
+                DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID,
+                DBHelper.FRIENDS_TABLE.NAME,
+                DBHelper.FRIENDS_TABLE.KEY_ID);
+
+        String userID = Long.toString(currentUser.getID());
+
+        Log.d("tskLoadFriends", "Loading friends for " + userID);
+
+        Cursor cursor = db.rawQuery(query,
+                new String[]{ userID });
+
+        if (cursor.getCount() < 1)
+            return mFriends;
+
+        Log.d("tskLoadFriends", String.format("Loaded %d friend(s) for %s", cursor.getCount(), userID));
+
+        // Create temporary ArrayList of friendIDs
+        ArrayList<Long> friendIDs = new ArrayList<Long>(cursor.getCount());
+
+        while (cursor.moveToNext()) {
+            friendIDs.add(cursor.getLong(cursor.getColumnIndex(DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID)));
+        }
+
+        // Close cursor
+        cursor.close();
+
+        // Build selection query from friendIDs
+        StringBuilder buildSelection = new StringBuilder((DBHelper.USERS_TABLE.KEY_ID.length() + 8) * friendIDs.size());
+        for (Long id : friendIDs) {
+            buildSelection.append(String.format(" OR %s=%d", DBHelper.USERS_TABLE.KEY_ID, id));
+        }
+        // Removing leading " OR ", (inclusive, exclusive)
+        buildSelection.delete(0, 4);
+
+        // Run database query (TableName, Columns to Select, Selection)
+        cursor = db.query(DBHelper.USERS_TABLE.NAME,
+                null,
+                buildSelection.toString(), null, null, null, null);
+
+        // Iterate through results
+        User friend;
+        while ((friend = User.fromCursor(cursor)) != null) {
+            Log.d("tskLoadFriends", String.format("Adding %s to Friend List", friend.getUserName()));
+
+            if (mFriends.add(friend)) {
+                //publishProgress(mFriends.size() - 1);
+            }
+        }
+
+        // Close cursor
+        cursor.close();
+
+
+/*
         AsyncTask<Context, Integer, Object> tskLoadFriends = new AsyncTask<Context, Integer, Object>() {
             @Override
             protected Integer doInBackground(Context... params) {
@@ -130,7 +191,7 @@ public class FriendListActivity extends Activity {
         };
 
         // Execute task asynchronously
-        tskLoadFriends.execute(this);
+        tskLoadFriends.execute(this);*/
 
         // Return list of friends
         return mFriends;

@@ -93,7 +93,6 @@ public class AddFriendActivity extends ActionBarActivity {
 
             try
             {
-                //db.insert(DataBaseHelper.DATABASE_TABLE_NAME, null, values);
                 db.insert(DBHelper.FRIENDS_TABLE.NAME, null, values);
 
                 Utility.showDialog(this, getResources().getString(R.string.added_friend_activity_add_friend));
