@@ -158,6 +158,7 @@ public class LoginActivity extends ActionBarActivity {
                 app.setCurrentUser(loginUser);
                 Intent intent = new Intent(app, HomeActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case INVALID_INPUT:
                 Utility.showDialog(this, getResources().getString(R.string.invalid_input_activity_login));

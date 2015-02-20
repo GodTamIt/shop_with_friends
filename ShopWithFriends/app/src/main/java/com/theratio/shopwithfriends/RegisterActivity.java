@@ -136,6 +136,7 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void showError(Integer errorCode) {
