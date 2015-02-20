@@ -1,4 +1,4 @@
-package models;
+package com.theratio.utilities;
 
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;

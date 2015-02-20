@@ -1,4 +1,4 @@
-package models;
+package com.theratio.utilities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
