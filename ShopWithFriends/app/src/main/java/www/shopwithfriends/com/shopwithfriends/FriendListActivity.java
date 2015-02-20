@@ -17,11 +17,18 @@ import java.util.List;
 
 public class FriendListActivity extends Activity {
 
+    protected RecyclerView recList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Call superclass constructor
         super.onCreate(savedInstanceState);
+
+        // Show layout
         setContentView(R.layout.activity_friends_list);
-        RecyclerView recList = (RecyclerView) findViewById(R.id.friends_list);
+
+        // Set RecyclerView layout
+        recList = (RecyclerView) findViewById(R.id.friends_list);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
