@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,18 +21,47 @@ import com.theratio.utilities.Utility;
 
 public class AddFriendActivity extends ActionBarActivity {
     private Button btnAddFriend;
-    private EditText txtUserName;
+    private EditText txtUsername;
     private EditText txtUserEmail;
+
+    private TextWatcher textValidator = new TextWatcher() {
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            // Test if all fields are valid
+            boolean enabled =
+                    Utility.validateUsername(txtUsername) &&
+                    Utility.validateEmail(txtUserEmail);
+
+            // Set enabled
+            btnAddFriend.setEnabled(enabled);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Show content
         setContentView(R.layout.activity_add_friend);
 
         // Assign UI components
         btnAddFriend = (Button) findViewById(R.id.AddFriendButton);
-        txtUserName = (EditText) findViewById(R.id.friendUsernameField);
+        txtUsername = (EditText) findViewById(R.id.friendUsernameField);
         txtUserEmail = (EditText) findViewById(R.id.friendEmailField);
+
+        // Attach validator
+        txtUsername.addTextChangedListener(textValidator);
+        txtUserEmail.addTextChangedListener(textValidator);
 
         // Show 'up' icon
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -57,7 +88,7 @@ public class AddFriendActivity extends ActionBarActivity {
 
     public void addFriend(View view) {
         String userEmail = txtUserEmail.getText().toString();
-        String userName = txtUserName.getText().toString();
+        String userName = txtUsername.getText().toString();
 
         SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
 
