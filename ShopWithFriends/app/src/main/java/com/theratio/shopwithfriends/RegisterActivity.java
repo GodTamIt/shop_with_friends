@@ -2,6 +2,7 @@ package com.theratio.shopwithfriends;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -20,7 +21,6 @@ import com.theratio.utilities.Utility;
 
 
 public class RegisterActivity extends ActionBarActivity implements OnClickListener {
-    // Variable Declaration should be in onCreate()
     private Button btnSubmit;
     private EditText txtUsername;
     private EditText txtPassword;
@@ -52,6 +52,9 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
         }
     };
 
+    protected enum RegisterResult {
+        SUCCESS, EMAIL_EXISTS, USERNAME_EXISTS, UNKNOWN
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +84,7 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 
 
     public void onClick(View v) {
-        switch (v.getId()) {
-        }
+
     }
 
 
@@ -92,9 +94,9 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 
 
     public void btnSubmit_Clicked(View view) {
-        AsyncTask<Context, Object, Integer> tskRegister = new AsyncTask<Context, Object, Integer>() {
+        AsyncTask<Context, Object, RegisterResult> tskRegister = new AsyncTask<Context, Object, RegisterResult>() {
             @Override
-            protected Integer doInBackground(Context... params) {
+            protected RegisterResult doInBackground(Context... params) {
                 String username = txtUsername.getText().toString();
                 String email = txtEmail.getText().toString();
                 String pass = txtPassword.getText().toString();
@@ -112,18 +114,15 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
                     db.insert(DBHelper.USERS_TABLE.NAME, null, values);
                 } catch (Exception e) {
                     Log.e("Registration", "Error occurred with database.", e);
-                    return 1;
+                    return RegisterResult.UNKNOWN;
                 }
-                return 0;
+
+                return RegisterResult.SUCCESS;
             }
 
             @Override
-            protected void onPostExecute(Integer params) {
-                if (params == 0) {
-                    finishRegistration();
-                } else {
-                    showError(params);
-                }
+            protected void onPostExecute(RegisterResult params) {
+                finishRegistration(params);
             }
         };
 
@@ -131,16 +130,32 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
     }
 
 
-    private void finishRegistration() {
-        Utility.showDialog(this, getResources().getString(R.string.successful_activity_register));
+    private void finishRegistration(RegisterResult result) {
 
+        if (result == RegisterResult.SUCCESS) {
+            Utility.showDialog(this, getResources().getString(R.string.successful_activity_register), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    showLogin();
+                }
+            });
+        }
+        else if (result == RegisterResult.EMAIL_EXISTS) {
+            // Email already taken
+        }
+        else if (result == RegisterResult.USERNAME_EXISTS) {
+            // Username already taken
+        }
+        else {
+            // Unknown error
+            Utility.showDialog(this, getResources().getString(R.string.unknown_error), null);
+        }
+    }
+
+    private void showLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    private void showError(Integer errorCode) {
-
     }
 
 }

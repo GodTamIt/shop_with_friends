@@ -161,13 +161,13 @@ public class LoginActivity extends ActionBarActivity {
                 finish();
                 break;
             case INVALID_INPUT:
-                Utility.showDialog(this, getResources().getString(R.string.invalid_input_activity_login));
+                Utility.showDialog(this, getResources().getString(R.string.invalid_input_activity_login), null);
                 break;
             case WRONG:
-                Utility.showDialog(this, getResources().getString(R.string.failed_login_activity_login));
+                Utility.showDialog(this, getResources().getString(R.string.failed_login_activity_login), null);
                 break;
             case UNKNOWN:
-                Utility.showDialog(this, getResources().getString(R.string.unknown_error));
+                Utility.showDialog(this, getResources().getString(R.string.unknown_error), null);
                 break;
         }
     }

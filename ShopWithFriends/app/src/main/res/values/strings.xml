@@ -29,6 +29,11 @@
     <!-- BEGIN: Register Activity -->
     <string name="title_activity_register">Register</string>
     <string name="successful_activity_register">Your account has been successfully registered.</string>
+    <string name="admin_activity_register">Administrator Status</string>
+    <string name="create_username_activity_register">Create a Username</string>
+    <string name="create_password_activity_register">Create a Password</string>
+    <string name="confirm_password_activity_register">Confirm Password</string>
+    <string name="enter_email_activity_register">Enter Email Address</string>
     <!-- END: Register Activity -->
 
     <!-- BEGIN: Home Activity -->
@@ -49,10 +54,5 @@
 
     <!-- BEGIN: Miscellaneous -->
     <string name="hello_world">Hello world!</string>
-    <string name="admin_activity_register">Administrator Status</string>
-    <string name="create_username_activity_register">Create a Username</string>
-    <string name="create_password_activity_register">Create a Password</string>
-    <string name="confirm_password_activity_register">Confirm Password</string>
-    <string name="enter_email_activity_register">Enter Email Address</string>
     <!-- END: Miscellaneous -->
 </resources>

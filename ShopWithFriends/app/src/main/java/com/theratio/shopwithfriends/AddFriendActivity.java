@@ -52,11 +52,6 @@ public class AddFriendActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -95,7 +90,7 @@ public class AddFriendActivity extends ActionBarActivity {
             {
                 db.insert(DBHelper.FRIENDS_TABLE.NAME, null, values);
 
-                Utility.showDialog(this, getResources().getString(R.string.added_friend_activity_add_friend));
+                Utility.showDialog(this, getResources().getString(R.string.added_friend_activity_add_friend), null);
                 return;
             }
             catch(Exception e)
@@ -104,7 +99,7 @@ public class AddFriendActivity extends ActionBarActivity {
             }
         }
 
-        Utility.showDialog(this, getResources().getString(R.string.failed_friend_activity_add_friend));
+        Utility.showDialog(this, getResources().getString(R.string.failed_friend_activity_add_friend), null);
 
     }
 

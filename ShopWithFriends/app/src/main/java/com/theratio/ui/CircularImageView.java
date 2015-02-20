@@ -196,7 +196,7 @@ public class CircularImageView extends ImageView {
      * @param color
      */
     public void setShadow(float radius, float dx, float dy, int color) {
-        // TODO
+
     }
 
     @Override
@@ -408,7 +408,6 @@ public class CircularImageView extends ImageView {
         }
     }
 
-    // TODO TEST REMOVE
     public void setIconModeEnabled(boolean e) {}
 
     /**

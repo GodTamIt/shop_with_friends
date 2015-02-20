@@ -43,6 +43,12 @@ public class FriendListActivity extends ActionBarActivity {
         // Show layout
         setContentView(R.layout.activity_friends_list);
 
+        // Show 'up' icon
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // BEGIN: RecyclerView Setup
+
         // Set RecyclerView layout
         mRecyclerView = (RecyclerView) findViewById(R.id.friends_list);
         mRecyclerView.setHasFixedSize(true);
@@ -56,6 +62,8 @@ public class FriendListActivity extends ActionBarActivity {
         // Attach adapter to RecyclerView
         mAdapter = new FriendAdapter(this, getFriends());
         mRecyclerView.setAdapter(mAdapter);
+
+        // END: RecyclerView Setup
 
         Log.d("Home Activity", String.format("Displaying home for user %s", currentUser.getUserName()));
     }
@@ -224,6 +232,8 @@ class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder> {
     public void onBindViewHolder(FriendViewHolder holder, int position) {
         // Get current user
         User current = friends.get(position);
+
+        Log.d("Friend list size", Integer.toString(friends.size()));
 
         // Set text and image
         holder.lblFriend.setText(current.getUserName());

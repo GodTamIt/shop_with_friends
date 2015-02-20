@@ -2,9 +2,11 @@ package com.theratio.utilities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.widget.EditText;
 
+import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 /**
@@ -58,9 +60,9 @@ public class Utility {
 
     // BEGIN: Dialogs
 
-    public static AlertDialog showDialog(Activity source, String message) {
+    public static AlertDialog showDialog(Activity source, String message, DialogInterface.OnClickListener okClicked) {
         AlertDialog.Builder builder = new AlertDialog.Builder(source);
-        builder.setMessage(message).setPositiveButton("OK", null);
+        builder.setMessage(message).setPositiveButton("OK", okClicked);
 
         return builder.show();
     }
