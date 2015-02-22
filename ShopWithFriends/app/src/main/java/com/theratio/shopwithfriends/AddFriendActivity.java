@@ -129,8 +129,8 @@ public class AddFriendActivity extends ActionBarActivity {
         String query = String.format("SELECT %s FROM %s WHERE %s=? AND %s=?",
                 DBHelper.USERS_TABLE.KEY_ID,
                 DBHelper.USERS_TABLE.NAME,
-                DBHelper.USERS_TABLE.KEY_USERNAME,
-                DBHelper.USERS_TABLE.KEY_EMAIL);
+                DBHelper.USERS_TABLE.KEY_EMAIL,
+                DBHelper.USERS_TABLE.KEY_USERNAME);
 
         Cursor cursor = db.rawQuery(query, new String[] {friendEmail, friendUsername});
 
