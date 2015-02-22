@@ -3,6 +3,7 @@ package com.theratio.utilities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.text.Editable;
 import android.widget.EditText;
 
@@ -16,6 +17,9 @@ public class Utility {
 
     //region Declarations
 
+    private Utility() {
+        // Prevent instantiation of Utility
+    }
 
     //endregion
 
@@ -74,4 +78,15 @@ public class Utility {
     //endregion Dialogs
 
 
+    //region Asynchronous Tasks
+
+    public static class RegisterTask extends AsyncTask<Object, Object, RegisterTask> {
+
+        @Override
+        protected RegisterTask doInBackground(Object... params) {
+            return null;
+        }
+    }
+
+    //endregion
 }
