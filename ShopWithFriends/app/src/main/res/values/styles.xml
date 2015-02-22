@@ -21,6 +21,7 @@
 
     <style name="ButtonBase">
         <item name="android:height">48dp</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:background">@drawable/button_background</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
