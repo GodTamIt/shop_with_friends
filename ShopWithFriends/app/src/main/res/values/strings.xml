@@ -7,11 +7,12 @@
     <string name="email">Email</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="register">Register</string>
     <string name="unknown_error">An unknown error occurred.</string>
+    <string name="login">Login</string>
     <!-- END: Common -->
 
     <!-- BEGIN: Login Activity -->
-    <string name="title_activity_login">Login</string>
     <string name="user_email_activity_login">Username or Email Address</string>
     <string name="google_activity_login">Sign in with Google</string>
     <string name="sign_in_activity_login">Sign In</string>
@@ -29,7 +30,6 @@
     <!-- END: Welcome Activity -->
 
     <!-- BEGIN: Register Activity -->
-    <string name="title_activity_register">Register</string>
     <string name="successful_activity_register">Your account has been successfully registered.</string>
     <string name="admin_activity_register">Administrator Status</string>
     <string name="create_username_activity_register">Create a Username</string>
@@ -43,10 +43,9 @@
     <!-- END: Home Activity -->
 
     <!-- BEGIN: Add Friend -->
+    <string name="add_friend">Add Friend</string>
     <string name="added_friend_activity_add_friend">Successfully added friend.</string>
     <string name="failed_friend_activity_add_friend">Failed to add friend. Please check your input</string>
-    <string name="add_friend_activity_add_friend">Add Friend</string>
-    <string name="title_activity_add_friend">Add Friend</string>
     <string name="title_activity_friend_list">Friend List</string>
     <!-- END: Add Friend -->
 

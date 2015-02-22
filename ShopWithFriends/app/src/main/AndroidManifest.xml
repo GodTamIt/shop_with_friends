@@ -21,7 +21,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/login" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.theratio.shopwithfriends.WelcomeActivity" />
@@ -30,7 +30,7 @@
 
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/title_activity_register" >
+            android:label="@string/register" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.theratio.shopwithfriends.WelcomeActivity" />
@@ -45,7 +45,7 @@
 
         <activity
             android:name=".AddFriendActivity"
-            android:label="@string/title_activity_add_friend"
+            android:label="@string/add_friend"
             android:parentActivityName=".HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
