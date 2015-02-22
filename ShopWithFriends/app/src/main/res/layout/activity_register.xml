@@ -10,11 +10,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentEnd="false">
+        android:orientation="vertical">
 
-        <ImageView android:layout_width="match_parent"
-                   android:layout_height="150dp" />
+        <ImageView
+            tools:ignore="ContentDescription"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
 
         <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -52,9 +53,8 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Submit"
-            android:onClick="onbtnSubmitClick"
-            android:background="@drawable/button_background"
+            android:text="@string/register"
+            android:onClick="onbtnRegisterClick"
             android:id="@+id/register_btnSubmit"
             android:enabled="false"
             android:nestedScrollingEnabled="false"

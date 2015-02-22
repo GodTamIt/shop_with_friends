@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/user_email_activity_login"
-                android:inputType="textNoSuggestions" />
+                android:inputType="textEmailAddress" />
 
             <EditText
                 android:id="@+id/login_txtPassword"
@@ -41,9 +41,7 @@
             android:text="@string/sign_in_activity_login"
             android:id="@+id/login_btnSignIn"
             android:layout_marginTop="10dp"
-            android:background="@drawable/button_background"
             android:clickable="true"
-            android:elegantTextHeight="true"
             android:onClick="onbtnSignInClick"
             android:enabled="false" />
 
@@ -60,8 +58,8 @@
                 android:id="@+id/btnGoogle"
                 android:background="@color/google"
                 android:elegantTextHeight="true"
-                android:drawableLeft="@drawable/googleplus"
-                android:textSize="14dp"
+                android:drawableStart="@drawable/googleplus"
+                android:textSize="14sp"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 android:clickable="true" />

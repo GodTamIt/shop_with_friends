@@ -35,14 +35,11 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="@string/add_friend_activity_add_friend"
-            android:id="@+id/AddFriendButton"
+            android:text="@string/add_friend"
+            android:id="@+id/add_friend_btnAddFriend"
             android:layout_marginTop="10dp"
-            android:background="@drawable/button_background"
             android:clickable="true"
-            android:elegantTextHeight="true"
             android:onClick="onbtnAddFriendClick"
-            android:singleLine="true"
             android:enabled="false" />
 
 
