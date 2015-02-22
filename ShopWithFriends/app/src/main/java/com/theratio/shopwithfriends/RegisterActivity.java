@@ -12,7 +12,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -23,7 +22,7 @@ import com.theratio.utilities.Utility;
 public class RegisterActivity extends ActionBarActivity {
 
     //region Declarations
-    private Button btnSubmit;
+    private Button btnRegister;
     private EditText txtUsername;
     private EditText txtPassword;
     private EditText txtConfPass;
@@ -50,7 +49,7 @@ public class RegisterActivity extends ActionBarActivity {
                     Utility.validateEmail(txtEmail);
 
             // Set enabled
-            btnSubmit.setEnabled(enabled);
+            btnRegister.setEnabled(enabled);
         }
     };
 
@@ -69,7 +68,7 @@ public class RegisterActivity extends ActionBarActivity {
         setContentView(R.layout.activity_register);
 
         //Assignment of UI fields to the variables
-        btnSubmit = (Button) findViewById(R.id.register_btnSubmit);
+        btnRegister = (Button) findViewById(R.id.register_btnSubmit);
         txtUsername = (EditText) findViewById(R.id.register_txtUsername);
         txtPassword = (EditText) findViewById(R.id.register_txtPassword);
         txtConfPass = (EditText) findViewById(R.id.register_txtConfPass);
@@ -94,8 +93,8 @@ public class RegisterActivity extends ActionBarActivity {
     //endregion
 
     //region UI
-    public void onbtnSubmitClick(View view) {
-        btnSubmit.setEnabled(false);
+    public void onbtnRegisterClick(View view) {
+        btnRegister.setEnabled(false);
         AsyncTask<String, Object, RegisterResult> tskRegister = new AsyncTask<String, Object, RegisterResult>() {
             @Override
             protected RegisterResult doInBackground(String... params) {
@@ -158,7 +157,7 @@ public class RegisterActivity extends ActionBarActivity {
             // Unknown error
             Utility.showDialog(this, getResources().getString(R.string.unknown_error), null);
         }
-        btnSubmit.setEnabled(true);
+        btnRegister.setEnabled(true);
     }
 
     //endregion
