@@ -4,10 +4,12 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +18,13 @@ import android.widget.EditText;
 
 import com.theratio.utilities.DBHelper;
 import com.theratio.ShopWithFriends;
+import com.theratio.utilities.User;
 import com.theratio.utilities.Utility;
 
 
 public class AddFriendActivity extends ActionBarActivity {
+
+    //region Declarations
     private Button btnAddFriend;
     private EditText txtUsername;
     private EditText txtUserEmail;
@@ -45,7 +50,9 @@ public class AddFriendActivity extends ActionBarActivity {
             btnAddFriend.setEnabled(enabled);
         }
     };
+    //endregion
 
+    //region Overridden Methods
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +93,37 @@ public class AddFriendActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addFriend(View view) {
-        String userEmail = txtUserEmail.getText().toString();
-        String userName = txtUsername.getText().toString();
+    //endregion
 
+    //region UI
+
+    public void btnAddFriend_Clicked(View view) {
+        btnAddFriend.setEnabled(false);
+        AsyncTask<Object, Object, AddFriendResult> tskAddFriend = new AsyncTask<Object, Object, AddFriendResult>() {
+            @Override
+            protected AddFriendResult doInBackground(Object... params) {
+                return addFriend(((ShopWithFriends) getApplicationContext()).getCurrentUser(),
+                        txtUserEmail.getText().toString(), txtUsername.getText().toString());
+            }
+
+            @Override
+            protected void onPostExecute(AddFriendResult params) {
+                onAddFriendComplete(params);
+            }
+        };
+
+        tskAddFriend.execute();
+    }
+
+    //endregion
+
+    //region Functioning
+
+    private enum AddFriendResult {
+        SUCCESS, ALREADY_FRIENDS, NO_SUCH_USER, UNKNOWN
+    }
+
+    private AddFriendResult addFriend(User user, String friendEmail, String friendUsername) {
         SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
         String query = String.format("SELECT %s FROM %s WHERE %s=? AND %s=?",
@@ -98,7 +132,7 @@ public class AddFriendActivity extends ActionBarActivity {
                 DBHelper.USERS_TABLE.KEY_USERNAME,
                 DBHelper.USERS_TABLE.KEY_EMAIL);
 
-        Cursor cursor = db.rawQuery(query, new String[] {userName, userEmail});
+        Cursor cursor = db.rawQuery(query, new String[] {friendEmail, friendUsername});
 
 
         if (cursor.moveToFirst()) {
@@ -120,23 +154,37 @@ public class AddFriendActivity extends ActionBarActivity {
             try
             {
                 db.insert(DBHelper.FRIENDS_TABLE.NAME, null, values);
-
-                Utility.showDialog(this, getResources().getString(R.string.added_friend_activity_add_friend), null);
-                return;
+                return AddFriendResult.SUCCESS;
             }
             catch(Exception e)
             {
+                Log.e("AddFriend", "Error occurred when adding friend", e);
                 e.printStackTrace();
             }
         }
 
-        Utility.showDialog(this, getResources().getString(R.string.failed_friend_activity_add_friend), null);
-
+        return AddFriendResult.NO_SUCH_USER;
     }
 
-    public void cancelAddFriend(View view) {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+    private void onAddFriendComplete(AddFriendResult result) {
+        if (result == AddFriendResult.SUCCESS) {
+            Utility.showDialog(this, getResources().getString(R.string.added_friend_activity_add_friend), null);
+            // Clear fields
+            txtUserEmail.setText(null);
+            txtUsername.setText(null);
+        }
+        else if (result == AddFriendResult.ALREADY_FRIENDS) {
+            // Already friends
+        }
+        else if (result == AddFriendResult.NO_SUCH_USER) {
+            Utility.showDialog(this, getResources().getString(R.string.failed_friend_activity_add_friend), null);
+        }
+        else {
+            // Unknown error
+        }
 
+        btnAddFriend.setEnabled(true);
     }
+
+    //endregion
 }

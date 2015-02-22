@@ -21,6 +21,7 @@ import com.theratio.utilities.Utility;
 
 public class LoginActivity extends ActionBarActivity {
 
+    //region Declarations
     private Button btnSignIn;
     private EditText txtUserEmail;
     private EditText txtPassword;
@@ -50,8 +51,9 @@ public class LoginActivity extends ActionBarActivity {
             btnSignIn.setEnabled(enabled);
         }
     };
+    //endregion
 
-    // BEGIN: Overridden Methods
+    //region Overridden Methods
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,61 +99,68 @@ public class LoginActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // END: Overridden Methods
+    //endregion
+
+    //region UI
 
     public void btnSignIn_Clicked(View view) {
-        AsyncTask<User, Object, LoginResult> tskCheckLogin = new AsyncTask<User, Object, LoginResult>() {
+        btnSignIn.setEnabled(false);
+        AsyncTask<Object, Object, LoginResult> tskCheckLogin = new AsyncTask<Object, Object, LoginResult>() {
 
             @Override
-            protected LoginResult doInBackground(User... params) {
-                String userEmail = txtUserEmail.getText().toString();
-                String loginType;
-
-                if (userEmail.contains("@")) {
-                    if (!Utility.validateEmail(userEmail))
-                        return LoginResult.INVALID_INPUT;
-
-                    loginType = DBHelper.USERS_TABLE.KEY_EMAIL;
-                } else {
-                    if (!Utility.validateUsername(userEmail))
-                        return LoginResult.INVALID_INPUT;
-
-                    loginType = DBHelper.USERS_TABLE.KEY_USERNAME;
-                }
-
-                SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
-
-                String query = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
-                        DBHelper.USERS_TABLE.NAME,
-                        loginType,
-                        DBHelper.USERS_TABLE.KEY_PASSWORD);
-
-                // Remember to clean SQL
-                Cursor cursor = db.rawQuery(query,
-                        new String[]{userEmail, txtPassword.getText().toString()});
-
-                if (cursor.getCount() < 1)
-                    return LoginResult.WRONG;
-
-                loginUser = User.fromCursor(cursor);
-
-                // Close cursor
-                cursor.close();
-                return loginUser == null ? LoginResult.UNKNOWN : LoginResult.SUCCESS;
+            protected LoginResult doInBackground(Object... params) {
+                return login(txtUserEmail.getText().toString(), txtPassword.getText().toString());
             }
 
             @Override
             protected void onPostExecute(LoginResult params) {
-                onLoginFinished(params);
+                onLoginComplete(params);
             }
         };
-        tskCheckLogin.execute(loginUser);
+        tskCheckLogin.execute();
     }
 
-    private void onLoggedIn(User user) {
+    //endregion
 
+    //region Functioning
+
+    private LoginResult login(String userEmail, String password) {
+        String loginType;
+
+        if (userEmail.contains("@")) {
+            if (!Utility.validateEmail(userEmail))
+                return LoginResult.INVALID_INPUT;
+
+            loginType = DBHelper.USERS_TABLE.KEY_EMAIL;
+        } else {
+            if (!Utility.validateUsername(userEmail))
+                return LoginResult.INVALID_INPUT;
+
+            loginType = DBHelper.USERS_TABLE.KEY_USERNAME;
+        }
+
+        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+
+        String query = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
+                DBHelper.USERS_TABLE.NAME,
+                loginType,
+                DBHelper.USERS_TABLE.KEY_PASSWORD);
+
+        // Remember to clean SQL
+        Cursor cursor = db.rawQuery(query,
+                new String[]{userEmail, password});
+
+        if (cursor.getCount() < 1)
+            return LoginResult.WRONG;
+
+        loginUser = User.fromCursor(cursor);
+
+        // Close cursor
+        cursor.close();
+        return loginUser == null ? LoginResult.UNKNOWN : LoginResult.SUCCESS;
     }
-    private void onLoginFinished(LoginResult result) {
+
+    private void onLoginComplete(LoginResult result) {
         switch (result) {
             case SUCCESS:
                 ShopWithFriends app = (ShopWithFriends) getApplicationContext();
@@ -170,11 +179,10 @@ public class LoginActivity extends ActionBarActivity {
                 Utility.showDialog(this, getResources().getString(R.string.unknown_error), null);
                 break;
         }
+        btnSignIn.setEnabled(true);
     }
 
-    private void showLoginError(int error) {
-
-    }
+    //endregion
 
 }
 

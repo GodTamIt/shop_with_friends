@@ -10,6 +10,7 @@ import android.view.View;
 
 public class WelcomeActivity extends ActionBarActivity {
 
+    //region Overridden Methods
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,10 @@ public class WelcomeActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //endregion
+
+    //region UI
+
     public void onClick(View view) {
         switch(view.getId())
         {
@@ -50,8 +55,8 @@ public class WelcomeActivity extends ActionBarActivity {
             default:
                 throw new RuntimeException("Unknown button ID");
         }
-
     }
 
+    //endregion
 
 }

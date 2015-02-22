@@ -20,7 +20,9 @@ import com.theratio.utilities.DBHelper;
 import com.theratio.utilities.Utility;
 
 
-public class RegisterActivity extends ActionBarActivity implements OnClickListener {
+public class RegisterActivity extends ActionBarActivity {
+
+    //region Declarations
     private Button btnSubmit;
     private EditText txtUsername;
     private EditText txtPassword;
@@ -52,10 +54,12 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
         }
     };
 
-    protected enum RegisterResult {
+    private enum RegisterResult {
         SUCCESS, EMAIL_EXISTS, USERNAME_EXISTS, UNKNOWN
     }
+    //endregion
 
+    //region Overridden Methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Call superclass method
@@ -83,60 +87,64 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
     }
 
 
-    public void onClick(View v) {
-
-    }
-
-
+    @Override
     public void onDestroy() {
         super.onDestroy();
     }
+    //endregion
 
-
+    //region UI
     public void btnSubmit_Clicked(View view) {
-        AsyncTask<Context, Object, RegisterResult> tskRegister = new AsyncTask<Context, Object, RegisterResult>() {
+        btnSubmit.setEnabled(false);
+        AsyncTask<String, Object, RegisterResult> tskRegister = new AsyncTask<String, Object, RegisterResult>() {
             @Override
-            protected RegisterResult doInBackground(Context... params) {
-                String username = txtUsername.getText().toString();
-                String email = txtEmail.getText().toString();
-                String pass = txtPassword.getText().toString();
-
-                // Create SQL entry
-                ContentValues values = new ContentValues();
-                values.put("username", username);
-                values.put("password", pass);
-                values.put("email", email);
-
-                try {
-                    // Get writable instance of database
-                    SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
-
-                    db.insert(DBHelper.USERS_TABLE.NAME, null, values);
-                } catch (Exception e) {
-                    Log.e("Registration", "Error occurred with database.", e);
-                    return RegisterResult.UNKNOWN;
-                }
-
-                return RegisterResult.SUCCESS;
+            protected RegisterResult doInBackground(String... params) {
+                return register(params[0], params[1], params[2]);
             }
 
             @Override
             protected void onPostExecute(RegisterResult params) {
-                finishRegistration(params);
+                onRegisterComplete(params);
             }
         };
 
-        tskRegister.execute(this);
+        tskRegister.execute(txtUsername.getText().toString(), txtEmail.getText().toString(), txtPassword.getText().toString());
+    }
+    //endregion
+
+    //region Registration
+
+    private RegisterResult register(String username, String email, String password) {
+        // Create SQL entries
+        ContentValues values = new ContentValues();
+        values.put("username", username);
+        values.put("email", email);
+        values.put("password", password);
+
+        // Retrieve database
+        SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
+
+        try {
+            db.insert(DBHelper.USERS_TABLE.NAME, null, values);
+        }
+        catch (Exception e) {
+            Log.e("Registration", "Error occurred with database.", e);
+            return RegisterResult.UNKNOWN;
+        }
+
+        return RegisterResult.SUCCESS;
     }
 
-
-    private void finishRegistration(RegisterResult result) {
-
+    private void onRegisterComplete(RegisterResult result) {
         if (result == RegisterResult.SUCCESS) {
+            final Context current = this;
             Utility.showDialog(this, getResources().getString(R.string.successful_activity_register), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    showLogin();
+                    Intent intent = new Intent(current, LoginActivity.class);
+                    startActivity(intent);
+
+                    finish();
                 }
             });
         }
@@ -150,12 +158,8 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
             // Unknown error
             Utility.showDialog(this, getResources().getString(R.string.unknown_error), null);
         }
+        btnSubmit.setEnabled(true);
     }
 
-    private void showLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
+    //endregion
 }
