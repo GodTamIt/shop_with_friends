@@ -8,7 +8,7 @@
         border="false"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/user_no_profile"/>
+        />
 
     <TextView
         android:id="@+id/friend_list_label"

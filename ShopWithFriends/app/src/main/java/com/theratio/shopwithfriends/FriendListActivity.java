@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +29,15 @@ import com.theratio.utilities.User;
 public class FriendListActivity extends ActionBarActivity {
 
     //region Declarations
-    protected RecyclerView mRecyclerView;
-    protected FriendAdapter mAdapter;
-    protected List<User> mFriends;
-    protected User currentUser;
+    private RecyclerView mRecyclerView;
+    private FriendAdapter mAdapter;
+    private List<User> mFriends;
+    private User currentUser;
+
+    // Cache for profile pictures
+    Drawable mDefaultPic;
     //endregion
+
 
     //region Overridden Methods
 
@@ -51,28 +56,24 @@ public class FriendListActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // BEGIN: RecyclerView Setup
 
         // Set RecyclerView layout
         mRecyclerView = (RecyclerView) findViewById(R.id.friends_list);
         mRecyclerView.setHasFixedSize(true);
 
         // Set layout of RecyclerView
-        //LinearLayoutManager llm = new LinearLayoutManager(this);
-        //llm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         // Attach adapter to RecyclerView
         mAdapter = new FriendAdapter(this, getFriends());
         mRecyclerView.setAdapter(mAdapter);
 
-        // END: RecyclerView Setup
-
+        // Logging for HomeActivity
         Log.d("Home Activity", String.format("Displaying home for user %s", currentUser.getUserName()));
     }
 
     //endregion
+
 
     //region Functioning
 
@@ -80,9 +81,12 @@ public class FriendListActivity extends ActionBarActivity {
         // Initialize mFriends
         mFriends = new ArrayList<User>();
 
-        AsyncTask<Context, Integer, Object> tskLoadFriends = new AsyncTask<Context, Integer, Object>() {
+        AsyncTask<Object, Object, Object> tskLoadFriends = new AsyncTask<Object, Object, Object>() {
             @Override
-            protected Integer doInBackground(Context... params) {
+            protected Object doInBackground(Object... params) {
+                // Load default pic into memory
+                mDefaultPic = getResources().getDrawable(R.drawable.user_no_profile);
+
                 SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
                 // Get all friends of current user
@@ -132,7 +136,7 @@ public class FriendListActivity extends ActionBarActivity {
                     Log.d("tskLoadFriends", String.format("Adding %s to Friend List", friend.getUserName()));
 
                     if (mFriends.add(friend)) {
-                        //publishProgress(mFriends.size() - 1);
+                        // NOTE: Must call this synchronously
                         mAdapter.notifyItemInserted(mFriends.size() - 1);
                     }
                 }
@@ -140,6 +144,7 @@ public class FriendListActivity extends ActionBarActivity {
                 // Close cursor
                 cursor.close();
 
+                // Don't care about return type
                 return null;
             }
         };
@@ -153,64 +158,69 @@ public class FriendListActivity extends ActionBarActivity {
 
     //endregion
 
-}
 
-class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder> {
+    //region RecyclerView classes
 
-    private LayoutInflater inflater;
-    private List<User> friends = Collections.emptyList();
+    private class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
-    public FriendAdapter(Context context, List<User> friends) {
-        inflater = LayoutInflater.from(context);
-        this.friends = friends;
-    }
+        private LayoutInflater inflater;
+        private List<User> friends = Collections.emptyList();
 
-
-    @Override
-    public FriendViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Retrieve and inflate friend list row
-        View view = inflater.inflate(R.layout.friend_list_recycler_row, parent, false);
-
-        Log.d("FriendAdapter", "Inflated new row");
-        // Send inflated view to ViewHolder (handles recycling of views)
-        FriendViewHolder holder = new FriendViewHolder(view);
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(FriendViewHolder holder, int position) {
-        // Get current user
-        User current = friends.get(position);
-
-        Log.d("Friend list size", Integer.toString(friends.size()));
-
-        // Set text and image
-        holder.lblFriend.setText(current.getUserName());
-
-        Drawable pic = current.getProfilePicture();
-        if (pic == null) {
-            // Replace with default image
+        public FriendAdapter(Context context, List<User> friends) {
+            inflater = LayoutInflater.from(context);
+            this.friends = friends;
         }
-        else {
-            holder.imgProfile.setImageDrawable(current.getProfilePicture());
+
+
+        @Override
+        public FriendViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            // Retrieve and inflate friend list row
+            View view = inflater.inflate(R.layout.friend_list_recycler_row, parent, false);
+
+            // Send inflated view to ViewHolder (handles recycling of views)
+            FriendViewHolder holder = new FriendViewHolder(view);
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(FriendViewHolder holder, int position) {
+            // Get current user
+            User current = friends.get(position);
+
+            Log.d("Friend list size", Integer.toString(friends.size()));
+
+            // Set text and image
+            holder.lblFriend.setText(current.getUserName());
+
+            Drawable pic = current.getProfilePicture();
+            if (pic == null) {
+                pic = mDefaultPic;
+            }
+
+            holder.imgProfile.setImageDrawable(pic);
+        }
+
+        @Override
+        public int getItemCount() {
+            return friends.size();
+        }
+
+    }
+
+    private class FriendViewHolder extends RecyclerView.ViewHolder {
+        ImageView imgProfile;
+        TextView lblFriend;
+        public FriendViewHolder(View itemView) {
+            // Call superclass constructor
+            super(itemView);
+
+            // Find text
+            lblFriend = (TextView) itemView.findViewById(R.id.friend_list_label);
+            imgProfile = (ImageView) itemView.findViewById(R.id.friend_list_icon);
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return friends.size();
-    }
+    //endregion
+
 }
 
-class FriendViewHolder extends RecyclerView.ViewHolder {
-    ImageView imgProfile;
-    TextView lblFriend;
-    public FriendViewHolder(View itemView) {
-        // Call superclass constructor
-        super(itemView);
-
-        // Find text
-        lblFriend = (TextView) itemView.findViewById(R.id.friend_list_label);
-        imgProfile = (ImageView) itemView.findViewById(R.id.friend_list_icon);
-    }
-}
