@@ -15,19 +15,25 @@ public class DBHelper extends SQLiteOpenHelper {
     private static DBHelper instance;
     private static final int DATABASE_VERSION = 2;
 
+    /**
+     * This method should only be called by the Application class.
+     * @param context - the application's context to create the database.
+     */
     public static void initInstance(Context context) {
         if (instance == null) {
             instance = new DBHelper(context);
         }
     }
 
+    /**
+     * Returns the application's instance of the database.
+     * @return the application's single instance of DBHelper.
+     */
     public static DBHelper getInstance() {
         return instance;
     }
 
-
     //endregion
-    
 
     //region Database Tables
 
@@ -63,6 +69,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //endregion
 
+    //region Overridden Methods
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -74,7 +81,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(FRIENDS_TABLE.CREATE);
     }
 
-    // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
@@ -85,4 +91,8 @@ public class DBHelper extends SQLiteOpenHelper {
         // Create tables again
         onCreate(db);
     }
+
+    //endregion
+
 }
+

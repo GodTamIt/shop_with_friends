@@ -90,7 +90,7 @@ public class AddFriendActivity extends ActionBarActivity {
         String userEmail = txtUserEmail.getText().toString();
         String userName = txtUsername.getText().toString();
 
-        SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
+        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
         String query = String.format("SELECT %s FROM %s WHERE %s=? AND %s=?",
                 DBHelper.USERS_TABLE.KEY_ID,
@@ -109,7 +109,7 @@ public class AddFriendActivity extends ActionBarActivity {
             // Close cursor
             cursor.close();
 
-            db = DBHelper.getInstance(this).getWritableDatabase();
+            db = DBHelper.getInstance().getWritableDatabase();
 
 
             // Create SQL entry

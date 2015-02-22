@@ -119,7 +119,7 @@ public class LoginActivity extends ActionBarActivity {
                     loginType = DBHelper.USERS_TABLE.KEY_USERNAME;
                 }
 
-                SQLiteDatabase db = DBHelper.getInstance(getApplicationContext()).getReadableDatabase();
+                SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
                 String query = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
                         DBHelper.USERS_TABLE.NAME,

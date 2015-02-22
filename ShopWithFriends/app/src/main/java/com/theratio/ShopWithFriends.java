@@ -2,6 +2,7 @@ package com.theratio;
 
 import android.app.Application;
 
+import com.theratio.utilities.DBHelper;
 import com.theratio.utilities.User;
 
 /**
@@ -9,11 +10,18 @@ import com.theratio.utilities.User;
  */
 public class ShopWithFriends extends Application {
 
-    // BEGIN: Declarations
+    //region Declarations
     private User currentUser;
-    // END: Declarations
+    //endregion
 
-    // BEGIN: Encapsulation Methods
+    //region Overridden Methods
+    @Override
+    public void onCreate() {
+        DBHelper.initInstance(getApplicationContext());
+    }
+    //endregion
+
+    //region Encapsulation Methods
 
     public User getCurrentUser() {
         return currentUser;
@@ -23,7 +31,7 @@ public class ShopWithFriends extends Application {
         this.currentUser = currentUser;
     }
 
-    // END: Encapsulation Methods
+    //endregion
 
 
 }

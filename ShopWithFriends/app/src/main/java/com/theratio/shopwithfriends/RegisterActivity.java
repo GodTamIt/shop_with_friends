@@ -109,7 +109,7 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 
                 try {
                     // Get writable instance of database
-                    SQLiteDatabase db = DBHelper.getInstance(params[0]).getWritableDatabase();
+                    SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
 
                     db.insert(DBHelper.USERS_TABLE.NAME, null, values);
                 } catch (Exception e) {

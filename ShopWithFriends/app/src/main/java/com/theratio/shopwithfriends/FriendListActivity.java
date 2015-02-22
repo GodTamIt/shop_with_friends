@@ -72,7 +72,7 @@ public class FriendListActivity extends ActionBarActivity {
         // Give an empty list for friends
         mFriends = new ArrayList();
 
-        SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
+        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
         // Get all friends of current user
         String query = String.format("SELECT %s FROM %s WHERE %s=?",
