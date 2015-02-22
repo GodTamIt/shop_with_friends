@@ -8,20 +8,28 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by filoleg on 2/19/15.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    // All Static variables
+
+    //region Static Members & Methods
+
+    private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
     private static DBHelper instance;
-    // Database Version
     private static final int DATABASE_VERSION = 2;
 
-    // Database Name
-    private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
-
-    public static DBHelper getInstance(Context context) {
+    public static void initInstance(Context context) {
         if (instance == null) {
             instance = new DBHelper(context);
         }
+    }
+
+    public static DBHelper getInstance() {
         return instance;
     }
+
+
+    //endregion
+    
+
+    //region Database Tables
 
     public static class USERS_TABLE {
         // Contacts table name
@@ -52,6 +60,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + KEY_ID + " LONG," +
                 KEY_FRIEND_ID + " TEXT" + ")";
     }
+
+    //endregion
 
 
     public DBHelper(Context context) {

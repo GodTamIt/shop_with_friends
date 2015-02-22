@@ -14,18 +14,20 @@ import java.util.regex.Pattern;
  */
 public class Utility {
 
+    //region Declarations
+
+
+    //endregion
+
+
+    // region Validate Email
+
     private static final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
             "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                     "\\@" +
                     "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
                     "(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+"
     );
-
-    private static final Pattern USERNAME_ADDRESS_PATTERN = Pattern.compile("[a-z0-9_-]{3,16}");
-
-
-    // BEGIN: Validate Email
-
     public static boolean validateEmail(CharSequence email) {
         return EMAIL_ADDRESS_PATTERN.matcher(email).matches();
     }
@@ -38,10 +40,12 @@ public class Utility {
         return validateEmail(email.getText().toString());
     }
 
-    // END: Validate Email
+    // endregion
 
 
-    // BEGIN: Validate Username
+    //region Validate Username
+
+    private static final Pattern USERNAME_ADDRESS_PATTERN = Pattern.compile("[a-z0-9_-]{3,16}");
 
     public static boolean validateUsername(CharSequence username) {
         return USERNAME_ADDRESS_PATTERN.matcher(username).matches();
@@ -55,10 +59,10 @@ public class Utility {
         return validateUsername(username.getText().toString());
     }
 
-    // END: Validate Username
+    //endregion Validate Username
 
 
-    // BEGIN: Dialogs
+    //region Dialogs
 
     public static AlertDialog showDialog(Activity source, String message, DialogInterface.OnClickListener okClicked) {
         AlertDialog.Builder builder = new AlertDialog.Builder(source);
@@ -67,5 +71,7 @@ public class Utility {
         return builder.show();
     }
 
-    // END: Dialogs
+    //endregion Dialogs
+
+
 }
