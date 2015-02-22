@@ -44,7 +44,7 @@
             android:background="@drawable/button_background"
             android:clickable="true"
             android:elegantTextHeight="true"
-            android:onClick="btnSignIn_Clicked"
+            android:onClick="onbtnSignInClick"
             android:enabled="false" />
 
         <LinearLayout

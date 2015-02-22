@@ -103,7 +103,7 @@ public class LoginActivity extends ActionBarActivity {
 
     //region UI
 
-    public void btnSignIn_Clicked(View view) {
+    public void onbtnSignInClick(View view) {
         btnSignIn.setEnabled(false);
         AsyncTask<Object, Object, LoginResult> tskCheckLogin = new AsyncTask<Object, Object, LoginResult>() {
 

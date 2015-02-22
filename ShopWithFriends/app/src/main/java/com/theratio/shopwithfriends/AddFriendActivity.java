@@ -97,7 +97,7 @@ public class AddFriendActivity extends ActionBarActivity {
 
     //region UI
 
-    public void btnAddFriend_Clicked(View view) {
+    public void onbtnAddFriendClick(View view) {
         btnAddFriend.setEnabled(false);
         AsyncTask<Object, Object, AddFriendResult> tskAddFriend = new AsyncTask<Object, Object, AddFriendResult>() {
             @Override

@@ -41,20 +41,14 @@ public class WelcomeActivity extends ActionBarActivity {
 
     //region UI
 
-    public void onClick(View view) {
-        switch(view.getId())
-        {
-            case R.id.welcome_btnLogin:
-                Intent loginPage = new Intent(this, LoginActivity.class);
-                startActivity(loginPage);
-                break;
-            case R.id.welcome_btnRegister:
-                Intent registerPage = new Intent(this, RegisterActivity.class);
-                startActivity(registerPage);
-                break;
-            default:
-                throw new RuntimeException("Unknown button ID");
-        }
+    public void onbtnLoginClick(View view) {
+        Intent loginPage = new Intent(this, LoginActivity.class);
+        startActivity(loginPage);
+    }
+
+    public void onbtnRegisterClick(View view) {
+        Intent registerPage = new Intent(this, RegisterActivity.class);
+        startActivity(registerPage);
     }
 
     //endregion

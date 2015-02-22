@@ -94,7 +94,7 @@ public class RegisterActivity extends ActionBarActivity {
     //endregion
 
     //region UI
-    public void btnSubmit_Clicked(View view) {
+    public void onbtnSubmitClick(View view) {
         btnSubmit.setEnabled(false);
         AsyncTask<String, Object, RegisterResult> tskRegister = new AsyncTask<String, Object, RegisterResult>() {
             @Override

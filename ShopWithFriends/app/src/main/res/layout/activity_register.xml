@@ -53,7 +53,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:text="Submit"
-            android:onClick="btnSubmit_Clicked"
+            android:onClick="onbtnSubmitClick"
             android:background="@drawable/button_background"
             android:id="@+id/register_btnSubmit"
             android:enabled="false"
