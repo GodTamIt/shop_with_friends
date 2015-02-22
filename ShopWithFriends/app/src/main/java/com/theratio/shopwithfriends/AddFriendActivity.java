@@ -1,7 +1,6 @@
 package com.theratio.shopwithfriends;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -62,7 +61,7 @@ public class AddFriendActivity extends ActionBarActivity {
         setContentView(R.layout.activity_add_friend);
 
         // Assign UI components
-        btnAddFriend = (Button) findViewById(R.id.AddFriendButton);
+        btnAddFriend = (Button) findViewById(R.id.add_friend_btnAddFriend);
         txtUsername = (EditText) findViewById(R.id.friendUsernameField);
         txtUserEmail = (EditText) findViewById(R.id.friendEmailField);
 
@@ -170,8 +169,11 @@ public class AddFriendActivity extends ActionBarActivity {
         if (result == AddFriendResult.SUCCESS) {
             Utility.showDialog(this, getResources().getString(R.string.added_friend_activity_add_friend), null);
             // Clear fields
-            txtUserEmail.setText(null);
             txtUsername.setText(null);
+            txtUserEmail.setText(null);
+
+            // Focus on txtUsername
+            txtUsername.requestFocus();
         }
         else if (result == AddFriendResult.ALREADY_FRIENDS) {
             // Already friends
