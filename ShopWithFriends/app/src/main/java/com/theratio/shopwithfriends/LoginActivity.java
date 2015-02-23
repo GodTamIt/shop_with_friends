@@ -1,8 +1,6 @@
 package com.theratio.shopwithfriends;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,10 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.theratio.utilities.DBHelper;
 import com.theratio.ShopWithFriends;
 import com.theratio.utilities.User;
 import com.theratio.utilities.Utility;
+
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -27,10 +25,6 @@ public class LoginActivity extends ActionBarActivity {
     private EditText txtPassword;
 
     private User loginUser;
-
-    private enum LoginResult {
-        SUCCESS, INVALID_INPUT, WRONG, UNKNOWN
-    }
 
     private TextWatcher textValidator = new TextWatcher() {
 
@@ -52,6 +46,7 @@ public class LoginActivity extends ActionBarActivity {
         }
     };
     //endregion
+
 
     //region Overridden Methods
 
@@ -89,97 +84,66 @@ public class LoginActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        switch (id) {
-
-        }
+        //int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
     }
 
     //endregion
 
+
     //region UI
 
     public void onbtnSignInClick(View view) {
-        btnSignIn.setEnabled(false);
-        AsyncTask<Object, Object, LoginResult> tskCheckLogin = new AsyncTask<Object, Object, LoginResult>() {
+        this.setAllEnabled(false);
 
+        AsyncTask<Object, Object, User.LoginResult> tskCheckLogin = new AsyncTask<Object, Object, User.LoginResult>() {
             @Override
-            protected LoginResult doInBackground(Object... params) {
-                return login(txtUserEmail.getText().toString(), txtPassword.getText().toString());
+            protected User.LoginResult doInBackground(Object... params) {
+                return User.login(txtUserEmail.getText().toString(), txtPassword.getText().toString());
             }
 
             @Override
-            protected void onPostExecute(LoginResult params) {
+            protected void onPostExecute(User.LoginResult params) {
                 onLoginComplete(params);
             }
         };
         tskCheckLogin.execute();
     }
 
+    private void setAllEnabled(boolean enabled) {
+        btnSignIn.setEnabled(enabled);
+        txtUserEmail.setEnabled(enabled);
+        txtPassword.setEnabled(enabled);
+    }
+
     //endregion
+
 
     //region Functioning
 
-    private LoginResult login(String userEmail, String password) {
-        String loginType;
+    private void onLoginComplete(User.LoginResult result) {
+        User.LoginResult.Result status = result.getResult();
 
-        if (userEmail.contains("@")) {
-            if (!Utility.validateEmail(userEmail))
-                return LoginResult.INVALID_INPUT;
+        if (status == User.LoginResult.Result.SUCCESS) {
+            ShopWithFriends.setCurrentUser(result.getLoggedInUser());
 
-            loginType = DBHelper.USERS_TABLE.KEY_EMAIL;
-        } else {
-            if (!Utility.validateUsername(userEmail))
-                return LoginResult.INVALID_INPUT;
-
-            loginType = DBHelper.USERS_TABLE.KEY_USERNAME;
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if (status == User.LoginResult.Result.INVALID_INPUT) {
+            Utility.showDialog(this, getResources().getString(R.string.invalid_input_activity_login), null);
+        }
+        else if (status == User.LoginResult.Result.WRONG) {
+            Utility.showDialog(this, getResources().getString(R.string.failed_login_activity_login), null);
+        }
+        else {
+            Utility.showDialog(this, getResources().getString(R.string.unknown_error), null);
         }
 
-        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
-
-        String query = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
-                DBHelper.USERS_TABLE.NAME,
-                loginType,
-                DBHelper.USERS_TABLE.KEY_PASSWORD);
-
-        // Remember to clean SQL
-        Cursor cursor = db.rawQuery(query,
-                new String[]{userEmail, password});
-
-        if (cursor.getCount() < 1)
-            return LoginResult.WRONG;
-
-        loginUser = User.fromCursor(cursor);
-
-        // Close cursor
-        cursor.close();
-        return loginUser == null ? LoginResult.UNKNOWN : LoginResult.SUCCESS;
-    }
-
-    private void onLoginComplete(LoginResult result) {
-        switch (result) {
-            case SUCCESS:
-                ShopWithFriends app = (ShopWithFriends) getApplicationContext();
-                app.setCurrentUser(loginUser);
-                Intent intent = new Intent(app, HomeActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            case INVALID_INPUT:
-                Utility.showDialog(this, getResources().getString(R.string.invalid_input_activity_login), null);
-                break;
-            case WRONG:
-                Utility.showDialog(this, getResources().getString(R.string.failed_login_activity_login), null);
-                break;
-            case UNKNOWN:
-                Utility.showDialog(this, getResources().getString(R.string.unknown_error), null);
-                break;
-        }
-        btnSignIn.setEnabled(true);
+        this.setAllEnabled(true);
     }
 
     //endregion

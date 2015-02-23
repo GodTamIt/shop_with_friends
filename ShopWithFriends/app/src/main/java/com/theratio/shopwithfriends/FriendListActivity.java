@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ public class FriendListActivity extends ActionBarActivity {
     private RecyclerView mRecyclerView;
     private FriendAdapter mAdapter;
     private List<User> mFriends;
-    private User currentUser;
 
     // Cache for profile pictures
     Drawable mDefaultPic;
@@ -45,9 +43,6 @@ public class FriendListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // Call superclass constructor
         super.onCreate(savedInstanceState);
-
-        // Get current user
-        currentUser = ((ShopWithFriends) getApplicationContext()).getCurrentUser();
 
         // Show layout
         setContentView(R.layout.activity_friends_list);
@@ -67,9 +62,6 @@ public class FriendListActivity extends ActionBarActivity {
         // Attach adapter to RecyclerView
         mAdapter = new FriendAdapter(this, getFriends());
         mRecyclerView.setAdapter(mAdapter);
-
-        // Logging for HomeActivity
-        Log.d("Home Activity", String.format("Displaying home for user %s", currentUser.getUserName()));
     }
 
     //endregion
@@ -87,62 +79,8 @@ public class FriendListActivity extends ActionBarActivity {
                 // Load default pic into memory
                 mDefaultPic = getResources().getDrawable(R.drawable.user_no_profile);
 
-                SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
-
-                // Get all friends of current user
-                String query = String.format("SELECT %s FROM %s WHERE %s=?",
-                        DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID,
-                        DBHelper.FRIENDS_TABLE.NAME,
-                        DBHelper.FRIENDS_TABLE.KEY_ID);
-
-                String userID = Long.toString(currentUser.getID());
-
-                Log.d("tskLoadFriends", "Loading friends for " + userID);
-
-                Cursor cursor = db.rawQuery(query,
-                        new String[]{ userID });
-
-                if (cursor.getCount() < 1)
-                    return null;
-
-                Log.d("tskLoadFriends", String.format("Loaded %d friend(s) for %s", cursor.getCount(), userID));
-
-                // Create temporary ArrayList of friendIDs
-                ArrayList<Long> friendIDs = new ArrayList<Long>(cursor.getCount());
-
-                while (cursor.moveToNext()) {
-                    friendIDs.add(cursor.getLong(cursor.getColumnIndex(DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID)));
-                }
-
-                // Close cursor
-                cursor.close();
-
-                // Build selection query from friendIDs
-                StringBuilder buildSelection = new StringBuilder((DBHelper.USERS_TABLE.KEY_ID.length() + 8) * friendIDs.size());
-                for (Long id : friendIDs) {
-                    buildSelection.append(String.format(" OR %s=%d", DBHelper.USERS_TABLE.KEY_ID, id));
-                }
-                // Removing leading " OR ", (inclusive, exclusive)
-                buildSelection.delete(0, 4);
-
-                // Run database query (TableName, Columns to Select, Selection)
-                cursor = db.query(DBHelper.USERS_TABLE.NAME,
-                        null,
-                        buildSelection.toString(), null, null, null, null);
-
-                // Iterate through results
-                User friend;
-                while ((friend = User.fromCursor(cursor)) != null) {
-                    Log.d("tskLoadFriends", String.format("Adding %s to Friend List", friend.getUserName()));
-
-                    if (mFriends.add(friend)) {
-                        // NOTE: Must call this synchronously
-                        mAdapter.notifyItemInserted(mFriends.size() - 1);
-                    }
-                }
-
-                // Close cursor
-                cursor.close();
+                // Call getFriends
+                ShopWithFriends.getCurrentUser().getFriends(mFriends, mAdapter);
 
                 // Don't care about return type
                 return null;
@@ -150,7 +88,7 @@ public class FriendListActivity extends ActionBarActivity {
         };
 
         // Execute task asynchronously
-        tskLoadFriends.execute(this);
+        tskLoadFriends.execute();
 
         // Return list of friends
         return mFriends;
@@ -190,7 +128,7 @@ public class FriendListActivity extends ActionBarActivity {
             Log.d("Friend list size", Integer.toString(friends.size()));
 
             // Set text and image
-            holder.lblFriend.setText(current.getUserName());
+            holder.lblFriend.setText(current.getUsername());
 
             Drawable pic = current.getProfilePicture();
             if (pic == null) {

@@ -11,8 +11,9 @@ import com.theratio.utilities.User;
 public class ShopWithFriends extends Application {
 
     //region Declarations
-    private User currentUser;
+    private static User currentUser;
     //endregion
+
 
     //region Overridden Methods
     @Override
@@ -21,14 +22,15 @@ public class ShopWithFriends extends Application {
     }
     //endregion
 
+
     //region Encapsulation Methods
 
-    public User getCurrentUser() {
+    public static User getCurrentUser() {
         return currentUser;
     }
 
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+    public static void setCurrentUser(User currentUser) {
+        ShopWithFriends.currentUser = currentUser;
     }
 
     //endregion

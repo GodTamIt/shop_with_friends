@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.theratio.ShopWithFriends;
-import com.theratio.utilities.DBHelper;
 import com.theratio.utilities.User;
 
 
@@ -22,7 +21,7 @@ public class HomeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_home);
 
         currentUser = ((ShopWithFriends) getApplicationContext()).getCurrentUser();
-        Log.d("Home Activity", String.format("Displaying home for user %s", currentUser.getUserName()));
+        Log.d("Home Activity", String.format("Displaying home for user %s", currentUser.getUsername()));
     }
 
 

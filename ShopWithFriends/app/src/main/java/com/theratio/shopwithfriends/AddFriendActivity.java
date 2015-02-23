@@ -51,6 +51,7 @@ public class AddFriendActivity extends ActionBarActivity {
     };
     //endregion
 
+
     //region Overridden Methods
 
     @Override
@@ -94,19 +95,19 @@ public class AddFriendActivity extends ActionBarActivity {
 
     //endregion
 
+
     //region UI
 
     public void onbtnAddFriendClick(View view) {
         btnAddFriend.setEnabled(false);
-        AsyncTask<Object, Object, AddFriendResult> tskAddFriend = new AsyncTask<Object, Object, AddFriendResult>() {
+        AsyncTask<Object, Object, User.AddFriendResult> tskAddFriend = new AsyncTask<Object, Object, User.AddFriendResult>() {
             @Override
-            protected AddFriendResult doInBackground(Object... params) {
-                return addFriend(((ShopWithFriends) getApplicationContext()).getCurrentUser(),
-                        txtUserEmail.getText().toString(), txtUsername.getText().toString());
+            protected User.AddFriendResult doInBackground(Object... params) {
+                return ShopWithFriends.getCurrentUser().addFriend(txtUserEmail.getText().toString(), txtUsername.getText().toString());
             }
 
             @Override
-            protected void onPostExecute(AddFriendResult params) {
+            protected void onPostExecute(User.AddFriendResult params) {
                 onAddFriendComplete(params);
             }
         };
@@ -116,57 +117,11 @@ public class AddFriendActivity extends ActionBarActivity {
 
     //endregion
 
+
     //region Functioning
 
-    private enum AddFriendResult {
-        SUCCESS, ALREADY_FRIENDS, NO_SUCH_USER, UNKNOWN
-    }
-
-    private AddFriendResult addFriend(User user, String friendEmail, String friendUsername) {
-        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
-
-        String query = String.format("SELECT %s FROM %s WHERE %s=? AND %s=?",
-                DBHelper.USERS_TABLE.KEY_ID,
-                DBHelper.USERS_TABLE.NAME,
-                DBHelper.USERS_TABLE.KEY_EMAIL,
-                DBHelper.USERS_TABLE.KEY_USERNAME);
-
-        Cursor cursor = db.rawQuery(query, new String[] {friendEmail, friendUsername});
-
-
-        if (cursor.moveToFirst()) {
-            // User exists - get Friend's ID from
-            cursor.moveToFirst();
-            long friendID = cursor.getLong(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_ID));
-
-            // Close cursor
-            cursor.close();
-
-            db = DBHelper.getInstance().getWritableDatabase();
-
-
-            // Create SQL entry
-            ContentValues values = new ContentValues();
-            values.put(DBHelper.FRIENDS_TABLE.KEY_ID, ((ShopWithFriends) getApplicationContext()).getCurrentUser().getID());
-            values.put(DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID, friendID);
-
-            try
-            {
-                db.insert(DBHelper.FRIENDS_TABLE.NAME, null, values);
-                return AddFriendResult.SUCCESS;
-            }
-            catch(Exception e)
-            {
-                Log.e("AddFriend", "Error occurred when adding friend", e);
-                e.printStackTrace();
-            }
-        }
-
-        return AddFriendResult.NO_SUCH_USER;
-    }
-
-    private void onAddFriendComplete(AddFriendResult result) {
-        if (result == AddFriendResult.SUCCESS) {
+    private void onAddFriendComplete(User.AddFriendResult result) {
+        if (result == User.AddFriendResult.SUCCESS) {
             Utility.showDialog(this, getResources().getString(R.string.added_friend_activity_add_friend), null);
             // Clear fields
             txtUsername.setText(null);
@@ -175,10 +130,10 @@ public class AddFriendActivity extends ActionBarActivity {
             // Focus on txtUsername
             txtUsername.requestFocus();
         }
-        else if (result == AddFriendResult.ALREADY_FRIENDS) {
+        else if (result == User.AddFriendResult.ALREADY_FRIENDS) {
             // Already friends
         }
-        else if (result == AddFriendResult.NO_SUCH_USER) {
+        else if (result == User.AddFriendResult.NO_SUCH_USER) {
             Utility.showDialog(this, getResources().getString(R.string.failed_friend_activity_add_friend), null);
         }
         else {

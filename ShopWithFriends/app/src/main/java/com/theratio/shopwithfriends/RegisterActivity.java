@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.theratio.utilities.DBHelper;
+import com.theratio.utilities.User;
 import com.theratio.utilities.Utility;
 
 
@@ -53,9 +54,6 @@ public class RegisterActivity extends ActionBarActivity {
         }
     };
 
-    private enum RegisterResult {
-        SUCCESS, EMAIL_EXISTS, USERNAME_EXISTS, UNKNOWN
-    }
     //endregion
 
     //region Overridden Methods
@@ -93,49 +91,39 @@ public class RegisterActivity extends ActionBarActivity {
     //endregion
 
     //region UI
+
     public void onbtnRegisterClick(View view) {
-        btnRegister.setEnabled(false);
-        AsyncTask<String, Object, RegisterResult> tskRegister = new AsyncTask<String, Object, RegisterResult>() {
+        this.setAllEnabled(false);
+
+        AsyncTask<String, Object, User.RegisterResult> tskRegister = new AsyncTask<String, Object, User.RegisterResult>() {
             @Override
-            protected RegisterResult doInBackground(String... params) {
-                return register(params[0], params[1], params[2]);
+            protected User.RegisterResult doInBackground(String... params) {
+                return User.register(params[0], params[1], params[2]);
             }
 
             @Override
-            protected void onPostExecute(RegisterResult params) {
+            protected void onPostExecute(User.RegisterResult params) {
                 onRegisterComplete(params);
             }
         };
 
         tskRegister.execute(txtUsername.getText().toString(), txtEmail.getText().toString(), txtPassword.getText().toString());
     }
+
+    private void setAllEnabled(boolean enabled) {
+        txtUsername.setEnabled(enabled);
+        txtPassword.setEnabled(enabled);
+        txtConfPass.setEnabled(enabled);
+        txtEmail.setEnabled(enabled);
+        btnRegister.setEnabled(enabled);
+    }
+
     //endregion
 
     //region Registration
 
-    private RegisterResult register(String username, String email, String password) {
-        // Create SQL entries
-        ContentValues values = new ContentValues();
-        values.put("username", username);
-        values.put("email", email);
-        values.put("password", password);
-
-        // Retrieve database
-        SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
-
-        try {
-            db.insert(DBHelper.USERS_TABLE.NAME, null, values);
-        }
-        catch (Exception e) {
-            Log.e("Registration", "Error occurred with database.", e);
-            return RegisterResult.UNKNOWN;
-        }
-
-        return RegisterResult.SUCCESS;
-    }
-
-    private void onRegisterComplete(RegisterResult result) {
-        if (result == RegisterResult.SUCCESS) {
+    private void onRegisterComplete(User.RegisterResult result) {
+        if (result == User.RegisterResult.SUCCESS) {
             final Context current = this;
             Utility.showDialog(this, getResources().getString(R.string.successful_activity_register), new DialogInterface.OnClickListener() {
                 @Override
@@ -147,10 +135,10 @@ public class RegisterActivity extends ActionBarActivity {
                 }
             });
         }
-        else if (result == RegisterResult.EMAIL_EXISTS) {
+        else if (result == User.RegisterResult.EMAIL_EXISTS) {
             // Email already taken
         }
-        else if (result == RegisterResult.USERNAME_EXISTS) {
+        else if (result == User.RegisterResult.USERNAME_EXISTS) {
             // Username already taken
         }
         else {
