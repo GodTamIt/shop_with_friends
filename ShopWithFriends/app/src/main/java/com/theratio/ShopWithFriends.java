@@ -1,6 +1,8 @@
 package com.theratio;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.res.Resources;
 
 import com.theratio.utilities.DBHelper;
 import com.theratio.utilities.User;
@@ -12,13 +14,16 @@ public class ShopWithFriends extends Application {
 
     //region Declarations
     private static User currentUser;
+    private static Context context;
     //endregion
 
 
     //region Overridden Methods
     @Override
     public void onCreate() {
-        DBHelper.initInstance(getApplicationContext());
+        ShopWithFriends.context = getApplicationContext();
+
+        DBHelper.initInstance(context);
     }
     //endregion
 
@@ -32,6 +37,11 @@ public class ShopWithFriends extends Application {
     public static void setCurrentUser(User currentUser) {
         ShopWithFriends.currentUser = currentUser;
     }
+
+    public static Context getAppContext() {
+        return ShopWithFriends.context;
+    }
+
 
     //endregion
 

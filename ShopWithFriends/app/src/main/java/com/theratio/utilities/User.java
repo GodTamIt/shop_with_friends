@@ -3,6 +3,8 @@ package com.theratio.utilities;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Parcel;
@@ -33,17 +35,31 @@ public class User implements Parcelable {
     private Boolean isAdmin;
     private long rating;
     private long salesReportsNum;
-    Drawable profilePicture;
+    BitmapDrawable profilePicture;
     //endregion
 
 
     //region Constructors
 
+    public User(Parcel in) {
+        friends = new ArrayList<User>();
+        in.readList(friends, List.class.getClassLoader());
+
+        this.id = in.readLong();
+        this.userName = in.readString();
+        this.email = in.readString();
+        this.isAdmin = in.readInt() == 1;
+        this.rating = in.readLong();
+        this.salesReportsNum = in.readLong();
+        this.profilePicture = new BitmapDrawable(ShopWithFriends.getAppContext().getResources(),
+                (Bitmap) in.readValue(Bitmap.class.getClassLoader()));
+    }
+
     public User(long id, String userName, String email, Boolean isAdmin) {
         this(id, userName, email, isAdmin, 0L, 0L, null);
     }
 
-    public User(long id, String userName, String email, Boolean isAdmin, long rating, long salesReportsNum, Drawable profilePicture) {
+    public User(long id, String userName, String email, Boolean isAdmin, long rating, long salesReportsNum, BitmapDrawable profilePicture) {
         this.id = id;
         this.userName = userName;
         this.email = email;
@@ -79,12 +95,12 @@ public class User implements Parcelable {
         this.userName = userName;
     }
 
-    public Drawable getProfilePicture() { return profilePicture; }
+    public BitmapDrawable getProfilePicture() { return profilePicture; }
 
     //endregion
 
 
-    //region Instance Methods
+    //region Overridden Methods
 
     @Override
     public int hashCode() {
@@ -106,8 +122,31 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(friends);
 
+        dest.writeLong(id);
+        dest.writeString(userName);
+        dest.writeString(email);
+        dest.writeInt(isAdmin ? 1 : 0);
+        dest.writeLong(rating);
+        dest.writeLong(salesReportsNum);
+        dest.writeValue(profilePicture.getBitmap());
     }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
+    //endregion
+
+
+    //region Instance Methods
 
     public static enum AddFriendResult {
         SUCCESS, ALREADY_FRIENDS, NO_SUCH_USER, UNKNOWN
@@ -268,10 +307,10 @@ public class User implements Parcelable {
     private static User fromCursor(Cursor cursor) {
         // Handle cursor moving
         if (cursor.moveToNext()) {
-            String uname = (cursor.getString(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_USERNAME)));
+            String username = (cursor.getString(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_USERNAME)));
             String email = (cursor.getString(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_EMAIL)));
             Long id = (cursor.getLong(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_ID)));
-            return new User(id, uname, email, false);
+            return new User(id, username, email, false);
         }
         return null;
     }
