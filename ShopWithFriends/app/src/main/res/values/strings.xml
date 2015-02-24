@@ -51,13 +51,13 @@
 
     <!-- BEGIN: Friend Profile -->name, email, rating, and number of sales reports given to you
     <string name="profile">Profile</string>
-    <string name="remove_button">Remove from friends: </string>
-    <string name="rating">Rating: </string>
-    <string name="sales_reports">Sales reports: </string>
+    <string name="remove_button">Remove from friends</string>
+    <string name="rating">Rating</string>
+    <string name="sales_reports_num">Sales reports: </string>
     <!-- END: Friend Profile -->
 
     <!-- BEGIN: Miscellaneous -->
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_friend_profile">FriendProfileActivity(replace with the name, yo)</string>
+    <string name="title_activity_friend_profile">Profile</string>
     <!-- END: Miscellaneous -->
 </resources>
