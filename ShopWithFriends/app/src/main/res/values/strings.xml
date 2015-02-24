@@ -49,8 +49,11 @@
     <string name="title_activity_friend_list">Friend List</string>
     <!-- END: Add Friend -->
 
-    <!-- BEGIN: Friend Profile -->
+    <!-- BEGIN: Friend Profile -->name, email, rating, and number of sales reports given to you
     <string name="profile">Profile</string>
+    <string name="remove_button">Remove from friends: </string>
+    <string name="rating">Rating: </string>
+    <string name="sales_reports">Sales reports: </string>
     <!-- END: Friend Profile -->
 
     <!-- BEGIN: Miscellaneous -->

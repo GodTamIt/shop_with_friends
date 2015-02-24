@@ -165,9 +165,12 @@ public class FriendListActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Intent loginPage = new Intent(v.getContext(), FriendProfileActivity.class);
-                    startActivity(loginPage);
-
+                    User friend = mFriends.get(getPosition());
+                    long friendID = friend.getID();
+                    Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
+                    friendPage.putExtra("friendID",friendID);
+                    Log.d("Friend ID clicked ", Long.toString(friendID));
+                    startActivity(friendPage);
                 }
             });
 
@@ -176,9 +179,12 @@ public class FriendListActivity extends ActionBarActivity {
 
                 @Override
                 public boolean onLongClick(View v) {
-
-                    Intent loginPage = new Intent(v.getContext(), FriendProfileActivity.class);
-                    startActivity(loginPage);
+                    User friend = mFriends.get(getPosition());
+                    long friendID = friend.getID();
+                    Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
+                    friendPage.putExtra("friendID", friendID);
+                    Log.d("Friend ID clicked ", Long.toString(friendID));
+                    startActivity(friendPage);
                     return true;
 
                 }
