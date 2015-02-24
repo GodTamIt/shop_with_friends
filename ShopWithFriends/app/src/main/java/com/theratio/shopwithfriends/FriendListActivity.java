@@ -168,7 +168,7 @@ public class FriendListActivity extends ActionBarActivity {
                     User friend = mFriends.get(getPosition());
                     long friendID = friend.getID();
                     Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
-                    friendPage.putExtra("friendID",friendID);
+                    friendPage.putExtra("user",friend);
                     Log.d("Friend ID clicked ", Long.toString(friendID));
                     startActivity(friendPage);
                 }
@@ -182,7 +182,7 @@ public class FriendListActivity extends ActionBarActivity {
                     User friend = mFriends.get(getPosition());
                     long friendID = friend.getID();
                     Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
-                    friendPage.putExtra("friendID", friendID);
+                    friendPage.putExtra("user", friend);
                     Log.d("Friend ID clicked ", Long.toString(friendID));
                     startActivity(friendPage);
                     return true;
