@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -11,16 +14,19 @@ import com.theratio.ShopWithFriends;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Stores data about User.
  */
-public class User implements Serializable {
+public class User implements Parcelable {
 
     //region Declarations
-    private static final long serialVersionUID = -7060210544600464481L;
 
+
+    // Friends should eventually be stored in DiskCache
+    private List<User> friends;
     private long id;
     private String userName;
     private String email;
@@ -34,13 +40,7 @@ public class User implements Serializable {
     //region Constructors
 
     public User(long id, String userName, String email, Boolean isAdmin) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.isAdmin = isAdmin;
-        this.rating = 0L; // default
-        this.salesReportsNum = 0L; // default
-        this.profilePicture = null; // drawing activity should handle default
+        this(id, userName, email, isAdmin, 0L, 0L, null);
     }
 
     public User(long id, String userName, String email, Boolean isAdmin, long rating, long salesReportsNum, Drawable profilePicture) {
@@ -51,6 +51,9 @@ public class User implements Serializable {
         this.rating = rating;
         this.salesReportsNum = salesReportsNum;
         this.profilePicture = profilePicture;
+
+        // Initialize friends
+        friends = new ArrayList<>();
     }
 
     //endregion
@@ -82,6 +85,29 @@ public class User implements Serializable {
 
 
     //region Instance Methods
+
+    @Override
+    public int hashCode() {
+        return (int) (id % Integer.MAX_VALUE);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            return this.getID() == ((User) obj).getID();
+        }
+        return false;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 
     public static enum AddFriendResult {
         SUCCESS, ALREADY_FRIENDS, NO_SUCH_USER, UNKNOWN
@@ -130,63 +156,108 @@ public class User implements Serializable {
         return AddFriendResult.NO_SUCH_USER;
     }
 
-    public void getFriends(List<User> friends, RecyclerView.Adapter adapterToNotify) {
-        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+    public void removeFriend(User friend) {
+        friends.remove(friend);
+    }
 
-        // Get all friends of current user
-        String query = String.format("SELECT %s FROM %s WHERE %s=?",
-                DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID,
-                DBHelper.FRIENDS_TABLE.NAME,
-                DBHelper.FRIENDS_TABLE.KEY_ID);
+    public void removeFriend(int index) {
+        friends.remove(index);
+    }
 
-        String userID = Long.toString(getID());
+    /**
+     * Updates and returns the current user's list of friends. Updating is done asynchronously.
+     * @param adapterToNotify - the RecyclerView adapter to notify when a friend has been updated.
+     * @return the list of friends.
+     */
+    public List<User> getAndUpdateFriends(RecyclerView.Adapter adapterToNotify) {
+        updateFriends(adapterToNotify);
+        return getFriends();
+    }
 
-        Log.d("tskLoadFriends", "Loading friends for " + userID);
+    /**
+     * Updates the friend list asynchronously.
+     * @param adapterToNotify - the RecyclerView adapter to notify when a friend has been updated.
+     */
+    public void updateFriends(final RecyclerView.Adapter adapterToNotify) {
 
-        Cursor cursor = db.rawQuery(query,
-                new String[]{ userID });
+        AsyncTask<Object, Object, Object> tskUpdate = new AsyncTask<Object, Object, Object>() {
 
-        if (cursor.getCount() < 1)
-            return;
+            @Override
+            protected Object doInBackground(Object... params) {
+                // Clear list of friends
+                friends.clear();
+                // Notify entire DataSet has changed (typically a bad practice, good here)
+                adapterToNotify.notifyDataSetChanged();
 
-        Log.d("tskLoadFriends", String.format("Loaded %d friend(s) for %s", cursor.getCount(), userID));
+                SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
-        // Create temporary ArrayList of friendIDs
-        ArrayList<Long> friendIDs = new ArrayList<Long>(cursor.getCount());
+                // Get all friends of current user
+                String query = String.format("SELECT %s FROM %s WHERE %s=?",
+                        DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID,
+                        DBHelper.FRIENDS_TABLE.NAME,
+                        DBHelper.FRIENDS_TABLE.KEY_ID);
 
-        while (cursor.moveToNext()) {
-            friendIDs.add(cursor.getLong(cursor.getColumnIndex(DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID)));
-        }
+                String userID = Long.toString(getID());
 
-        // Close cursor
-        cursor.close();
+                Log.d("User.updateFriends", "Loading friends for " + userID);
 
-        // Build selection query from friendIDs
-        StringBuilder buildSelection = new StringBuilder((DBHelper.USERS_TABLE.KEY_ID.length() + 8) * friendIDs.size());
-        for (Long id : friendIDs) {
-            buildSelection.append(String.format(" OR %s=%d", DBHelper.USERS_TABLE.KEY_ID, id));
-        }
-        // Removing leading " OR ", (inclusive, exclusive)
-        buildSelection.delete(0, 4);
+                Cursor cursor = db.rawQuery(query,
+                        new String[]{ userID });
 
-        // Run database query (TableName, Columns to Select, Selection)
-        cursor = db.query(DBHelper.USERS_TABLE.NAME,
-                null,
-                buildSelection.toString(), null, null, null, null);
+                if (cursor.getCount() < 1)
+                    return null;
 
-        // Iterate through results
-        User friend;
-        while ((friend = User.fromCursor(cursor)) != null) {
-            Log.d("tskLoadFriends", String.format("Adding %s to Friend List", friend.getUsername()));
+                Log.d("User.updateFriends", String.format("Loaded %d friend(s) for %s", cursor.getCount(), userID));
 
-            if (friends.add(friend)) {
-                // NOTE: Must call this synchronously
-                adapterToNotify.notifyItemInserted(friends.size() - 1);
+                // Create temporary ArrayList of friendIDs
+                ArrayList<Long> friendIDs = new ArrayList<Long>(cursor.getCount());
+
+                while (cursor.moveToNext()) {
+                    friendIDs.add(cursor.getLong(cursor.getColumnIndex(DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID)));
+                }
+
+                // Close cursor
+                cursor.close();
+
+                // Build selection query from friendIDs
+                StringBuilder buildSelection = new StringBuilder((DBHelper.USERS_TABLE.KEY_ID.length() + 8) * friendIDs.size());
+                for (Long id : friendIDs) {
+                    buildSelection.append(String.format(" OR %s=%d", DBHelper.USERS_TABLE.KEY_ID, id));
+                }
+                // Removing leading " OR ", (inclusive, exclusive)
+                buildSelection.delete(0, 4);
+
+                // Run database query (TableName, Columns to Select, Selection)
+                cursor = db.query(DBHelper.USERS_TABLE.NAME, null,
+                        buildSelection.toString(), null, null, null, null);
+
+                // Iterate through results
+                User friend;
+                while ((friend = User.fromCursor(cursor)) != null) {
+                    Log.d("User.updateFriends", String.format("Adding %s to Friend List", friend.getUsername()));
+
+                    if (friends.add(friend)) {
+                        // NOTE: Must call this synchronously
+                        adapterToNotify.notifyItemInserted(friends.size() - 1);
+                    }
+                }
+
+                // Close cursor
+                cursor.close();
+                // Don't care about return type
+                return null;
             }
-        }
+        };
 
-        // Close cursor
-        cursor.close();
+        tskUpdate.execute();
+    }
+
+    /**
+     * Gets the current user's list of friends.
+     * @return the current User instance's list of friends.
+     */
+    public List<User> getFriends() {
+        return friends;
     }
 
     //endregion
@@ -194,7 +265,7 @@ public class User implements Serializable {
 
     //region Static Methods
 
-    public static User fromCursor(Cursor cursor) {
+    private static User fromCursor(Cursor cursor) {
         // Handle cursor moving
         if (cursor.moveToNext()) {
             String uname = (cursor.getString(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_USERNAME)));
@@ -300,6 +371,25 @@ public class User implements Serializable {
         }
 
         return RegisterResult.SUCCESS;
+    }
+
+
+    public static User getUser(long userID) {
+        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+
+        String query = String.format("SELECT * FROM %s WHERE %s=%s",
+                DBHelper.USERS_TABLE.NAME,
+                DBHelper.USERS_TABLE.KEY_ID,
+                userID);
+
+
+        Log.d("User.getUser", "Retrieving user " + userID);
+
+        // Make query
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Return result
+        return User.fromCursor(cursor);
     }
 
     //endregion
