@@ -1,6 +1,7 @@
 package com.theratio.shopwithfriends;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
@@ -10,8 +11,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -155,6 +159,30 @@ public class FriendListActivity extends ActionBarActivity {
             // Find text
             lblFriend = (TextView) itemView.findViewById(R.id.friend_list_label);
             imgProfile = (ImageView) itemView.findViewById(R.id.friend_list_icon);
+
+            itemView.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    Intent loginPage = new Intent(v.getContext(), FriendProfileActivity.class);
+                    startActivity(loginPage);
+
+                }
+            });
+
+
+            itemView.setOnLongClickListener(new OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+
+                    Intent loginPage = new Intent(v.getContext(), FriendProfileActivity.class);
+                    startActivity(loginPage);
+                    return true;
+
+                }
+            });
         }
     }
 

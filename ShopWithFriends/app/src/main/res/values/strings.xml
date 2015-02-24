@@ -49,8 +49,12 @@
     <string name="title_activity_friend_list">Friend List</string>
     <!-- END: Add Friend -->
 
+    <!-- BEGIN: Friend Profile -->
+    <string name="profile">Profile</string>
+    <!-- END: Friend Profile -->
 
     <!-- BEGIN: Miscellaneous -->
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_friend_profile">FriendProfileActivity(replace with the name, yo)</string>
     <!-- END: Miscellaneous -->
 </resources>

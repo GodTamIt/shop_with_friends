@@ -8,17 +8,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/title_activity_welcome" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".LoginActivity"
             android:label="@string/login" >
@@ -26,8 +24,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.theratio.shopwithfriends.WelcomeActivity" />
         </activity>
-
-
         <activity
             android:name=".RegisterActivity"
             android:label="@string/register" >
@@ -35,14 +31,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.theratio.shopwithfriends.WelcomeActivity" />
         </activity>
-
-
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
-
-
         <activity
             android:name=".AddFriendActivity"
             android:label="@string/add_friend"
@@ -51,8 +43,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.theratio.shopwithfriends.HomeActivity" />
         </activity>
-
-
         <activity
             android:name=".FriendListActivity"
             android:label="@string/title_activity_friend_list"
@@ -60,6 +50,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.theratio.shopwithfriends.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".FriendProfileActivity"
+            android:label="@string/title_activity_friend_profile"
+            android:parentActivityName=".FriendListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.theratio.shopwithfriends.FriendListActivity" />
         </activity>
     </application>
 
