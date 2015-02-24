@@ -2,10 +2,7 @@ package com.theratio.shopwithfriends;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.theratio.utilities.DBHelper;
 import com.theratio.ShopWithFriends;
 import com.theratio.utilities.User;
 
@@ -35,8 +31,6 @@ public class FriendListActivity extends ActionBarActivity {
     //region Declarations
     private RecyclerView mRecyclerView;
     private FriendAdapter mAdapter;
-    private List<User> mFriends;
-
     // Cache for profile pictures
     Drawable mDefaultPic;
     //endregion
@@ -64,39 +58,12 @@ public class FriendListActivity extends ActionBarActivity {
         // Set layout of RecyclerView
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Store default profile picture to memory (eventually implement Lru and Disk cache)
+        mDefaultPic = getResources().getDrawable(R.drawable.user_no_profile);
+
         // Attach adapter to RecyclerView
-        mAdapter = new FriendAdapter(this, getFriends());
+        mAdapter = new FriendAdapter(this, ShopWithFriends.getCurrentUser().getAndUpdateFriends(mAdapter));
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-    //endregion
-
-
-    //region Functioning
-
-    public List<User> getFriends() {
-        // Initialize mFriends
-        mFriends = new ArrayList<User>();
-
-        AsyncTask<Object, Object, Object> tskLoadFriends = new AsyncTask<Object, Object, Object>() {
-            @Override
-            protected Object doInBackground(Object... params) {
-                // Load default pic into memory
-                mDefaultPic = getResources().getDrawable(R.drawable.user_no_profile);
-
-                // Call getFriends
-                ShopWithFriends.getCurrentUser().getFriends(mFriends, mAdapter);
-
-                // Don't care about return type
-                return null;
-            }
-        };
-
-        // Execute task asynchronously
-        tskLoadFriends.execute();
-
-        // Return list of friends
-        return mFriends;
     }
 
     //endregion
@@ -166,7 +133,7 @@ public class FriendListActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-                    User friend = mFriends.get(getPosition());
+                    User friend = ShopWithFriends.getCurrentUser().getFriends().get(getPosition());
                     long friendID = friend.getID();
                     Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
                     friendPage.putExtra("user",(Serializable)friend);
@@ -180,7 +147,7 @@ public class FriendListActivity extends ActionBarActivity {
 
                 @Override
                 public boolean onLongClick(View v) {
-                    User friend = mFriends.get(getPosition());
+                    User friend = ShopWithFriends.getCurrentUser().getFriends().get(getPosition());
                     long friendID = friend.getID();
                     Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
                     friendPage.putExtra("user", (Serializable)friend);
