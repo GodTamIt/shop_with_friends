@@ -62,7 +62,8 @@ public class FriendListActivity extends ActionBarActivity {
         mDefaultPic = getResources().getDrawable(R.drawable.user_no_profile);
 
         // Attach adapter to RecyclerView
-        mAdapter = new FriendAdapter(this, ShopWithFriends.getCurrentUser().getAndUpdateFriends(mAdapter));
+        mAdapter = new FriendAdapter(this, ShopWithFriends.getCurrentUser().getFriends());
+        ShopWithFriends.getCurrentUser().updateFriends(mAdapter);
         mRecyclerView.setAdapter(mAdapter);
     }
 

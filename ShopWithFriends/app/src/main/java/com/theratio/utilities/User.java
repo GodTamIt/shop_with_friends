@@ -226,7 +226,9 @@ public class User implements Parcelable {
                 // Clear list of friends
                 friends.clear();
                 // Notify entire DataSet has changed (typically a bad practice, good here)
-                adapterToNotify.notifyDataSetChanged();
+                if (adapterToNotify != null) {
+                    adapterToNotify.notifyDataSetChanged();
+                }
 
                 SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
@@ -275,7 +277,7 @@ public class User implements Parcelable {
                 while ((friend = User.fromCursor(cursor)) != null) {
                     Log.d("User.updateFriends", String.format("Adding %s to Friend List", friend.getUsername()));
 
-                    if (friends.add(friend)) {
+                    if (friends.add(friend) && (adapterToNotify != null)) {
                         // NOTE: Must call this synchronously
                         adapterToNotify.notifyItemInserted(friends.size() - 1);
                     }
