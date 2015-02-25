@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -135,10 +136,9 @@ public class FriendListActivity extends ActionBarActivity {
                 public void onClick(View v) {
 
                     User friend = ShopWithFriends.getCurrentUser().getFriends().get(getPosition());
-                    long friendID = friend.getID();
                     Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
-                    friendPage.putExtra("user",(Serializable)friend);
-                    Log.d("Friend ID clicked ", Long.toString(friendID));
+                    friendPage.putExtra("user",(Parcelable) friend);
+
                     startActivity(friendPage);
                 }
             });
@@ -149,10 +149,9 @@ public class FriendListActivity extends ActionBarActivity {
                 @Override
                 public boolean onLongClick(View v) {
                     User friend = ShopWithFriends.getCurrentUser().getFriends().get(getPosition());
-                    long friendID = friend.getID();
                     Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
-                    friendPage.putExtra("user", (Serializable)friend);
-                    Log.d("Friend ID clicked ", Long.toString(friendID));
+                    friendPage.putExtra("user", (Parcelable) friend);
+
                     startActivity(friendPage);
                     return true;
 

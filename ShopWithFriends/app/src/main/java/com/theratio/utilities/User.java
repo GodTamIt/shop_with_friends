@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -14,9 +13,7 @@ import android.util.Log;
 
 import com.theratio.ShopWithFriends;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -49,8 +46,8 @@ public class User implements Parcelable {
         this.userName = in.readString();
         this.email = in.readString();
         this.isAdmin = in.readInt() == 1;
-        this.rating = in.readLong();
-        this.salesReportsNum = in.readLong();
+        this.setRating(in.readLong());
+        this.setSalesReportsNum(in.readLong());
         this.profilePicture = new BitmapDrawable(ShopWithFriends.getAppContext().getResources(),
                 (Bitmap) in.readValue(Bitmap.class.getClassLoader()));
     }
@@ -64,8 +61,8 @@ public class User implements Parcelable {
         this.userName = userName;
         this.email = email;
         this.isAdmin = isAdmin;
-        this.rating = rating;
-        this.salesReportsNum = salesReportsNum;
+        this.setRating(rating);
+        this.setSalesReportsNum(salesReportsNum);
         this.profilePicture = profilePicture;
 
         // Initialize friends
@@ -96,6 +93,22 @@ public class User implements Parcelable {
     }
 
     public BitmapDrawable getProfilePicture() { return profilePicture; }
+
+    public long getRating() {
+        return rating;
+    }
+
+    public void setRating(long rating) {
+        this.rating = rating;
+    }
+
+    public long getSalesReportsNum() {
+        return salesReportsNum;
+    }
+
+    public void setSalesReportsNum(long salesReportsNum) {
+        this.salesReportsNum = salesReportsNum;
+    }
 
     //endregion
 
@@ -128,9 +141,11 @@ public class User implements Parcelable {
         dest.writeString(userName);
         dest.writeString(email);
         dest.writeInt(isAdmin ? 1 : 0);
-        dest.writeLong(rating);
-        dest.writeLong(salesReportsNum);
-        dest.writeValue(profilePicture.getBitmap());
+        dest.writeLong(getRating());
+        dest.writeLong(getSalesReportsNum());
+        if (profilePicture != null) {
+            dest.writeValue(profilePicture.getBitmap());
+        }
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {

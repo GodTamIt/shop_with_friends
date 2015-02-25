@@ -20,7 +20,7 @@ public class HomeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        currentUser = ((ShopWithFriends) getApplicationContext()).getCurrentUser();
+        currentUser = ShopWithFriends.getCurrentUser();
         Log.d("Home Activity", String.format("Displaying home for user %s", currentUser.getUsername()));
     }
 
@@ -51,7 +51,7 @@ public class HomeActivity extends ActionBarActivity {
 
         else if (id == R.id.logout) {
             // Clear current user session
-            ((ShopWithFriends) getApplicationContext()).setCurrentUser(null);
+            ShopWithFriends.setCurrentUser(null);
 
             // Show WelcomeActivity
             Intent intent = new Intent(this, WelcomeActivity.class);

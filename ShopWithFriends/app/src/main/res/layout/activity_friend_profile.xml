@@ -6,7 +6,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.theratio.shopwithfriends.FriendProfileActivity">
 
-    <ImageView android:text="@string/profile"
+    <com.theratio.ui.CircularImageView android:text="@string/profile"
         android:id="@+id/profile_pic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         android:textColor="@android:color/black" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/remove_button"
         android:id="@+id/remove_button"

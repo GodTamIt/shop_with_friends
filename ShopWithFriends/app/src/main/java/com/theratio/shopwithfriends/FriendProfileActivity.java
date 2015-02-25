@@ -30,7 +30,7 @@ public class FriendProfileActivity extends ActionBarActivity {
         setContentView(R.layout.activity_friend_profile);
         Bundle bundle = getIntent().getExtras();
 
-        user = (User) getIntent().getSerializableExtra("user");
+        user = (User) getIntent().getParcelableExtra("user");
 
         TextView usernameText =(TextView)findViewById(R.id.username);
         TextView emailText = (TextView)findViewById(R.id.email);
