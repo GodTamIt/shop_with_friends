@@ -1,17 +1,11 @@
 package com.theratio.shopwithfriends;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,12 +13,10 @@ import com.theratio.ShopWithFriends;
 import com.theratio.ui.CircularImageView;
 import com.theratio.utilities.User;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
-public class FriendProfileActivity extends ActionBarActivity {
+public class ProfileActivity extends ActionBarActivity {
 
     private User curUser;
     private User user;
@@ -35,7 +27,7 @@ public class FriendProfileActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_profile);
+        setContentView(R.layout.activity_profile);
         Bundle bundle = getIntent().getExtras();
 
         user = (User) getIntent().getParcelableExtra("user");

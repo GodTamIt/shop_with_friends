@@ -52,7 +52,7 @@
                 android:value="com.theratio.shopwithfriends.HomeActivity" />
         </activity>
         <activity
-            android:name=".FriendProfileActivity"
+            android:name=".ProfileActivity"
             android:label="@string/title_activity_friend_profile"
             android:parentActivityName=".FriendListActivity" >
             <meta-data

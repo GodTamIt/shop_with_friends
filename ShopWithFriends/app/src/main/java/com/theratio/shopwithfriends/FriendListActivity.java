@@ -18,8 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -136,7 +134,7 @@ public class FriendListActivity extends ActionBarActivity {
                 public void onClick(View v) {
 
                     User friend = ShopWithFriends.getCurrentUser().getFriends().get(getPosition());
-                    Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
+                    Intent friendPage = new Intent(v.getContext(), ProfileActivity.class);
                     friendPage.putExtra("user",(Parcelable) friend);
 
                     startActivity(friendPage);
@@ -149,7 +147,7 @@ public class FriendListActivity extends ActionBarActivity {
                 @Override
                 public boolean onLongClick(View v) {
                     User friend = ShopWithFriends.getCurrentUser().getFriends().get(getPosition());
-                    Intent friendPage = new Intent(v.getContext(), FriendProfileActivity.class);
+                    Intent friendPage = new Intent(v.getContext(), ProfileActivity.class);
                     friendPage.putExtra("user", (Parcelable) friend);
 
                     startActivity(friendPage);
