@@ -32,7 +32,7 @@ public class User implements Parcelable {
     private Boolean isAdmin;
     private long rating;
     private long salesReportsNum;
-    BitmapDrawable profilePicture;
+    private BitmapDrawable profilePicture;
     //endregion
 
 
@@ -42,14 +42,21 @@ public class User implements Parcelable {
         friends = new ArrayList<User>();
         in.readList(friends, List.class.getClassLoader());
 
+
         this.id = in.readLong();
-        this.userName = in.readString();
-        this.email = in.readString();
         this.isAdmin = in.readInt() == 1;
+
+        this.setUsername(in.readString());
+        this.setEmail(in.readString());
         this.setRating(in.readLong());
         this.setSalesReportsNum(in.readLong());
-        this.profilePicture = new BitmapDrawable(ShopWithFriends.getAppContext().getResources(),
-                (Bitmap) in.readValue(Bitmap.class.getClassLoader()));
+
+        Object tmp = in.readValue(Bitmap.class.getClassLoader());
+        if (tmp != null && tmp instanceof Bitmap) {
+            this.profilePicture = new BitmapDrawable(ShopWithFriends.getAppContext().getResources(),
+                    (Bitmap) tmp);
+        }
+
     }
 
     public User(long id, String userName, String email, Boolean isAdmin) {
@@ -57,13 +64,16 @@ public class User implements Parcelable {
     }
 
     public User(long id, String userName, String email, Boolean isAdmin, long rating, long salesReportsNum, BitmapDrawable profilePicture) {
+        // Fields that cannot be changed
         this.id = id;
-        this.userName = userName;
-        this.email = email;
         this.isAdmin = isAdmin;
+
+
+        this.setUsername(userName);
+        this.setEmail(email);
         this.setRating(rating);
         this.setSalesReportsNum(salesReportsNum);
-        this.profilePicture = profilePicture;
+        this.setProfilePicture(profilePicture);
 
         // Initialize friends
         friends = new ArrayList<>();
@@ -85,17 +95,21 @@ public class User implements Parcelable {
     }
 
     public String getUsername() {
-        return userName;
+        return this.userName;
     }
 
     public void setUsername(String userName) {
         this.userName = userName;
     }
 
-    public BitmapDrawable getProfilePicture() { return profilePicture; }
+    public BitmapDrawable getProfilePicture() { return this.profilePicture; }
+
+    public void setProfilePicture(BitmapDrawable picture) {
+        this.profilePicture = picture;
+    }
 
     public long getRating() {
-        return rating;
+        return this.rating;
     }
 
     public void setRating(long rating) {
@@ -103,7 +117,7 @@ public class User implements Parcelable {
     }
 
     public long getSalesReportsNum() {
-        return salesReportsNum;
+        return this.salesReportsNum;
     }
 
     public void setSalesReportsNum(long salesReportsNum) {
@@ -239,6 +253,8 @@ public class User implements Parcelable {
                 return null;
             }
         };
+
+        tskRemove.execute();
     }
 
     /**
