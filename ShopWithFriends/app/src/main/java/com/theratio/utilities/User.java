@@ -42,14 +42,12 @@ public class User implements Parcelable {
         friends = new ArrayList<User>();
         in.readList(friends, List.class.getClassLoader());
 
-
         this.id = in.readLong();
+        this.userName = in.readString();
+        this.email = in.readString();
         this.isAdmin = in.readInt() == 1;
-
-        this.setUsername(in.readString());
-        this.setEmail(in.readString());
-        this.setRating(in.readLong());
-        this.setSalesReportsNum(in.readLong());
+        this.rating = in.readLong();
+        this.salesReportsNum = in.readLong();
 
         Object tmp = in.readValue(Bitmap.class.getClassLoader());
         if (tmp != null && tmp instanceof Bitmap) {
@@ -64,15 +62,12 @@ public class User implements Parcelable {
     }
 
     public User(long id, String userName, String email, Boolean isAdmin, long rating, long salesReportsNum, BitmapDrawable profilePicture) {
-        // Fields that cannot be changed
         this.id = id;
+        this.userName = userName;
+        this.email = email;
         this.isAdmin = isAdmin;
-
-
-        this.setUsername(userName);
-        this.setEmail(email);
-        this.setRating(rating);
-        this.setSalesReportsNum(salesReportsNum);
+        this.rating = rating;
+        this.salesReportsNum = salesReportsNum;
         this.setProfilePicture(profilePicture);
 
         // Initialize friends
