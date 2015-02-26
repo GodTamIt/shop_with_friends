@@ -211,11 +211,34 @@ public class User implements Parcelable {
     }
 
     public void removeFriend(User friend) {
-        friends.remove(friend);
+        friends.indexOf(friend);
+
+        this.removeFriendFromDatabase(friend.getID());
     }
 
     public void removeFriend(int index) {
-        friends.remove(index);
+        User removed = friends.remove(index);
+
+        this.removeFriendFromDatabase(removed.getID());
+    }
+
+    private void removeFriendFromDatabase(final long id) {
+
+        AsyncTask<Object, Object, Object> tskRemove = new AsyncTask<Object, Object, Object>() {
+            @Override
+            protected Object doInBackground(Object... params) {
+                SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+
+                db.delete(DBHelper.FRIENDS_TABLE.NAME,
+                        String.format("%s=%d AND %s=%d",
+                                DBHelper.FRIENDS_TABLE.KEY_ID, ShopWithFriends.getCurrentUser().getID(),
+                                DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID, id),
+                        null);
+
+                // Don't care about return
+                return null;
+            }
+        };
     }
 
     /**
