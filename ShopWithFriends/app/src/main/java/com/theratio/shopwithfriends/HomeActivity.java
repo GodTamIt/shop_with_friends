@@ -13,7 +13,7 @@ import com.theratio.utilities.User;
 
 public class HomeActivity extends ActionBarActivity {
 
-    User currentUser;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,6 @@ public class HomeActivity extends ActionBarActivity {
         currentUser = ShopWithFriends.getCurrentUser();
         Log.d("Home Activity", String.format("Displaying home for user %s", currentUser.getUsername()));
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -63,4 +62,5 @@ public class HomeActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
