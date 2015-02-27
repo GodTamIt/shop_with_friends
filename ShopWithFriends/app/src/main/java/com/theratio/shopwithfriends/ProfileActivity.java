@@ -18,11 +18,15 @@ import java.util.List;
 
 public class ProfileActivity extends ActionBarActivity {
 
-    private User curUser;
+    //region Declarations
     private User user;
     private Button addRemoveBtn;
     private boolean isFriend;
-    Drawable mDefaultPic;
+    private Drawable mDefaultPic;
+    //endregion
+
+
+    //region Overridden Methods
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +35,6 @@ public class ProfileActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
 
         user = (User) getIntent().getParcelableExtra("user");
-        curUser = ShopWithFriends.getCurrentUser();
 
         Drawable pic = user.getProfilePicture();
         mDefaultPic = getResources().getDrawable(R.drawable.user_no_profile);
@@ -63,22 +66,6 @@ public class ProfileActivity extends ActionBarActivity {
         salesReportsNumText.append(": 0");
     }
 
-    //used to check if the user is in friends with our current user
-    public boolean isFriend(){
-
-
-        List<User> friendList = curUser.getFriends();
-
-        for (User i:friendList) {
-            if (user.equals(i)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -96,17 +83,35 @@ public class ProfileActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //endregion
+
+
+    //region UI
+
     public void onAddRemoveBtn(View view) {
         if (isFriend) {
-            curUser.removeFriend(user);
+            ShopWithFriends.getCurrentUser().removeFriend(user);
             addRemoveBtn.setText(this.getString(R.string.add_to_friends_button));
             isFriend = false;
 
         } else {
-            curUser.addFriend(user.getEmail(),user.getUsername());
+            ShopWithFriends.getCurrentUser().addFriend(user.getEmail(),user.getUsername());
             addRemoveBtn.setText(this.getString(R.string.remove_from_friends_button));
-            
             isFriend = true;
         }
     }
+
+    //endregion
+
+
+    //region Functioning
+
+    public boolean isFriend() {
+       return ShopWithFriends.getCurrentUser().getFriends().contains(this.user);
+    }
+
+    //endregion
+
+
+
 }
