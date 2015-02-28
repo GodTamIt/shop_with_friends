@@ -38,7 +38,11 @@ public class User implements Parcelable {
 
     //region Constructors
 
-    public User(Parcel in) {
+    /**
+     * Builds a new instance of a user from a given Parcel.
+     * @param in - the Parcel in which the User class's data is stored.
+     */
+    private User(Parcel in) {
         friends = new ArrayList<User>();
         in.readList(friends, List.class.getClassLoader());
 
@@ -57,10 +61,27 @@ public class User implements Parcelable {
 
     }
 
+    /**
+     * Initializes a new user from the given parameters.  All other fields are defaulted to 0 or null.
+     * @param id - the ID of the user.
+     * @param userName - the display username of the user.
+     * @param email - the email of the user.
+     * @param isAdmin - specifies whether the user has administrator privileges.
+     */
     public User(long id, String userName, String email, Boolean isAdmin) {
         this(id, userName, email, isAdmin, 0L, 0L, null);
     }
 
+    /**
+     *
+     * @param id - the ID of the user.
+     * @param userName - the display username of the user.
+     * @param email - the email of the user.
+     * @param isAdmin - specifies whether the user has administrator privileges.
+     * @param rating - the rating of the user.
+     * @param salesReportsNum - the reported number of sales of the user.
+     * @param profilePicture - a <code>BitmapDrawable</code> profile picture of the user.  If null, the default picture will be used.
+     */
     public User(long id, String userName, String email, Boolean isAdmin, long rating, long salesReportsNum, BitmapDrawable profilePicture) {
         this.id = id;
         this.userName = userName;
@@ -79,42 +100,88 @@ public class User implements Parcelable {
 
     //region Encapsulation Methods
 
+    /**
+     * Retrieves the ID of the current user.
+     * @return a <code>long</code> value representing the user's ID.
+     */
     public long getID() { return id; }
 
+    /**
+     * Gets the registered email address of the current user.
+     * @return a <code>String</code> representing the user's email address.
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets the registered email address of the current user.
+     * @param email the <code>String</code> representing the user's new email address.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Gets the display username of the current user.
+     * @return a <code>String</code> representing the user's username.
+     */
     public String getUsername() {
         return this.userName;
     }
 
+    /**
+     * Sets the display username of the current user.
+     * @param userName the <code>String</code> representing the user's new username.
+     */
     public void setUsername(String userName) {
         this.userName = userName;
     }
 
+    /**
+     * Gets the current user's profile picture.
+     * @return a <code>BitmapDrawable</code> representation of the user's profile picture, or
+     * <code>null</code> if the user does not have a profile picture set.
+     */
     public BitmapDrawable getProfilePicture() { return this.profilePicture; }
 
+    /**
+     * Sets the current user's profile picture.
+     * @param picture a <code>BitmapDrawable</code> representation of the user's new profile picture, or
+     *                <code>null</code> to delete current picture.
+     */
     public void setProfilePicture(BitmapDrawable picture) {
         this.profilePicture = picture;
     }
 
+    /**
+     * Gets the current user's rating.
+     * @return a <code>long</code> value representing the user's rating.
+     */
     public long getRating() {
         return this.rating;
     }
 
+    /**
+     * Sets the current user's rating.
+     * @param rating a <code>long</code> value representing the user's new rating.
+     */
     public void setRating(long rating) {
         this.rating = rating;
     }
 
+    /**
+     * Gets the number of sales reports on the current user.
+     * @return the <code>long</code> value representing the user's number of sales reports.
+     */
     public long getSalesReportsNum() {
         return this.salesReportsNum;
     }
 
+    /**
+     * Sets the current user's number of sales reports.
+     * @param salesReportsNum the <code>long</code> value representing the user's new number of sales reports.
+     */
     public void setSalesReportsNum(long salesReportsNum) {
         this.salesReportsNum = salesReportsNum;
     }
@@ -172,10 +239,19 @@ public class User implements Parcelable {
 
     //region Instance Methods
 
+    /**
+     * An enumeration representing the result of an add friend operation.
+     */
     public static enum AddFriendResult {
         SUCCESS, ALREADY_FRIENDS, NO_SUCH_USER, UNKNOWN
     }
 
+    /**
+     * Adds a user to the current user's friends.
+     * @param friendEmail the registered email address of the given friend.
+     * @param friendUsername the displayed username of the given friend.
+     * @return an <code>AddFriendResult</code> containing the result of the add operation.
+     */
     public AddFriendResult addFriend(String friendEmail, String friendUsername) {
         SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
@@ -219,16 +295,22 @@ public class User implements Parcelable {
         return AddFriendResult.NO_SUCH_USER;
     }
 
+    /**
+     * Removes a user from the current user's friends.
+     * @param friend a <code>User</code> object representing the friend to remove.
+     */
     public void removeFriend(User friend) {
-        friends.indexOf(friend);
+        friends.remove(friend);
 
         this.removeFriendFromDatabase(friend.getID());
     }
 
-    public void removeFriend(int index) {
-        User removed = friends.remove(index);
-
-        this.removeFriendFromDatabase(removed.getID());
+    /**
+     * Removes a user from the current user's friends.
+     * @param userID a <code>long</code> value representing the ID of the friend to remove.
+     */
+    public void removeFriend(long userID) {
+        this.removeFriend(new User(userID, null, null, null));
     }
 
     private void removeFriendFromDatabase(final long id) {
@@ -250,16 +332,6 @@ public class User implements Parcelable {
         };
 
         tskRemove.execute();
-    }
-
-    /**
-     * Updates and returns the current user's list of friends. Updating is done asynchronously.
-     * @param adapterToNotify - the RecyclerView adapter to notify when a friend has been updated.
-     * @return the list of friends.
-     */
-    public List<User> getAndUpdateFriends(RecyclerView.Adapter adapterToNotify) {
-        updateFriends(adapterToNotify);
-        return getFriends();
     }
 
     /**
@@ -366,7 +438,9 @@ public class User implements Parcelable {
         return null;
     }
 
-
+    /**
+     * An enumeration representing whether a login request is successful.
+     */
     public static class LoginResult {
 
         //region Declaration
@@ -398,6 +472,12 @@ public class User implements Parcelable {
 
     }
 
+    /**
+     * Attempts to login a user, given a username/email and a password combination.
+     * @param userEmail the username or email to check.
+     * @param password the password to check.
+     * @return a <code>LoginResult</code> object with the login result.
+     */
     public static LoginResult login(String userEmail, String password) {
         String loginType;
         User loginUser;
@@ -438,10 +518,20 @@ public class User implements Parcelable {
     }
 
 
+    /**
+     * An enumeration representing whether a register request is successful.
+     */
     public static enum RegisterResult {
         SUCCESS, EMAIL_EXISTS, USERNAME_EXISTS, UNKNOWN
     }
 
+    /**
+     * Attempts to register a new user with the given credentials.
+     * @param username the new user's display username.
+     * @param email the new user's registered email.
+     * @param password the new user's password.
+     * @return a <code>RegisterResult</code> object with the registration result.
+     */
     public static RegisterResult register(String username, String email, String password) {
         // Create SQL entries
         ContentValues values = new ContentValues();
@@ -463,7 +553,13 @@ public class User implements Parcelable {
         return RegisterResult.SUCCESS;
     }
 
-
+    
+    /**
+     * Retrieves a User from database, given user ID.
+     * @param userID the ID of the user to retrieve.
+     * @return a <code>User</code> object representing the user, or <code>null</code> if the
+     * user retrieving failed.
+     */
     public static User getUser(long userID) {
         SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
