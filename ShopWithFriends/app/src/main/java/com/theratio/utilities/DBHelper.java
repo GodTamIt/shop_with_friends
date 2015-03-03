@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
     private static DBHelper instance;
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     /**
      * This method should only be called by the Application class.
@@ -38,33 +38,40 @@ public class DBHelper extends SQLiteOpenHelper {
     //region Database Tables
 
     public static class USERS_TABLE {
-        // Contacts table name
         public static final String NAME = "users";
 
-        // Contacts Table Columns names
         public static final String KEY_ID = "id";
         public static final String KEY_USERNAME = "username";
         public static final String KEY_PASSWORD = "password";
         public static final String KEY_EMAIL = "email";
 
-        // Creating Tables
         private static final String CREATE = "CREATE TABLE " + NAME + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_USERNAME + " TEXT," + KEY_PASSWORD + " TEXT,"
                 + KEY_EMAIL + " TEXT" + ")";
     }
 
     public static class FRIENDS_TABLE {
-        // Contacts table name
         public static final String NAME = "friends";
 
-        // Contacts Table Columns names
         public static final String KEY_ID = "id";
         public static final String KEY_FRIEND_ID = "friend_id";
 
-        // Creating Tables
         private static final String CREATE = "CREATE TABLE " + NAME + "("
                 + KEY_ID + " LONG," +
                 KEY_FRIEND_ID + " TEXT" + ")";
+    }
+
+    public static class POSTS_TABLE {
+        public static final String NAME = "posts";
+
+        public static final String KEY_ID = "id";
+        public static final String KEY_ITEM_NAME = "item_name";
+        public static final String KEY_MAX_PRICE = "max_price";
+
+        private static final String CREATE = "CREATE TABLE " + NAME + "("
+                + KEY_ID + " LONG," +
+                KEY_ITEM_NAME + " TEXT," +
+                KEY_MAX_PRICE + " FLOAT" + ")";
     }
 
     //endregion
@@ -79,6 +86,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(USERS_TABLE.CREATE);
         db.execSQL(FRIENDS_TABLE.CREATE);
+        db.execSQL(POSTS_TABLE.CREATE);
     }
 
     @Override
