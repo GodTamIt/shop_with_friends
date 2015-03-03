@@ -64,14 +64,20 @@ public class DBHelper extends SQLiteOpenHelper {
     public static class POSTS_TABLE {
         public static final String NAME = "posts";
 
-        public static final String KEY_ID = "id";
+        public static final String KEY_POSTER_ID = "poster_id";
+        public static final String KEY_POST_TYPE = "post_type";
+        public static final String KEY_ITEM_ID = "item_id";
         public static final String KEY_ITEM_NAME = "item_name";
-        public static final String KEY_MAX_PRICE = "max_price";
+        public static final String KEY_WORST_PRICE = "worst_price";
+        public static final String KEY_AUTO_PRICE = "max_price";
 
-        private static final String CREATE = "CREATE TABLE " + NAME + "("
-                + KEY_ID + " LONG," +
+        private static final String CREATE = "CREATE TABLE " + NAME + "(" +
+                KEY_POSTER_ID + " LONG," +
+                KEY_POST_TYPE + " INTEGER," +
+                KEY_ITEM_ID + " LONG," +
                 KEY_ITEM_NAME + " TEXT," +
-                KEY_MAX_PRICE + " FLOAT" + ")";
+                KEY_WORST_PRICE + " FLOAT," +
+                KEY_AUTO_PRICE + " FLOAT" + ")";
     }
 
     //endregion
