@@ -40,7 +40,7 @@ public class User implements Parcelable {
 
     /**
      * Builds a new instance of a user from a given Parcel.
-     * @param in - the Parcel in which the User class's data is stored.
+     * @param in the Parcel in which the User class's data is stored.
      */
     private User(Parcel in) {
         friends = new ArrayList<User>();
@@ -63,10 +63,10 @@ public class User implements Parcelable {
 
     /**
      * Initializes a new user from the given parameters.  All other fields are defaulted to 0 or null.
-     * @param id - the ID of the user.
-     * @param userName - the display username of the user.
-     * @param email - the email of the user.
-     * @param isAdmin - specifies whether the user has administrator privileges.
+     * @param id the ID of the user.
+     * @param userName the display username of the user.
+     * @param email the email of the user.
+     * @param isAdmin specifies whether the user has administrator privileges.
      */
     public User(long id, String userName, String email, Boolean isAdmin) {
         this(id, userName, email, isAdmin, 0L, 0L, null);
@@ -74,13 +74,13 @@ public class User implements Parcelable {
 
     /**
      *
-     * @param id - the ID of the user.
-     * @param userName - the display username of the user.
-     * @param email - the email of the user.
-     * @param isAdmin - specifies whether the user has administrator privileges.
-     * @param rating - the rating of the user.
-     * @param salesReportsNum - the reported number of sales of the user.
-     * @param profilePicture - a <code>BitmapDrawable</code> profile picture of the user.  If null, the default picture will be used.
+     * @param id the ID of the user.
+     * @param userName the display username of the user.
+     * @param email the email of the user.
+     * @param isAdmin specifies whether the user has administrator privileges.
+     * @param rating the rating of the user.
+     * @param salesReportsNum the reported number of sales of the user.
+     * @param profilePicture a <code>BitmapDrawable</code> profile picture of the user.  If null, the default picture will be used.
      */
     public User(long id, String userName, String email, Boolean isAdmin, long rating, long salesReportsNum, BitmapDrawable profilePicture) {
         this.id = id;
