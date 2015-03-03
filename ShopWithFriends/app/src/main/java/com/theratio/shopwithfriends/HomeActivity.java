@@ -58,6 +58,10 @@ public class HomeActivity extends ActionBarActivity {
 
             // Do not allow returning to this activity
             finish();
+        } else if (id == R.id.post_item) {
+            // Post an item you are interested in
+            Intent intent = new Intent(this, PostItemActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

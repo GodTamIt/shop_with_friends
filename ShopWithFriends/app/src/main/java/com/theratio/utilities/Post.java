@@ -1,18 +1,37 @@
 package com.theratio.utilities;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Christopher Tam on 3/3/2015.
  */
-public class Post {
+public class Post implements Parcelable {
 
     //region Declarations
-    private long id;
+    private long userID;
     private TYPE postType;
-    private long itemID;
+    private long postID;
     private String itemName;
     private float worstPrice;
     private float autoPrice;
+    private String description;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
+    public static Post createPost(long userID, TYPE postType, String itemName, float worstPrice, String description) {
+
+
+        return new Post(0, TYPE.BUY, 0, "testing");
+    }
 
     public static enum TYPE {
         BUY, SELL
@@ -21,25 +40,31 @@ public class Post {
 
     //region Constructors
 
-    public Post(long id, TYPE postType, long itemID, String itemName) {
-        this(id, postType, itemID, itemName, 0.0F, 0.0F);
+
+    public Post(long userID, TYPE postType, long postID, String itemName) {
+        this(userID, postType, postID, itemName, 0.0F, 0.0F,"");
     }
 
-    public Post(long id, TYPE postType, long itemID, String itemName, float worstPrice, float autoPrice) {
-        this.id = id;
+    public Post(long userID, TYPE postType, long postID, String itemName, float worstPrice, String description) {
+        this(userID, postType, postID, itemName, worstPrice, 0.0F, description);
+    }
+
+    public Post(long userID, TYPE postType, long postID, String itemName, float worstPrice, float autoPrice, String description) {
+        this.userID = userID;
         this.postType = postType;
-        this.itemID = itemID;
+        this.postID = postID;
         this.itemName = itemName;
         this.worstPrice = worstPrice;
         this.autoPrice = autoPrice;
+        this.description = description;
     }
 
     //endregion
 
     //region Encapsulation Methods
 
-    public long getId() {
-        return id;
+    public long getUserID() {
+        return userID;
     }
 
     public TYPE getPostType() {
@@ -50,13 +75,13 @@ public class Post {
         this.postType = postType;
     }
 
-    public long getItemID() {
-        return itemID;
+    public long getPostID() {
+        return postID;
     }
 
-    public void setItemID(long itemID) {
-        this.itemID = itemID;
-    }
+    /*public void setPostID(long postID) {
+        this.postID = postID;
+    }*/
 
     public String getItemName() {
         return itemName;

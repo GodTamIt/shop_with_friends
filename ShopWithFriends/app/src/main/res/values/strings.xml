@@ -57,8 +57,18 @@
     <string name="sales_reports_num">Sales reports</string>
     <!-- END: Friend Profile -->
 
+    <!-- BEGIN: Post Item -->
+    <string name="item_name">Item name</string>
+    <string name="threshold_price">Threshold price</string>
+    <string name="post_item_btn">Post item</string>
+    <string name="item_description">Describe the item</string>
+    <string name="successful_activity_post">The item was posted successfully!</string>
+    <!-- END: Post Item -->
+
     <!-- BEGIN: Miscellaneous -->
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_friend_profile">Profile</string>
+    <string name="title_activity_post_item">PostItem</string>
     <!-- END: Miscellaneous -->
+
 </resources>

@@ -59,6 +59,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.theratio.shopwithfriends.FriendListActivity" />
         </activity>
+        <activity
+            android:name=".PostItem"
+            android:label="@string/title_activity_post_item"
+            android:parentActivityName=".HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.theratio.shopwithfriends.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".PostItemActivity"
+            android:label="@string/title_activity_post_item"
+            android:parentActivityName=".HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.theratio.shopwithfriends.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

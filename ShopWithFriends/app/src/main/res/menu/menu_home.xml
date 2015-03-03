@@ -1,11 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.theratio.shopwithfriends.HomeActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.theratio.shopwithfriends.HomeActivity">
+
+    <item android:id="@+id/post_item"
+        android:title="Post item"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
     <item android:id="@+id/add_friend"
-          android:title="Add Friend"
-          android:orderInCategory="100"
-          app:showAsAction="never"/>
+        android:title="Add Friend"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
     <item android:id="@+id/friend_list"
         android:title="Friend List"
         android:orderInCategory="100"
