@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
     private static DBHelper instance;
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     /**
      * This method should only be called by the Application class.
@@ -45,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String KEY_PASSWORD = "password";
         public static final String KEY_EMAIL = "email";
 
-        private static final String CREATE = "CREATE TABLE " + NAME + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+        private static final String CREATE = "CREATE TABLE " + NAME + "(" + KEY_ID + " LONG PRIMARY KEY,"
                 + KEY_USERNAME + " TEXT," + KEY_PASSWORD + " TEXT,"
                 + KEY_EMAIL + " TEXT" + ")";
     }
@@ -64,17 +64,17 @@ public class DBHelper extends SQLiteOpenHelper {
     public static class POSTS_TABLE {
         public static final String NAME = "posts";
 
-        public static final String KEY_POSTER_ID = "poster_id";
+        public static final String KEY_POST_ID = "post_id";
+        public static final String KEY_USER_ID = "user_id";
         public static final String KEY_POST_TYPE = "post_type";
-        public static final String KEY_ITEM_ID = "item_id";
         public static final String KEY_ITEM_NAME = "item_name";
         public static final String KEY_WORST_PRICE = "worst_price";
         public static final String KEY_AUTO_PRICE = "max_price";
 
         private static final String CREATE = "CREATE TABLE " + NAME + "(" +
-                KEY_POSTER_ID + " LONG," +
+                KEY_POST_ID + " LONG PRIMARY KEY," +
                 KEY_POST_TYPE + " INTEGER," +
-                KEY_ITEM_ID + " LONG," +
+                KEY_USER_ID + " LONG," +
                 KEY_ITEM_NAME + " TEXT," +
                 KEY_WORST_PRICE + " FLOAT," +
                 KEY_AUTO_PRICE + " FLOAT" + ")";
