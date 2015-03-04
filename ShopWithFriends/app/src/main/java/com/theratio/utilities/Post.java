@@ -1,6 +1,8 @@
 package com.theratio.utilities;
 
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,8 +13,8 @@ public class Post implements Parcelable {
 
     //region Declarations
     private long postID;
-    private TYPE postType;
     private long userID;
+    private TYPE postType;
     private String itemName;
     private float worstPrice;
     private float autoPrice;
@@ -60,15 +62,7 @@ public class Post implements Parcelable {
         this.description = in.readString();
     }
 
-    private Post(long userID, TYPE postType, long postID, String itemName) {
-        this(userID, postType, postID, itemName, 0.0F, 0.0F, "");
-    }
-
-    private Post(long userID, TYPE postType, long postID, String itemName, float worstPrice, String description) {
-        this(userID, postType, postID, itemName, worstPrice, 0.0F, description);
-    }
-
-    private Post(long userID, TYPE postType, long postID, String itemName, float worstPrice, float autoPrice, String description) {
+    private Post(long postID, long userID, TYPE postType, String itemName, float worstPrice, float autoPrice, String description) {
         this.postID = postID;
         this.userID = userID;
         this.postType = postType;
@@ -150,7 +144,7 @@ public class Post implements Parcelable {
         if (obj instanceof Post) {
             Post other = (Post) obj;
 
-            // Eventually implement checking for the update status
+            // TODO: Eventually implement checking for the update status
             return (this.postID == other.postID);
         }
         return false;
@@ -188,10 +182,81 @@ public class Post implements Parcelable {
 
     //region Static Methods
 
-    public static Post createPost(long userID, TYPE postType, String itemName, float worstPrice, String description) {
+    /**
+     * A class containing whether a create post request is successful,
+     * and if successful, the resulting Post.
+     */
+    public static class CreatePostResult {
 
+        //region Declaration
+        private Post post;
+        private Result result;
 
-        return new Post(0, TYPE.BUY, 0, "testing");
+        /**
+         * An enumeration representing whether a create post request is successful.
+         */
+        public static enum Result {
+            SUCCESS, INVALID_INPUT, NO_PERMISSION, UNKNOWN
+        }
+        //endregion
+
+        private CreatePostResult(Result result) {
+            this.post = null;
+            this.result = result;
+        }
+
+        private CreatePostResult(Result result, Post post) {
+            this.post = post;
+            this.result = result;
+        }
+
+        /**
+         * Retrieves the result of the create post request.
+         * @return a <code>CreatePostResult.Result</code> enumeration value representing
+         * the success value.
+         */
+        public Result getResult() {
+            return this.result;
+        }
+
+        /**
+         * Retrieves the post if the create post request is successful.
+         * @return a <code>Post</code> object representing the new post.
+         */
+        public Post getPost() {
+            return this.post;
+        }
+
+    }
+
+    public static CreatePostResult createPost(long userID, TYPE postType, String itemName,
+                                              float worstPrice, String description) {
+        return Post.createPost(userID, postType, itemName, worstPrice, 0.0F, "");
+    }
+
+    public static CreatePostResult createPost(long userID, TYPE postType, String itemName,
+                                              float worstPrice, float autoPrice, String description) {
+        // Create SQL entries
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.POSTS_TABLE.KEY_USER_ID, userID);
+        values.put(DBHelper.POSTS_TABLE.KEY_POST_TYPE, postType.getValue());
+        values.put(DBHelper.POSTS_TABLE.KEY_ITEM_NAME, itemName);
+        values.put(DBHelper.POSTS_TABLE.KEY_WORST_PRICE, worstPrice);
+        values.put(DBHelper.POSTS_TABLE.KEY_AUTO_PRICE, autoPrice);
+        values.put(DBHelper.POSTS_TABLE.KEY_DESCRIPTION, description);
+
+        // Retrieve database
+        SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
+
+        long dbInsert = db.insert(DBHelper.USERS_TABLE.NAME, null, values);
+
+        if (dbInsert < 0) {
+            return new CreatePostResult(CreatePostResult.Result.UNKNOWN);
+        }
+
+        Post post = new Post(dbInsert, userID, postType, itemName, worstPrice, autoPrice, description);
+
+        return new CreatePostResult(CreatePostResult.Result.SUCCESS, post);
     }
 
     //endregion
