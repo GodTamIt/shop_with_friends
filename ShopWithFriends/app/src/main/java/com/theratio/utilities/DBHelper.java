@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Returns the application's instance of the database.
-     * @return the application's single instance of DBHelper.
+     * @return the application's single instance of <code>DBHelper</code>.
      */
     public static DBHelper getInstance() {
         return instance;
