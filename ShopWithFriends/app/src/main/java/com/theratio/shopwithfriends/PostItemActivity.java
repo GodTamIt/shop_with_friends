@@ -92,7 +92,7 @@ public class PostItemActivity extends ActionBarActivity {
 
 
     public void onbtnPostItem(View view) {
-
+        // TODO: Check if post was successful
         Post.createPost(curUser.getID(), Post.TYPE.BUY, itemName.getText().toString(), Float.valueOf(thresholdPrice.getText().toString()), itemDescription.getText().toString());
         final Context current = this;
         Utility.showDialog(this, getResources().getString(R.string.successful_activity_post), new DialogInterface.OnClickListener() {
