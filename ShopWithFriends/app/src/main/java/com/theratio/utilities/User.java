@@ -199,6 +199,7 @@ public class User implements Parcelable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
+            // Eventually check for the update status of the user
             return this.getID() == ((User) obj).getID();
         }
         return false;
