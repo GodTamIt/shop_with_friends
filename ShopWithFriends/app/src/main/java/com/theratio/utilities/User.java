@@ -199,7 +199,7 @@ public class User implements Parcelable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
-            // Eventually check for the update status of the user
+            // TODO: Eventually check for the update status of the user
             return this.getID() == ((User) obj).getID();
         }
         return false;
@@ -441,7 +441,7 @@ public class User implements Parcelable {
 
     /**
      * A class containing whether a login request is successful,
-     * and if successful, the resulting User.
+     * and if successful, the resulting <code>User</code>.
      */
     public static class LoginResult {
 
@@ -452,7 +452,7 @@ public class User implements Parcelable {
         /**
          * An enumeration representing whether a login request is successful.
          */
-        public enum Result {
+        public static enum Result {
             SUCCESS, INVALID_INPUT, WRONG, UNKNOWN
         }
         //endregion
@@ -469,7 +469,8 @@ public class User implements Parcelable {
 
         /**
          * Retrieves the result of the login request.
-         * @return a <code>LoginResult</code> enumeration value representing the success value.
+         * @return a <code>LoginResult.Result</code> enumeration value representing
+         * the success value.
          */
         public Result getResult() {
             return this.result;
@@ -555,11 +556,9 @@ public class User implements Parcelable {
         // Retrieve database
         SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
 
-        try {
-            db.insert(DBHelper.USERS_TABLE.NAME, null, values);
-        }
-        catch (Exception e) {
-            Log.e("Registration", "Error occurred with database.", e);
+        long dbInsert = db.insert(DBHelper.USERS_TABLE.NAME, null, values);
+
+        if (dbInsert < 0) {
             return RegisterResult.UNKNOWN;
         }
 
