@@ -440,7 +440,8 @@ public class User implements Parcelable {
     }
 
     /**
-     * An enumeration representing whether a login request is successful.
+     * A class containing whether a login request is successful,
+     * and if successful, the resulting User.
      */
     public static class LoginResult {
 
@@ -448,25 +449,36 @@ public class User implements Parcelable {
         private User user;
         private Result result;
 
+        /**
+         * An enumeration representing whether a login request is successful.
+         */
         public enum Result {
             SUCCESS, INVALID_INPUT, WRONG, UNKNOWN
         }
         //endregion
 
-        public LoginResult(Result result) {
+        private LoginResult(Result result) {
             this.user = null;
             this.result = result;
         }
 
-        public LoginResult(Result result, User user) {
+        private LoginResult(Result result, User user) {
             this.user = user;
             this.result = result;
         }
 
+        /**
+         * Retrieves the result of the login request.
+         * @return a <code>LoginResult</code> enumeration value representing the success value.
+         */
         public Result getResult() {
             return this.result;
         }
 
+        /**
+         * Retrieves the logged in user if the login request is successful.
+         * @return a <code>User</code> object representing the logged in user.
+         */
         public User getLoggedInUser() {
             return this.user;
         }
@@ -536,9 +548,9 @@ public class User implements Parcelable {
     public static RegisterResult register(String username, String email, String password) {
         // Create SQL entries
         ContentValues values = new ContentValues();
-        values.put("username", username);
-        values.put("email", email);
-        values.put("password", password);
+        values.put(DBHelper.USERS_TABLE.KEY_USERNAME, username);
+        values.put(DBHelper.USERS_TABLE.KEY_EMAIL, email);
+        values.put(DBHelper.USERS_TABLE.KEY_PASSWORD, password);
 
         // Retrieve database
         SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
