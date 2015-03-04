@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
     private static DBHelper instance;
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     /**
      * This method should only be called by the Application class.
@@ -45,9 +45,11 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String KEY_PASSWORD = "password";
         public static final String KEY_EMAIL = "email";
 
-        private static final String CREATE = "CREATE TABLE " + NAME + "(" + KEY_ID + " LONG PRIMARY KEY,"
-                + KEY_USERNAME + " TEXT," + KEY_PASSWORD + " TEXT,"
-                + KEY_EMAIL + " TEXT" + ")";
+        private static final String CREATE = "CREATE TABLE " + NAME + "(" +
+                KEY_ID + " LONG PRIMARY KEY," +
+                KEY_USERNAME + " VARCHAR(20)," +
+                KEY_PASSWORD + " VARCHAR(100)," +
+                KEY_EMAIL + " VARCHAR(100)" + ")";
     }
 
     public static class FRIENDS_TABLE {
@@ -56,9 +58,9 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String KEY_ID = "id";
         public static final String KEY_FRIEND_ID = "friend_id";
 
-        private static final String CREATE = "CREATE TABLE " + NAME + "("
-                + KEY_ID + " LONG," +
-                KEY_FRIEND_ID + " TEXT" + ")";
+        private static final String CREATE = "CREATE TABLE " + NAME + "(" +
+                KEY_ID + " LONG," +
+                KEY_FRIEND_ID + " LONG" + ")";
     }
 
     public static class POSTS_TABLE {
@@ -70,14 +72,16 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String KEY_ITEM_NAME = "item_name";
         public static final String KEY_WORST_PRICE = "worst_price";
         public static final String KEY_AUTO_PRICE = "max_price";
+        public static final String KEY_DESCRIPTION = "description";
 
         private static final String CREATE = "CREATE TABLE " + NAME + "(" +
                 KEY_POST_ID + " LONG PRIMARY KEY," +
                 KEY_POST_TYPE + " INTEGER," +
                 KEY_USER_ID + " LONG," +
-                KEY_ITEM_NAME + " TEXT," +
+                KEY_ITEM_NAME + " VARCHAR(50)," +
                 KEY_WORST_PRICE + " FLOAT," +
-                KEY_AUTO_PRICE + " FLOAT" + ")";
+                KEY_AUTO_PRICE + " FLOAT" +
+                KEY_DESCRIPTION + " TEXT" + ")";
     }
 
     //endregion
