@@ -58,10 +58,10 @@
     <!-- END: Friend Profile -->
 
     <!-- BEGIN: Post Item -->
-    <string name="item_name">Item name</string>
-    <string name="threshold_price">Threshold price</string>
-    <string name="post_item_btn">Post item</string>
-    <string name="item_description">Describe the item</string>
+    <string name="item_name">Item Name</string>
+    <string name="threshold_price">Threshold Price</string>
+    <string name="post_item_btn">Post Item</string>
+    <string name="item_description">Describe the item.</string>
     <string name="successful_activity_post">The item was posted successfully!</string>
     <!-- END: Post Item -->
 
