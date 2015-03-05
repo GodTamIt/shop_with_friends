@@ -254,13 +254,13 @@ public class User implements Parcelable {
      * @return an <code>AddFriendResult</code> containing the result of the add operation.
      */
     public AddFriendResult addFriend(String friendEmail, String friendUsername) {
-        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+        SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
         String query = String.format("SELECT %s FROM %s WHERE %s=? AND %s=?",
-                DBHelper.USERS_TABLE.KEY_ID,
-                DBHelper.USERS_TABLE.NAME,
-                DBHelper.USERS_TABLE.KEY_EMAIL,
-                DBHelper.USERS_TABLE.KEY_USERNAME);
+                DB.USERS_TABLE.KEY_ID,
+                DB.USERS_TABLE.NAME,
+                DB.USERS_TABLE.KEY_EMAIL,
+                DB.USERS_TABLE.KEY_USERNAME);
 
         Cursor cursor = db.rawQuery(query, new String[] {friendEmail, friendUsername});
 
@@ -268,22 +268,22 @@ public class User implements Parcelable {
         if (cursor.moveToFirst()) {
             // User exists - get Friend's ID from
             cursor.moveToFirst();
-            long friendID = cursor.getLong(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_ID));
+            long friendID = cursor.getLong(cursor.getColumnIndex(DB.USERS_TABLE.KEY_ID));
 
             // Close cursor
             cursor.close();
 
-            db = DBHelper.getInstance().getWritableDatabase();
+            db = DB.getInstance().getWritableDatabase();
 
 
             // Create SQL entry
             ContentValues values = new ContentValues();
-            values.put(DBHelper.FRIENDS_TABLE.KEY_ID, this.getID());
-            values.put(DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID, friendID);
+            values.put(DB.FRIENDS_TABLE.KEY_ID, this.getID());
+            values.put(DB.FRIENDS_TABLE.KEY_FRIEND_ID, friendID);
 
             try
             {
-                db.insert(DBHelper.FRIENDS_TABLE.NAME, null, values);
+                db.insert(DB.FRIENDS_TABLE.NAME, null, values);
                 return AddFriendResult.SUCCESS;
             }
             catch(Exception e)
@@ -319,12 +319,12 @@ public class User implements Parcelable {
         AsyncTask<Object, Object, Object> tskRemove = new AsyncTask<Object, Object, Object>() {
             @Override
             protected Object doInBackground(Object... params) {
-                SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+                SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
-                db.delete(DBHelper.FRIENDS_TABLE.NAME,
+                db.delete(DB.FRIENDS_TABLE.NAME,
                         String.format("%s=%d AND %s=%d",
-                                DBHelper.FRIENDS_TABLE.KEY_ID, ShopWithFriends.getCurrentUser().getID(),
-                                DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID, id),
+                                DB.FRIENDS_TABLE.KEY_ID, ShopWithFriends.getCurrentUser().getID(),
+                                DB.FRIENDS_TABLE.KEY_FRIEND_ID, id),
                         null);
 
                 // Don't care about return
@@ -351,15 +351,15 @@ public class User implements Parcelable {
                     adapterToNotify.notifyDataSetChanged();
                 }
 
-                SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+                SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
                 long userID = getID();
 
                 // Get all friends of current user
                 String query = String.format("SELECT %s FROM %s WHERE %s=%d",
-                        DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID,
-                        DBHelper.FRIENDS_TABLE.NAME,
-                        DBHelper.FRIENDS_TABLE.KEY_ID,
+                        DB.FRIENDS_TABLE.KEY_FRIEND_ID,
+                        DB.FRIENDS_TABLE.NAME,
+                        DB.FRIENDS_TABLE.KEY_ID,
                         userID);
 
                 Log.d("User.updateFriends", "Loading friends for " + userID);
@@ -375,22 +375,22 @@ public class User implements Parcelable {
                 ArrayList<Long> friendIDs = new ArrayList<Long>(cursor.getCount());
 
                 while (cursor.moveToNext()) {
-                    friendIDs.add(cursor.getLong(cursor.getColumnIndex(DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID)));
+                    friendIDs.add(cursor.getLong(cursor.getColumnIndex(DB.FRIENDS_TABLE.KEY_FRIEND_ID)));
                 }
 
                 // Close cursor
                 cursor.close();
 
                 // Build selection query from friendIDs
-                StringBuilder buildSelection = new StringBuilder((DBHelper.USERS_TABLE.KEY_ID.length() + 8) * friendIDs.size());
+                StringBuilder buildSelection = new StringBuilder((DB.USERS_TABLE.KEY_ID.length() + 8) * friendIDs.size());
                 for (Long id : friendIDs) {
-                    buildSelection.append(String.format(" OR %s=%d", DBHelper.USERS_TABLE.KEY_ID, id));
+                    buildSelection.append(String.format(" OR %s=%d", DB.USERS_TABLE.KEY_ID, id));
                 }
                 // Removing leading " OR ", (inclusive, exclusive)
                 buildSelection.delete(0, 4);
 
                 // Run database query (TableName, Columns to Select, Selection)
-                cursor = db.query(DBHelper.USERS_TABLE.NAME, null,
+                cursor = db.query(DB.USERS_TABLE.NAME, null,
                         buildSelection.toString(), null, null, null, null);
 
                 // Iterate through results
@@ -447,9 +447,9 @@ public class User implements Parcelable {
     private static User fromCursor(Cursor cursor) {
         // Handle cursor moving
         if (cursor.moveToNext()) {
-            String username = (cursor.getString(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_USERNAME)));
-            String email = (cursor.getString(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_EMAIL)));
-            Long id = (cursor.getLong(cursor.getColumnIndex(DBHelper.USERS_TABLE.KEY_ID)));
+            String username = (cursor.getString(cursor.getColumnIndex(DB.USERS_TABLE.KEY_USERNAME)));
+            String email = (cursor.getString(cursor.getColumnIndex(DB.USERS_TABLE.KEY_EMAIL)));
+            Long id = (cursor.getLong(cursor.getColumnIndex(DB.USERS_TABLE.KEY_ID)));
             return new User(id, username, email, false);
         }
         return null;
@@ -516,20 +516,20 @@ public class User implements Parcelable {
             if (!Utility.validateEmail(userEmail))
                 return new LoginResult(LoginResult.Result.INVALID_INPUT);
 
-            loginType = DBHelper.USERS_TABLE.KEY_EMAIL;
+            loginType = DB.USERS_TABLE.KEY_EMAIL;
         } else {
             if (!Utility.validateUsername(userEmail))
                 return new LoginResult(LoginResult.Result.INVALID_INPUT);
 
-            loginType = DBHelper.USERS_TABLE.KEY_USERNAME;
+            loginType = DB.USERS_TABLE.KEY_USERNAME;
         }
 
-        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+        SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
         String query = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
-                DBHelper.USERS_TABLE.NAME,
+                DB.USERS_TABLE.NAME,
                 loginType,
-                DBHelper.USERS_TABLE.KEY_PASSWORD);
+                DB.USERS_TABLE.KEY_PASSWORD);
 
         // Remember to clean SQL
         Cursor cursor = db.rawQuery(query,
@@ -565,14 +565,14 @@ public class User implements Parcelable {
     public static RegisterResult register(String username, String email, String password) {
         // Create SQL entries
         ContentValues values = new ContentValues();
-        values.put(DBHelper.USERS_TABLE.KEY_USERNAME, username);
-        values.put(DBHelper.USERS_TABLE.KEY_EMAIL, email);
-        values.put(DBHelper.USERS_TABLE.KEY_PASSWORD, password);
+        values.put(DB.USERS_TABLE.KEY_USERNAME, username);
+        values.put(DB.USERS_TABLE.KEY_EMAIL, email);
+        values.put(DB.USERS_TABLE.KEY_PASSWORD, password);
 
         // Retrieve database
-        SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
+        SQLiteDatabase db = DB.getInstance().getWritableDatabase();
 
-        long dbInsert = db.insert(DBHelper.USERS_TABLE.NAME, null, values);
+        long dbInsert = db.insert(DB.USERS_TABLE.NAME, null, values);
 
         if (dbInsert < 0) {
             return RegisterResult.UNKNOWN;
@@ -589,11 +589,11 @@ public class User implements Parcelable {
      * user retrieving failed.
      */
     public static User getUser(long userID) {
-        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+        SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
         String query = String.format("SELECT * FROM %s WHERE %s=%s",
-                DBHelper.USERS_TABLE.NAME,
-                DBHelper.USERS_TABLE.KEY_ID,
+                DB.USERS_TABLE.NAME,
+                DB.USERS_TABLE.KEY_ID,
                 userID);
 
 

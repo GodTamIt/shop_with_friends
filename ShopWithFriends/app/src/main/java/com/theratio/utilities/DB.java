@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by filoleg on 2/19/15.
  */
-public class DBHelper extends SQLiteOpenHelper {
+public class DB extends SQLiteOpenHelper {
 
     //region Static Members & Methods
 
     private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
-    private static DBHelper instance;
+    private static DB instance;
     private static final int DATABASE_VERSION = 5;
 
     /**
@@ -21,15 +21,15 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public static void initInstance(Context context) {
         if (instance == null) {
-            instance = new DBHelper(context);
+            instance = new DB(context);
         }
     }
 
     /**
      * Returns the application's instance of the database.
-     * @return the application's single instance of <code>DBHelper</code>.
+     * @return the application's single instance of <code>DB</code>.
      */
-    public static DBHelper getInstance() {
+    public static DB getInstance() {
         return instance;
     }
 
@@ -88,7 +88,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //region Overridden Methods
 
-    public DBHelper(Context context) {
+    public DB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

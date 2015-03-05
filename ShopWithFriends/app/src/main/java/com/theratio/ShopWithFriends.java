@@ -2,9 +2,8 @@ package com.theratio;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
 
-import com.theratio.utilities.DBHelper;
+import com.theratio.utilities.DB;
 import com.theratio.utilities.User;
 
 /**
@@ -23,7 +22,7 @@ public class ShopWithFriends extends Application {
     public void onCreate() {
         ShopWithFriends.context = getApplicationContext();
 
-        DBHelper.initInstance(context);
+        DB.initInstance(context);
     }
     //endregion
 

@@ -245,17 +245,17 @@ public class Post implements Parcelable {
                                               float worstPrice, float autoPrice, String description) {
         // Create SQL entries
         ContentValues values = new ContentValues();
-        values.put(DBHelper.POSTS_TABLE.KEY_USER_ID, userID);
-        values.put(DBHelper.POSTS_TABLE.KEY_POST_TYPE, postType.getValue());
-        values.put(DBHelper.POSTS_TABLE.KEY_ITEM_NAME, itemName);
-        values.put(DBHelper.POSTS_TABLE.KEY_WORST_PRICE, worstPrice);
-        values.put(DBHelper.POSTS_TABLE.KEY_AUTO_PRICE, autoPrice);
-        values.put(DBHelper.POSTS_TABLE.KEY_DESCRIPTION, description);
+        values.put(DB.POSTS_TABLE.KEY_USER_ID, userID);
+        values.put(DB.POSTS_TABLE.KEY_POST_TYPE, postType.getValue());
+        values.put(DB.POSTS_TABLE.KEY_ITEM_NAME, itemName);
+        values.put(DB.POSTS_TABLE.KEY_WORST_PRICE, worstPrice);
+        values.put(DB.POSTS_TABLE.KEY_AUTO_PRICE, autoPrice);
+        values.put(DB.POSTS_TABLE.KEY_DESCRIPTION, description);
 
         // Retrieve database
-        SQLiteDatabase db = DBHelper.getInstance().getWritableDatabase();
+        SQLiteDatabase db = DB.getInstance().getWritableDatabase();
 
-        long dbInsert = db.insert(DBHelper.USERS_TABLE.NAME, null, values);
+        long dbInsert = db.insert(DB.USERS_TABLE.NAME, null, values);
 
         if (dbInsert < 0) {
             return new CreatePostResult(CreatePostResult.Result.UNKNOWN);
@@ -274,12 +274,12 @@ public class Post implements Parcelable {
      * @return a <code>List</code> containing the posts by the given user ID.
      */
     public static List<Post> getPostsByUserID(long userID, List<Post> results) {
-        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+        SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
         // Get all posts of given user
         String query = String.format("SELECT * FROM %s WHERE %s=%s",
-                DBHelper.POSTS_TABLE.NAME,
-                DBHelper.POSTS_TABLE.KEY_USER_ID,
+                DB.POSTS_TABLE.NAME,
+                DB.POSTS_TABLE.KEY_USER_ID,
                 userID);
 
         Cursor cursor = db.rawQuery(query, null);
@@ -323,12 +323,12 @@ public class Post implements Parcelable {
             @Override
             protected Object doInBackground(Object... params) {
 
-                SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+                SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
                 // Get all posts of given user
                 String query = String.format("SELECT * FROM %s WHERE %s=%s",
-                        DBHelper.POSTS_TABLE.NAME,
-                        DBHelper.POSTS_TABLE.KEY_USER_ID,
+                        DB.POSTS_TABLE.NAME,
+                        DB.POSTS_TABLE.KEY_USER_ID,
                         userID);
 
                 Cursor cursor = db.rawQuery(query, null);
@@ -364,13 +364,13 @@ public class Post implements Parcelable {
     private static Post fromCursor(Cursor cursor) {
         // Handle cursor moving
         if (cursor.moveToNext()) {
-            long postID = cursor.getLong(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_POST_ID));
-            long userID = cursor.getLong(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_USER_ID));
-            TYPE postType = Post.TYPE.fromValue(cursor.getInt(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_POST_TYPE)));
-            String itemName = cursor.getString(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_ITEM_NAME));
-            float worstPrice = cursor.getFloat(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_WORST_PRICE));
-            float autoPrice = cursor.getFloat(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_AUTO_PRICE));
-            String description = cursor.getString(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_DESCRIPTION));
+            long postID = cursor.getLong(cursor.getColumnIndex(DB.POSTS_TABLE.KEY_POST_ID));
+            long userID = cursor.getLong(cursor.getColumnIndex(DB.POSTS_TABLE.KEY_USER_ID));
+            TYPE postType = Post.TYPE.fromValue(cursor.getInt(cursor.getColumnIndex(DB.POSTS_TABLE.KEY_POST_TYPE)));
+            String itemName = cursor.getString(cursor.getColumnIndex(DB.POSTS_TABLE.KEY_ITEM_NAME));
+            float worstPrice = cursor.getFloat(cursor.getColumnIndex(DB.POSTS_TABLE.KEY_WORST_PRICE));
+            float autoPrice = cursor.getFloat(cursor.getColumnIndex(DB.POSTS_TABLE.KEY_AUTO_PRICE));
+            String description = cursor.getString(cursor.getColumnIndex(DB.POSTS_TABLE.KEY_DESCRIPTION));
 
             return new Post(postID, userID, postType, itemName, worstPrice, autoPrice, description);
         }

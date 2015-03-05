@@ -1,21 +1,16 @@
 package com.theratio.shopwithfriends;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.theratio.utilities.DBHelper;
 import com.theratio.ShopWithFriends;
 import com.theratio.utilities.User;
 import com.theratio.utilities.Utility;
