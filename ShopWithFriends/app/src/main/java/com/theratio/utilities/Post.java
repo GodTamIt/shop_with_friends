@@ -2,9 +2,16 @@ package com.theratio.utilities;
 
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Christopher Tam on 3/3/2015.
@@ -257,6 +264,117 @@ public class Post implements Parcelable {
         Post post = new Post(dbInsert, userID, postType, itemName, worstPrice, autoPrice, description);
 
         return new CreatePostResult(CreatePostResult.Result.SUCCESS, post);
+    }
+
+    /**
+     * Synchronously retrieves posts made by a given user ID.
+     * @param userID the user ID to filter posts by.
+     * @param results the <code>List</code> to add posts to. If <code>null</code>,
+     *                a new <code>List</code> will be initialized.
+     * @return a <code>List</code> containing the posts by the given user ID.
+     */
+    public static List<Post> getPostsByUserID(long userID, List<Post> results) {
+        SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+
+        // Get all posts of given user
+        String query = String.format("SELECT * FROM %s WHERE %s=%s",
+                DBHelper.POSTS_TABLE.NAME,
+                DBHelper.POSTS_TABLE.KEY_USER_ID,
+                userID);
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (results == null)
+            results = new ArrayList<Post>(cursor.getCount());
+
+
+        if (cursor.getCount() < 1)
+            return results;
+
+        Log.d("Post.getPostsByUserID",
+                String.format("Loaded %d posts by %s", cursor.getCount(), userID));
+
+
+        // Iterate through results
+        Post post;
+        while ((post = Post.fromCursor(cursor)) != null) {
+            results.add(post);
+        }
+
+        // Close cursor
+        cursor.close();
+
+
+        return results;
+    }
+
+    /**
+     * Asynchronously retrieves posts by a given user ID and notifies a RecyclerView adapter.
+     * @param userID the user ID to filter posts by.
+     * @param results the <code>List</code> to add posts to. If <code>null</code>,
+     *                an <code>IllegalArgumentException</code> will be thrown.
+     * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
+     */
+    public static void getPostsByUserID(final long userID, final List<Post> results, final RecyclerView.Adapter adapterToNotify) {
+        if (results == null)
+            throw new IllegalArgumentException("Results list cannot be null.");
+
+        AsyncTask<Object, Object, Object> tskPosts = new AsyncTask<Object, Object, Object>() {
+            @Override
+            protected Object doInBackground(Object... params) {
+
+                SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
+
+                // Get all posts of given user
+                String query = String.format("SELECT * FROM %s WHERE %s=%s",
+                        DBHelper.POSTS_TABLE.NAME,
+                        DBHelper.POSTS_TABLE.KEY_USER_ID,
+                        userID);
+
+                Cursor cursor = db.rawQuery(query, null);
+
+
+                if (cursor.getCount() < 1)
+                    return null;
+
+                Log.d("Post.getPostsByUserID",
+                        String.format("Loaded %d posts by %s", cursor.getCount(), userID));
+
+
+                // Iterate through results
+                Post post;
+                while ((post = Post.fromCursor(cursor)) != null) {
+                    if (results.add(post) && (adapterToNotify != null)) {
+                        // NOTE: Must call this synchronously
+                        adapterToNotify.notifyItemInserted(results.size() - 1);
+                        Log.d("Post.getPostsByUserID", String.format("Adding %s to Post List", post.getItemName()));
+                    }
+                }
+
+                // Close cursor
+                cursor.close();
+
+                return null;
+            }
+        };
+
+        tskPosts.execute();
+    }
+
+    private static Post fromCursor(Cursor cursor) {
+        // Handle cursor moving
+        if (cursor.moveToNext()) {
+            long postID = cursor.getLong(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_POST_ID));
+            long userID = cursor.getLong(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_USER_ID));
+            TYPE postType = Post.TYPE.fromValue(cursor.getInt(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_POST_TYPE)));
+            String itemName = cursor.getString(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_ITEM_NAME));
+            float worstPrice = cursor.getFloat(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_WORST_PRICE));
+            float autoPrice = cursor.getFloat(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_AUTO_PRICE));
+            String description = cursor.getString(cursor.getColumnIndex(DBHelper.POSTS_TABLE.KEY_DESCRIPTION));
+
+            return new Post(postID, userID, postType, itemName, worstPrice, autoPrice, description);
+        }
+        return null;
     }
 
     //endregion

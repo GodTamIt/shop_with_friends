@@ -340,7 +340,6 @@ public class User implements Parcelable {
      * @param adapterToNotify - the RecyclerView adapter to notify when a friend has been updated.
      */
     public void updateFriends(final RecyclerView.Adapter adapterToNotify) {
-
         AsyncTask<Object, Object, Object> tskUpdate = new AsyncTask<Object, Object, Object>() {
 
             @Override
@@ -354,23 +353,23 @@ public class User implements Parcelable {
 
                 SQLiteDatabase db = DBHelper.getInstance().getReadableDatabase();
 
+                long userID = getID();
+
                 // Get all friends of current user
-                String query = String.format("SELECT %s FROM %s WHERE %s=?",
+                String query = String.format("SELECT %s FROM %s WHERE %s=%d",
                         DBHelper.FRIENDS_TABLE.KEY_FRIEND_ID,
                         DBHelper.FRIENDS_TABLE.NAME,
-                        DBHelper.FRIENDS_TABLE.KEY_ID);
-
-                String userID = Long.toString(getID());
+                        DBHelper.FRIENDS_TABLE.KEY_ID,
+                        userID);
 
                 Log.d("User.updateFriends", "Loading friends for " + userID);
 
-                Cursor cursor = db.rawQuery(query,
-                        new String[]{ userID });
+                Cursor cursor = db.rawQuery(query, null);
 
                 if (cursor.getCount() < 1)
                     return null;
 
-                Log.d("User.updateFriends", String.format("Loaded %d friend(s) for %s", cursor.getCount(), userID));
+                Log.d("User.updateFriends", String.format("Loaded %d friend(s) for %d", cursor.getCount(), userID));
 
                 // Create temporary ArrayList of friendIDs
                 ArrayList<Long> friendIDs = new ArrayList<Long>(cursor.getCount());
@@ -421,6 +420,23 @@ public class User implements Parcelable {
      */
     public List<User> getFriends() {
         return friends;
+    }
+
+    /**
+     * Synchronously retrieves posts by the current user.
+     * @return a <code>List</code> representing the posts by the current user.
+     */
+    public List<Post> getPosts() {
+        return Post.getPostsByUserID(this.id, null);
+    }
+
+    /**
+     * Asynchronously retrieves posts by the current user and notifies a RecyclerView adapter.
+     * @param results the <code>List</code> of <code>Post</code>s to add to.
+     * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
+     */
+    public void getPosts(List<Post> results, RecyclerView.Adapter adapterToNotify) {
+        Post.getPostsByUserID(this.id, results, adapterToNotify);
     }
 
     //endregion
