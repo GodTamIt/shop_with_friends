@@ -69,6 +69,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_friend_profile">Profile</string>
     <string name="title_activity_post_item">PostItem</string>
+    <string name="title_activity_post">PostActivity</string>
     <!-- END: Miscellaneous -->
 
 </resources>

@@ -71,7 +71,7 @@ public class DB extends SQLiteOpenHelper {
         public static final String KEY_POST_TYPE = "post_type";
         public static final String KEY_ITEM_NAME = "item_name";
         public static final String KEY_WORST_PRICE = "worst_price";
-        public static final String KEY_AUTO_PRICE = "max_price";
+        public static final String KEY_AUTO_PRICE = "auto_price";
         public static final String KEY_DESCRIPTION = "description";
 
         private static final String CREATE = "CREATE TABLE " + NAME + "(" +

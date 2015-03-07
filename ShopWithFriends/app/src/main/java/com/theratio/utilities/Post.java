@@ -4,6 +4,7 @@ package com.theratio.utilities;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -26,6 +27,7 @@ public class Post implements Parcelable {
     private float worstPrice;
     private float autoPrice;
     private String description;
+    private BitmapDrawable picture;
 
 
     public static enum TYPE {
@@ -131,6 +133,8 @@ public class Post implements Parcelable {
     public String getDescription() {
         return description;
     }
+
+    public BitmapDrawable getPicture() {return picture; }
 
     public void setDescription(String description) {
         this.description = description;
