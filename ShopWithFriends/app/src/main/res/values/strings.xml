@@ -57,19 +57,23 @@
     <string name="sales_reports_num">Sales reports</string>
     <!-- END: Friend Profile -->
 
-    <!-- BEGIN: Post Item -->
+    <!-- BEGIN: Register Interest & Report Sale-->
     <string name="item_name">Item Name</string>
     <string name="threshold_price">Threshold Price</string>
-    <string name="post_item_btn">Post Item</string>
+    <string name="register_interest_btn">Register Interest</string>
+    <string name="report_sale_btn">Report Sale</string>
     <string name="item_description">Describe the item.</string>
-    <string name="successful_activity_post">The item was posted successfully!</string>
-    <!-- END: Post Item -->
+    <string name="successful_interest">Your interest was registered successfully!</string>
+    <string name="successful_report">Your sale report was generated successfully!</string>
+    <string name="location">Location</string>
+    <!-- END: Register Interest & Report Sale-->
 
     <!-- BEGIN: Miscellaneous -->
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_friend_profile">Profile</string>
     <string name="title_activity_post_item">PostItem</string>
     <string name="title_activity_post">PostActivity</string>
+    <string name="title_activity_report_sale">ReportSaleActivity</string>
     <!-- END: Miscellaneous -->
 
 </resources>

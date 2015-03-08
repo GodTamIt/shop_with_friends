@@ -80,11 +80,16 @@ public class HomeActivity extends ActionBarActivity {
 
             // Do not allow returning to this activity
             finish();
-        } else if (id == R.id.post_item) {
+        } else if (id == R.id.register_interest) {
             // Post an item you are interested in
-            Intent intent = new Intent(this, PostItemActivity.class);
+            Intent intent = new Intent(this, RegisterInterestActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.report_sale) {
+            // Post an item you are interested in
+            Intent intent = new Intent(this, ReportSaleActivity.class);
             startActivity(intent);
         }
+
 
         return super.onOptionsItemSelected(item);
     }

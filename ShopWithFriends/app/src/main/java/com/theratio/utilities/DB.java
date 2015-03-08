@@ -13,7 +13,7 @@ public class DB extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
     private static DB instance;
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     /**
      * This method should only be called by the Application class.
@@ -104,6 +104,7 @@ public class DB extends SQLiteOpenHelper {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + USERS_TABLE.NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FRIENDS_TABLE.NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + POSTS_TABLE.NAME);
 
 
         // Create tables again

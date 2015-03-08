@@ -31,8 +31,8 @@ public class Post implements Parcelable {
 
 
     public static enum TYPE {
-        BUY(0),
-        SELL(1);
+        INTEREST(0),
+        REPORT(1);
 
         private int value;
 
@@ -47,11 +47,11 @@ public class Post implements Parcelable {
         public static TYPE fromValue(int value) {
             switch (value) {
                 case 0:
-                    return BUY;
+                    return INTEREST;
                 case 1:
-                    return SELL;
+                    return REPORT;
                 default:
-                    return BUY;
+                    return INTEREST;
             }
         }
 
@@ -259,7 +259,7 @@ public class Post implements Parcelable {
         // Retrieve database
         SQLiteDatabase db = DB.getInstance().getWritableDatabase();
 
-        long dbInsert = db.insert(DB.USERS_TABLE.NAME, null, values);
+        long dbInsert = db.insert(DB.POSTS_TABLE.NAME, null, values);
 
         if (dbInsert < 0) {
             return new CreatePostResult(CreatePostResult.Result.UNKNOWN);

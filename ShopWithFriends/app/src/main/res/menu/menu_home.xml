@@ -3,8 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.theratio.shopwithfriends.HomeActivity">
 
-    <item android:id="@+id/post_item"
-        android:title="Post item"
+    <item android:id="@+id/register_interest"
+        android:title="Register Interest"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item android:id="@+id/report_sale"
+        android:title="Report Sale"
         android:orderInCategory="100"
         app:showAsAction="never"/>
     <item android:id="@+id/add_friend"
