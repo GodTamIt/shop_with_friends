@@ -242,7 +242,7 @@ public class Post implements Parcelable {
 
     public static CreatePostResult createPost(long userID, TYPE postType, String itemName,
                                               float worstPrice, String description) {
-        return Post.createPost(userID, postType, itemName, worstPrice, 0.0F, "");
+        return Post.createPost(userID, postType, itemName, worstPrice, 0.0F, description);
     }
 
     public static CreatePostResult createPost(long userID, TYPE postType, String itemName,
