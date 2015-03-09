@@ -22,13 +22,13 @@ import com.theratio.ShopWithFriends;
 import com.theratio.utilities.Post;
 import com.theratio.utilities.User;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
 public class HomeActivity extends ActionBarActivity {
 
-    private User currentUser;
     Drawable mDefaultPic;
 
     @Override
@@ -39,7 +39,6 @@ public class HomeActivity extends ActionBarActivity {
         // Store default profile picture to memory (eventually implement Lru and Disk cache and replace it with something else)
         //mDefaultPic = getResources().getDrawable(R.drawable.user_no_profile);
 
-        currentUser = ShopWithFriends.getCurrentUser();
         RecyclerView recList = (RecyclerView) findViewById(R.id.home_activity_card_list);
         recList.setHasFixedSize(true);
 
@@ -49,10 +48,17 @@ public class HomeActivity extends ActionBarActivity {
         recList.setItemAnimator(new DefaultItemAnimator());
 
 
-        List<Post> posts = currentUser.getPosts();
-        PostAdapter postAdapter = new PostAdapter(this, currentUser.getPosts());
-        Log.d("Post list size", Integer.toString(currentUser.getPosts().size()));
+        List<Post> posts = ShopWithFriends.getCurrentUser().getPosts();
+        PostAdapter postAdapter = new PostAdapter(this, posts);
         recList.setAdapter(postAdapter);
+
+        // Call update to posts
+        ShopWithFriends.getCurrentUser().updatePosts(postAdapter);
+
+        // Call asynchronous posts
+
+
+        //Log.d("Post list size", Integer.toString(currentUser.updatePosts().size()));
     }
 
     @Override
