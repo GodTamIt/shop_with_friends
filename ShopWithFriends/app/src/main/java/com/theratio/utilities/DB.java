@@ -13,7 +13,7 @@ public class DB extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
     private static DB instance;
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     /**
      * This method should only be called by the Application class.
@@ -80,7 +80,7 @@ public class DB extends SQLiteOpenHelper {
                 KEY_USER_ID + " LONG," +
                 KEY_ITEM_NAME + " VARCHAR(50)," +
                 KEY_WORST_PRICE + " FLOAT," +
-                KEY_AUTO_PRICE + " FLOAT" +
+                KEY_AUTO_PRICE + " FLOAT," +
                 KEY_DESCRIPTION + " TEXT" + ")";
     }
 
