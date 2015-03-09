@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,19 +37,28 @@ public class HomeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_home);
 
         // Store default profile picture to memory (eventually implement Lru and Disk cache and replace it with something else)
-        mDefaultPic = getResources().getDrawable(R.drawable.user_no_profile);
+        //mDefaultPic = getResources().getDrawable(R.drawable.user_no_profile);
 
         currentUser = ShopWithFriends.getCurrentUser();
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        RecyclerView recList = (RecyclerView) findViewById(R.id.home_activity_card_list);
         recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
+
+        RecyclerView.LayoutManager llm = new LinearLayoutManager(this);
+        //llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
+        recList.setItemAnimator(new DefaultItemAnimator());
+
+
+        List<Post> posts = currentUser.getPosts();
+        PostAdapter postAdapter = new PostAdapter(this, currentUser.getPosts());
+        Log.d("Post list size", Integer.toString(currentUser.getPosts().size()));
+        recList.setAdapter(postAdapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
@@ -108,7 +118,7 @@ public class HomeActivity extends ActionBarActivity {
         @Override
         public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // Retrieve and inflate friend list row
-            View view = inflater.inflate(R.layout.post_list_recycler_card, parent, false);
+            View view = inflater.inflate(R.layout.cards_layout, parent, false);
 
             // Send inflated view to ViewHolder (handles recycling of views)
             PostViewHolder holder = new PostViewHolder(view);
@@ -117,20 +127,21 @@ public class HomeActivity extends ActionBarActivity {
 
         @Override
         public void onBindViewHolder(PostViewHolder holder, int position) {
-            // Get current user
+            // Get current post
             Post current = posts.get(position);
 
-            Log.d("Friend list size", Integer.toString(posts.size()));
+            Log.d("Post list size", Integer.toString(posts.size()));
 
             // Set text and image
-            holder.lblItem.setText(current.getItemName());
+            holder.itemName.setText(current.getItemName());
+            holder.itemPrice.setText(Float.toString(current.getWorstPrice()));
 
-            Drawable pic = current.getPicture();
+            /*Drawable pic = current.getPicture();
             if (pic == null) {
                 pic = mDefaultPic;
             }
 
-            holder.imgProfile.setImageDrawable(pic);
+            holder.imgProfile.setImageDrawable(pic);*/
         }
 
         @Override
@@ -142,13 +153,15 @@ public class HomeActivity extends ActionBarActivity {
 
     private class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProfile;
-        TextView lblItem;
+        TextView itemName;
+        TextView itemPrice;
         public PostViewHolder(View itemView) {
             // Call superclass constructor
             super(itemView);
 
             // Find text
-            lblItem = (TextView) itemView.findViewById(R.id.post_item_name);
+            itemName = (TextView) itemView.findViewById(R.id.card_item_name);
+            itemPrice = (TextView) itemView.findViewById(R.id.card_item_price);
             //imgProfile = (ImageView) itemView.findViewById(R.id.post_list_icon);
 
             itemView.setOnClickListener(new View.OnClickListener() {
