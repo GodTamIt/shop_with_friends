@@ -26,6 +26,8 @@ public class User implements Parcelable {
 
     // Friends should eventually be stored in DiskCache
     private List<User> friends;
+    // Posts should eventually be stored in DiskCache
+    private List<Post> posts;
     private long id;
     private String userName;
     private String email;
@@ -91,8 +93,9 @@ public class User implements Parcelable {
         this.salesReportsNum = salesReportsNum;
         this.setProfilePicture(profilePicture);
 
-        // Initialize friends
+        // Initialize friends and posts
         friends = new ArrayList<>();
+        posts = new ArrayList<>();
     }
 
     //endregion
@@ -427,7 +430,15 @@ public class User implements Parcelable {
      * @return a <code>List</code> representing the posts by the current user.
      */
     public List<Post> getPosts() {
-        return Post.getPostsByUserID(this.id, null);
+        return this.posts;
+    }
+
+    /**
+     * Asynchronously retrieves posts by the current user and notifies a RecyclerView adapter.
+     * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
+     */
+    public void updatePosts(RecyclerView.Adapter adapterToNotify) {
+        Post.updatePostsByUserID(this.id, this.posts, adapterToNotify);
     }
 
     /**
@@ -435,8 +446,8 @@ public class User implements Parcelable {
      * @param results the <code>List</code> of <code>Post</code>s to add to.
      * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
      */
-    public void getPosts(List<Post> results, RecyclerView.Adapter adapterToNotify) {
-        Post.getPostsByUserID(this.id, results, adapterToNotify);
+    public void updatePosts(List<Post> results, RecyclerView.Adapter adapterToNotify) {
+        Post.updatePostsByUserID(this.id, results, adapterToNotify);
     }
 
     //endregion

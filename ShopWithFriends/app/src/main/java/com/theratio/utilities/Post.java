@@ -281,7 +281,7 @@ public class Post implements Parcelable {
         SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
         // Get all posts of given user
-        String query = String.format("SELECT * FROM %s WHERE %s=%s",
+        String query = String.format("SELECT * FROM %s WHERE %s=%d",
                 DB.POSTS_TABLE.NAME,
                 DB.POSTS_TABLE.KEY_USER_ID,
                 userID);
@@ -295,7 +295,7 @@ public class Post implements Parcelable {
         if (cursor.getCount() < 1)
             return results;
 
-        Log.d("Post.getPostsByUserID",
+        Log.d("Post.updatePostsByUserID",
                 String.format("Loaded %d posts by %s", cursor.getCount(), userID));
 
 
@@ -319,7 +319,7 @@ public class Post implements Parcelable {
      *                an <code>IllegalArgumentException</code> will be thrown.
      * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
      */
-    public static void getPostsByUserID(final long userID, final List<Post> results, final RecyclerView.Adapter adapterToNotify) {
+    public static void updatePostsByUserID(final long userID, final List<Post> results, final RecyclerView.Adapter adapterToNotify) {
         if (results == null)
             throw new IllegalArgumentException("Results list cannot be null.");
 
@@ -341,7 +341,7 @@ public class Post implements Parcelable {
                 if (cursor.getCount() < 1)
                     return null;
 
-                Log.d("Post.getPostsByUserID",
+                Log.d("Post.updatePostsByUserID",
                         String.format("Loaded %d posts by %s", cursor.getCount(), userID));
 
 
@@ -351,7 +351,7 @@ public class Post implements Parcelable {
                     if (results.add(post) && (adapterToNotify != null)) {
                         // NOTE: Must call this synchronously
                         adapterToNotify.notifyItemInserted(results.size() - 1);
-                        Log.d("Post.getPostsByUserID", String.format("Adding %s to Post List", post.getItemName()));
+                        Log.d("Post.updatePostsByUserID", String.format("Adding %s to Post List", post.getItemName()));
                     }
                 }
 
