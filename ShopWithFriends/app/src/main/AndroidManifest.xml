@@ -53,31 +53,23 @@
         </activity>
         <activity
             android:name=".ProfileActivity"
-            android:label="@string/title_activity_friend_profile"
+            android:label="@string/profile"
             android:parentActivityName=".FriendListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.theratio.shopwithfriends.FriendListActivity" />
         </activity>
         <activity
-            android:name=".PostItem"
-            android:label="@string/title_activity_post_item"
-            android:parentActivityName=".HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.theratio.shopwithfriends.HomeActivity" />
-        </activity>
-        <activity
             android:name=".RegisterInterestActivity"
-            android:label="@string/title_activity_post_item"
+            android:label="@string/title_activity_register_interest"
             android:parentActivityName=".HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.theratio.shopwithfriends.HomeActivity" />
         </activity>
         <activity
-            android:name=".PostActivity"
-            android:label="@string/title_activity_post"
+            android:name=".ViewPostActivity"
+            android:label="@string/title_view_post"
             android:parentActivityName=".HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

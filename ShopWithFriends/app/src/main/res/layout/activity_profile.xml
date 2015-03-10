@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/sales_reports_num"
+        android:text="@string/sales_reports"
         android:id="@+id/sales_reports_num"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/rating"
@@ -60,7 +60,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_to_friends_button"
+        android:text="@string/add_to_friends_activity_profile"
         android:id="@+id/profile_add_remove_button"
         android:onClick="onAddRemoveBtn"
         android:layout_alignParentBottom="true"

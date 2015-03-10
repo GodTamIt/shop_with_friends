@@ -10,7 +10,14 @@
     <string name="register">Register</string>
     <string name="unknown_error">An unknown error occurred.</string>
     <string name="login">Login</string>
+    <string name="rating">Rating</string>
+    <string name="sales_reports">Sales Reports</string>
+    <string name="location">Location</string>
+    <string name="item_description_prompt">Describe the item.</string>
+    <string name="item_name">Item Name</string>
+    <string name="threshold_price">Threshold Price</string>
     <!-- END: Common -->
+
 
     <!-- BEGIN: Login Activity -->
     <string name="user_email_activity_login">Username or Email Address</string>
@@ -49,31 +56,27 @@
     <string name="title_activity_friend_list">Friend List</string>
     <!-- END: Add Friend -->
 
-    <!-- BEGIN: Friend Profile -->name, email, rating, and number of sales reports given to you
+    <!-- BEGIN: Friend Profile -->
     <string name="profile">Profile</string>
-    <string name="remove_from_friends_button">Remove from friends</string>
-    <string name="add_to_friends_button">Add to friends</string>
-    <string name="rating">Rating</string>
-    <string name="sales_reports_num">Sales reports</string>
+    <string name="remove_from_friends_activity_profile">Remove from Friends</string>
+    <string name="add_to_friends_activity_profile">Add to Friends</string>
     <!-- END: Friend Profile -->
 
-    <!-- BEGIN: Register Interest & Report Sale-->
-    <string name="item_name">Item Name</string>
-    <string name="threshold_price">Threshold Price</string>
-    <string name="register_interest_btn">Register Interest</string>
-    <string name="report_sale_btn">Report Sale</string>
-    <string name="item_description">Describe the item.</string>
-    <string name="successful_interest">Your interest was registered successfully!</string>
-    <string name="successful_report">Your sale report was generated successfully!</string>
-    <string name="location">Location</string>
+    <!-- BEGIN: Register Interest & Report Sale -->
+    <string name="title_activity_register_interest">Register Interest</string>
+    <string name="title_activity_report_sale">Report Sale</string>
+    <string name="register_interest_activity_register_interest">Register Interest</string>
+    <string name="report_sale_activity_report_sale">Report Sale</string>
+    <string name="successful_interest_activity_register_interest">Your interest was registered successfully!</string>
+    <string name="successful_report_activity_report_sale">Your sale report was generated successfully!</string>
     <!-- END: Register Interest & Report Sale-->
+
+    <!-- BEGIN: View Post -->
+    <string name="title_view_post">View Post</string>
+    <!-- END: View Post -->
 
     <!-- BEGIN: Miscellaneous -->
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_friend_profile">Profile</string>
-    <string name="title_activity_post_item">PostItem</string>
-    <string name="title_activity_post">PostActivity</string>
-    <string name="title_activity_report_sale">ReportSaleActivity</string>
     <!-- END: Miscellaneous -->
 
 </resources>

@@ -15,7 +15,6 @@ import android.widget.EditText;
 
 import com.theratio.ShopWithFriends;
 import com.theratio.utilities.Post;
-import com.theratio.utilities.User;
 import com.theratio.utilities.Utility;
 
 
@@ -56,11 +55,6 @@ public class RegisterInterestActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -93,7 +87,7 @@ public class RegisterInterestActivity extends ActionBarActivity {
         // TODO: Check if post was successful
         Post.createPost(ShopWithFriends.getCurrentUser().getID(), Post.TYPE.INTEREST, itemName.getText().toString(), Float.valueOf(thresholdPrice.getText().toString()), itemDescription.getText().toString());
         final Context current = this;
-        Utility.showDialog(this, getResources().getString(R.string.successful_interest), new DialogInterface.OnClickListener() {
+        Utility.showDialog(this, getResources().getString(R.string.successful_interest_activity_register_interest), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(current, HomeActivity.class);

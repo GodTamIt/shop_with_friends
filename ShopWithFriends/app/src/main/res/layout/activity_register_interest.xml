@@ -39,13 +39,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/item_description"
+            android:hint="@string/item_description_prompt"
             android:layout_marginTop="10dp" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="@string/register_interest_btn"
+            android:text="@string/register_interest_activity_register_interest"
             android:id="@+id/register_interest_btn"
             android:layout_marginTop="10dp"
             android:clickable="true"

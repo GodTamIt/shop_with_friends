@@ -13,8 +13,6 @@ import com.theratio.ShopWithFriends;
 import com.theratio.ui.CircularImageView;
 import com.theratio.utilities.User;
 
-import java.util.List;
-
 
 public class ProfileActivity extends ActionBarActivity {
 
@@ -53,7 +51,7 @@ public class ProfileActivity extends ActionBarActivity {
         addRemoveBtn = (Button)findViewById(R.id.profile_add_remove_button);
 
         if (isFriend) {
-            addRemoveBtn.setText(this.getString(R.string.remove_from_friends_button));
+            addRemoveBtn.setText(this.getString(R.string.remove_from_friends_activity_profile));
         }
 
 
@@ -91,12 +89,12 @@ public class ProfileActivity extends ActionBarActivity {
     public void onAddRemoveBtn(View view) {
         if (isFriend) {
             ShopWithFriends.getCurrentUser().removeFriend(user);
-            addRemoveBtn.setText(this.getString(R.string.add_to_friends_button));
+            addRemoveBtn.setText(this.getString(R.string.add_to_friends_activity_profile));
             isFriend = false;
 
         } else {
             ShopWithFriends.getCurrentUser().addFriend(user.getEmail(),user.getUsername());
-            addRemoveBtn.setText(this.getString(R.string.remove_from_friends_button));
+            addRemoveBtn.setText(this.getString(R.string.remove_from_friends_activity_profile));
             isFriend = true;
         }
     }

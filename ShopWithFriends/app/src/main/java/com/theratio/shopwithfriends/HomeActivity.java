@@ -20,9 +20,7 @@ import android.widget.TextView;
 
 import com.theratio.ShopWithFriends;
 import com.theratio.utilities.Post;
-import com.theratio.utilities.User;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -176,7 +174,7 @@ public class HomeActivity extends ActionBarActivity {
                 public void onClick(View v) {
 
                     Post post = ShopWithFriends.getCurrentUser().getPosts().get(getPosition());
-                    Intent postPage = new Intent(v.getContext(), PostActivity.class);
+                    Intent postPage = new Intent(v.getContext(), ViewPostActivity.class);
                     postPage.putExtra("post",(Parcelable) post);
 
                     startActivity(postPage);
@@ -189,7 +187,7 @@ public class HomeActivity extends ActionBarActivity {
                 @Override
                 public boolean onLongClick(View v) {
                     Post post = ShopWithFriends.getCurrentUser().getPosts().get(getPosition());
-                    Intent postPage = new Intent(v.getContext(), PostActivity.class);
+                    Intent postPage = new Intent(v.getContext(), ViewPostActivity.class);
                     postPage.putExtra("post",(Parcelable) post);
 
                     startActivity(postPage);

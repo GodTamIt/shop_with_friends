@@ -47,13 +47,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/item_description"
+            android:hint="@string/item_description_prompt"
             android:layout_marginTop="10dp" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="@string/report_sale_btn"
+            android:text="@string/report_sale_activity_report_sale"
             android:id="@+id/report_sale_btn"
             android:layout_marginTop="10dp"
             android:clickable="true"
