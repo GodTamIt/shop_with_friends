@@ -438,7 +438,7 @@ public class User implements Parcelable {
      * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
      */
     public void updatePosts(RecyclerView.Adapter adapterToNotify) {
-        Post.updatePostsByUserID(this.id, this.posts, adapterToNotify);
+        Post.updatePostsByUserID(this.id, this.posts, adapterToNotify, true);
     }
 
     /**
@@ -447,7 +447,7 @@ public class User implements Parcelable {
      * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
      */
     public void updatePosts(List<Post> results, RecyclerView.Adapter adapterToNotify) {
-        Post.updatePostsByUserID(this.id, results, adapterToNotify);
+        Post.updatePostsByUserID(this.id, results, adapterToNotify, false);
     }
 
     //endregion

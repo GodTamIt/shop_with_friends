@@ -319,13 +319,20 @@ public class Post implements Parcelable {
      *                an <code>IllegalArgumentException</code> will be thrown.
      * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
      */
-    public static void updatePostsByUserID(final long userID, final List<Post> results, final RecyclerView.Adapter adapterToNotify) {
+    public static void updatePostsByUserID(final long userID, final List<Post> results,
+                                           final RecyclerView.Adapter adapterToNotify, final boolean clearList) {
         if (results == null)
             throw new IllegalArgumentException("Results list cannot be null.");
 
         AsyncTask<Object, Object, Object> tskPosts = new AsyncTask<Object, Object, Object>() {
             @Override
             protected Object doInBackground(Object... params) {
+                // if clear list
+                if (clearList) {
+                    results.clear();
+                    // Typically bad practice, but we're clearing here
+                    adapterToNotify.notifyDataSetChanged();
+                }
 
                 SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
@@ -341,7 +348,7 @@ public class Post implements Parcelable {
                 if (cursor.getCount() < 1)
                     return null;
 
-                Log.d("Post.updatePostsByUserID",
+                Log.d("updatePostsByUserID",
                         String.format("Loaded %d posts by %s", cursor.getCount(), userID));
 
 
@@ -351,7 +358,7 @@ public class Post implements Parcelable {
                     if (results.add(post) && (adapterToNotify != null)) {
                         // NOTE: Must call this synchronously
                         adapterToNotify.notifyItemInserted(results.size() - 1);
-                        Log.d("Post.updatePostsByUserID", String.format("Adding %s to Post List", post.getItemName()));
+                        Log.d("updatePostsByUserID", String.format("Adding %s to Post List", post.getItemName()));
                     }
                 }
 
