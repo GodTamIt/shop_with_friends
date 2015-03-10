@@ -3,11 +3,9 @@ package com.theratio.utilities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.text.Editable;
 import android.widget.EditText;
 
-import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 /**
