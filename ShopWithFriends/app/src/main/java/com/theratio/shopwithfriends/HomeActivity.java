@@ -51,6 +51,8 @@ public class HomeActivity extends ActionBarActivity {
         List<Post> interests = ShopWithFriends.getCurrentUser().getPosts();
         //PostAdapter postAdapter = new PostAdapter(this, interests);
 
+
+
         List<Post> reports = Post.getAllPosts(Post.TYPE.REPORT);
 
         List<Post> postList = new ArrayList<Post>();
@@ -65,7 +67,6 @@ public class HomeActivity extends ActionBarActivity {
         }
 
         PostAdapter postAdapter = new PostAdapter(this, postList);
-
         recList.setAdapter(postAdapter);
 
         // Call update to posts

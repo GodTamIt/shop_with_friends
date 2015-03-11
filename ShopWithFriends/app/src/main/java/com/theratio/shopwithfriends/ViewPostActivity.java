@@ -17,6 +17,8 @@ public class ViewPostActivity extends ActionBarActivity {
     private String itemName;
     private float thresholdPrice;
     private String itemDescription;
+    private Post.TYPE itemType;
+    private String itemLocation;//used for reports, hardcoded for now
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +31,19 @@ public class ViewPostActivity extends ActionBarActivity {
         itemName = post.getItemName();
         thresholdPrice = post.getWorstPrice();
         itemDescription = post.getDescription();
+        itemType = post.getPostType();
+        itemLocation = post.getLocation();
 
         TextView itemNameText =(TextView)findViewById(R.id.item_name);
         TextView thresholdPriceText = (TextView)findViewById(R.id.threshold_price);
         TextView itemDescriptionText = (TextView)findViewById(R.id.item_description);
+        TextView itemLocationText = (TextView)findViewById(R.id.location);
 
+        if (itemType == Post.TYPE.REPORT) {
+            itemLocationText.append(": " + itemLocation);
+        }   else {
+            itemLocationText.setText("");
+        }
         setTitle(itemName);
 
         itemNameText.append(": " + itemName);

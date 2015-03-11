@@ -27,6 +27,7 @@ public class Post implements Parcelable {
     private float worstPrice;
     private float autoPrice;
     private String description;
+    private String location = "ur mum";//fix it later
     private BitmapDrawable picture;
 
 
@@ -69,6 +70,7 @@ public class Post implements Parcelable {
         this.worstPrice = in.readFloat();
         this.autoPrice = in.readFloat();
         this.description = in.readString();
+        this.location  = in.readString();
     }
 
     private Post(long postID, long userID, TYPE postType, String itemName, float worstPrice, float autoPrice, String description) {
@@ -79,6 +81,7 @@ public class Post implements Parcelable {
         this.worstPrice = worstPrice;
         this.autoPrice = autoPrice;
         this.description = description;
+        this.location = "ur mum";//retrieve it from the db later
     }
 
     //endregion
@@ -130,6 +133,8 @@ public class Post implements Parcelable {
         this.autoPrice = autoPrice;
     }
 
+    public String getLocation() { return location; }
+
     public String getDescription() {
         return description;
     }
@@ -175,6 +180,7 @@ public class Post implements Parcelable {
         dest.writeFloat(this.worstPrice);
         dest.writeFloat(this.autoPrice);
         dest.writeString(this.description);
+        dest.writeString(this.location);
     }
 
     public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
