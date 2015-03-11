@@ -295,8 +295,8 @@ public class Post implements Parcelable {
         if (cursor.getCount() < 1)
             return results;
 
-        Log.d("Post.updatePostsByUserID",
-                String.format("Loaded %d posts by %s", cursor.getCount(), userID));
+        Log.d("updatePostsByUserID",
+                String.format("Loaded %d posts made by %s", cursor.getCount(), userID));
 
 
         // Iterate through results
@@ -349,7 +349,7 @@ public class Post implements Parcelable {
                     return null;
 
                 Log.d("updatePostsByUserID",
-                        String.format("Loaded %d posts by %s", cursor.getCount(), userID));
+                        String.format("Loaded %d posts made by %s", cursor.getCount(), userID));
 
 
                 // Iterate through results
@@ -386,6 +386,109 @@ public class Post implements Parcelable {
             return new Post(postID, userID, postType, itemName, worstPrice, autoPrice, description);
         }
         return null;
+    }
+
+    /**
+     * Synchronously retrieves all posts.
+     * @param filterType the type of posts to retrieve.
+     *                   If <code>null</code>, all posts will be retrieved.
+     * @return a <code>List</code> object containing the posts.
+     */
+    public static List<Post> getAllPosts(TYPE filterType) {
+        SQLiteDatabase db = DB.getInstance().getReadableDatabase();
+
+        // Get all posts
+        String query = String.format("SELECT * FROM %s", DB.POSTS_TABLE.NAME);
+
+        if (filterType != null) {
+            query += String.format(" WHERE %s=%d",
+                    DB.POSTS_TABLE.KEY_POST_TYPE,
+                    filterType.getValue());
+        }
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        ArrayList<Post> results = new ArrayList<Post>(cursor.getCount());
+
+        if (cursor.getCount() < 1)
+            return results;
+
+        Log.d("getAllPosts",
+                String.format("Loaded %d posts", cursor.getCount()));
+
+
+        // Iterate through results
+        Post post;
+        while ((post = Post.fromCursor(cursor)) != null) {
+            results.add(post);
+        }
+
+        // Close cursor
+        cursor.close();
+
+
+        return results;
+    }
+
+    /**
+     * Asynchronously retrieves all posts.
+     * @param results the <code>List</code> object to add results to.
+     * @param filterType the type of posts to retrieve.
+     *                   If <code>null</code>, all posts will be retrieved.
+     * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
+     * @param clearList the value determining whether to clear <code>results</code> before
+     *                  retrieving posts.
+     */
+    public static void getAllPosts(final List<Post> results, final TYPE filterType,
+                                   final RecyclerView.Adapter adapterToNotify, final boolean clearList) {
+
+        if (results == null)
+            throw new IllegalArgumentException("Results list cannot be null.");
+
+        AsyncTask<Object, Object, Object> tskGetPosts = new AsyncTask<Object, Object, Object>() {
+            @Override
+            protected Object doInBackground(Object... params) {
+                if (clearList) {
+                    results.clear();
+                }
+
+                SQLiteDatabase db = DB.getInstance().getReadableDatabase();
+
+                // Get all posts
+                String query = String.format("SELECT * FROM %s", DB.POSTS_TABLE.NAME);
+
+                if (filterType != null) {
+                    query += String.format(" WHERE %s=%d",
+                            DB.POSTS_TABLE.KEY_POST_TYPE,
+                            filterType.getValue());
+                }
+
+                Cursor cursor = db.rawQuery(query, null);
+
+                if (cursor.getCount() < 1)
+                    return results;
+
+                Log.d("getAllPosts",
+                        String.format("Loaded %d posts", cursor.getCount()));
+
+
+                // Iterate through results
+                Post post;
+                while ((post = Post.fromCursor(cursor)) != null) {
+                    if (adapterToNotify != null && results.add(post)) {
+                        adapterToNotify.notifyItemInserted(results.size() - 1);
+                    }
+                }
+
+                // Close cursor
+                cursor.close();
+
+                // Don't care about return
+                return null;
+            }
+        };
+
+        tskGetPosts.execute();
     }
 
     //endregion
