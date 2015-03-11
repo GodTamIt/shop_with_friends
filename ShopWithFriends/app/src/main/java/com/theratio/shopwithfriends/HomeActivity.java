@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import com.theratio.ShopWithFriends;
 import com.theratio.utilities.Post;
+import com.theratio.utilities.User;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,12 +48,30 @@ public class HomeActivity extends ActionBarActivity {
         recList.setItemAnimator(new DefaultItemAnimator());
 
 
-        List<Post> posts = ShopWithFriends.getCurrentUser().getPosts();
-        PostAdapter postAdapter = new PostAdapter(this, posts);
+        List<Post> interests = ShopWithFriends.getCurrentUser().getPosts();
+        //PostAdapter postAdapter = new PostAdapter(this, interests);
+
+        List<Post> reports = Post.getAllPosts(Post.TYPE.REPORT);
+
+        List<Post> postList = new ArrayList<Post>();
+
+        for (Post report:reports) {
+            for (Post interest:interests) {
+
+                if ((report.getItemName() == interest.getItemName()) && (report.getWorstPrice() <= interest.getWorstPrice()) && (ShopWithFriends.getCurrentUser().getFriends().contains(User.getUser(report.getUserID())))) {
+                    postList.add(report);
+                }
+            }
+        }
+
+        PostAdapter postAdapter = new PostAdapter(this, postList);
+
         recList.setAdapter(postAdapter);
 
         // Call update to posts
-        ShopWithFriends.getCurrentUser().updatePosts(postAdapter);
+        //ShopWithFriends.getCurrentUser().updatePosts(postAdapter);
+
+
 
         // Call asynchronous posts
 
