@@ -392,9 +392,13 @@ public class User implements Parcelable {
                 // Removing leading " OR ", (inclusive, exclusive)
                 buildSelection.delete(0, 4);
 
+                query = String.format("SELECT * FROM %s WHERE %s", DB.USERS_TABLE.NAME, buildSelection.toString());
+
+                cursor = db.rawQuery(query, null);
+
                 // Run database query (TableName, Columns to Select, Selection)
-                cursor = db.query(DB.USERS_TABLE.NAME, null,
-                        buildSelection.toString(), null, null, null, null);
+                //cursor = db.query(DB.USERS_TABLE.NAME, null,
+                        //buildSelection.toString(), null, null, null, null);
 
                 // Iterate through results
                 User friend;
@@ -415,6 +419,68 @@ public class User implements Parcelable {
         };
 
         tskUpdate.execute();
+    }
+
+    public List<User> updateFriendsSync(List<User> friends) {
+        SQLiteDatabase db = DB.getInstance().getReadableDatabase();
+
+        // Get all friends of current user
+        String query = String.format("SELECT %s FROM %s WHERE %s=%d",
+                DB.FRIENDS_TABLE.KEY_FRIEND_ID,
+                DB.FRIENDS_TABLE.NAME,
+                DB.FRIENDS_TABLE.KEY_ID,
+                this.id);
+
+        Log.d("User.updateFriends", "Loading friends for " + this.id);
+
+        Cursor cursor = db.rawQuery(query, null);
+
+
+
+        if (friends == null)
+            friends = new ArrayList<User>();
+        else
+            friends.clear();
+
+        if (cursor.getCount() < 1)
+            return friends;
+
+        Log.d("User.updateFriends", String.format("Loaded %d friend(s) for %d", cursor.getCount(), this.id));
+
+        // Create temporary ArrayList of friendIDs
+        ArrayList<Long> friendIDs = new ArrayList<Long>(cursor.getCount());
+
+        while (cursor.moveToNext()) {
+            friendIDs.add(cursor.getLong(cursor.getColumnIndex(DB.FRIENDS_TABLE.KEY_FRIEND_ID)));
+        }
+
+        // Close cursor
+        cursor.close();
+
+        // Build selection query from friendIDs
+        StringBuilder buildSelection = new StringBuilder((DB.USERS_TABLE.KEY_ID.length() + 8) * friendIDs.size());
+        for (Long id : friendIDs) {
+            buildSelection.append(String.format(" OR %s=%d", DB.USERS_TABLE.KEY_ID, id));
+        }
+        // Removing leading " OR ", (inclusive, exclusive)
+        buildSelection.delete(0, 4);
+
+        // Run database query (TableName, Columns to Select, Selection)
+        cursor = db.query(DB.USERS_TABLE.NAME, null,
+                buildSelection.toString(), null, null, null, null);
+
+        // Iterate through results
+        User friend;
+        while ((friend = User.fromCursor(cursor)) != null) {
+            Log.d("User.updateFriends", String.format("Adding %s to Friend List", friend.getUsername()));
+
+            friends.add(friend);
+        }
+
+        // Close cursor
+        cursor.close();
+
+        return friends;
     }
 
     /**
@@ -442,6 +508,16 @@ public class User implements Parcelable {
     }
 
     /**
+     * Synchronously updates and retrieves posts by the current user.
+     * @param posts the <code>List</code> the method appends posts to. If <code>null</code>,
+     *                a new <code>List</code> is initialized.
+     * @return a <code>List</code> containing the resulting posts retrieved.
+     */
+    public List<Post> updatePostsSync(List<Post> posts) {
+        return Post.getPostsByUserID(this.id, posts);
+    }
+
+    /**
      * Asynchronously retrieves posts by the current user and notifies a RecyclerView adapter.
      * @param results the <code>List</code> of <code>Post</code>s to add to.
      * @param adapterToNotify the <code>RecyclerView.Adapter</code> to notify.
@@ -449,6 +525,8 @@ public class User implements Parcelable {
     public void updatePosts(List<Post> results, RecyclerView.Adapter adapterToNotify) {
         Post.updatePostsByUserID(this.id, results, adapterToNotify, false);
     }
+
+
 
     //endregion
 

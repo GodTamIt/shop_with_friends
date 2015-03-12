@@ -13,7 +13,7 @@ public class DB extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "com.theratio.ShopWithFriends.db";
     private static DB instance;
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 10;
 
     /**
      * This method should only be called by the Application class.
@@ -46,7 +46,7 @@ public class DB extends SQLiteOpenHelper {
         public static final String KEY_EMAIL = "email";
 
         private static final String CREATE = "CREATE TABLE " + NAME + "(" +
-                KEY_ID + " LONG PRIMARY KEY," +
+                KEY_ID + " INTEGER PRIMARY KEY," +
                 KEY_USERNAME + " VARCHAR(20)," +
                 KEY_PASSWORD + " VARCHAR(100)," +
                 KEY_EMAIL + " VARCHAR(100)" + ")";
@@ -75,7 +75,7 @@ public class DB extends SQLiteOpenHelper {
         public static final String KEY_DESCRIPTION = "description";
 
         private static final String CREATE = "CREATE TABLE " + NAME + "(" +
-                KEY_POST_ID + " LONG PRIMARY KEY," +
+                KEY_POST_ID + " INTEGER PRIMARY KEY," +
                 KEY_POST_TYPE + " INTEGER," +
                 KEY_USER_ID + " LONG," +
                 KEY_ITEM_NAME + " VARCHAR(50)," +

@@ -30,6 +30,8 @@ import java.util.List;
 public class HomeActivity extends ActionBarActivity {
 
     Drawable mDefaultPic;
+    List<User> friendList;
+    List<Post> postList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +50,19 @@ public class HomeActivity extends ActionBarActivity {
         recList.setItemAnimator(new DefaultItemAnimator());
 
 
-        List<Post> interests = ShopWithFriends.getCurrentUser().getPosts();
+        List<Post> interests = ShopWithFriends.getCurrentUser().updatePostsSync(null);
         //PostAdapter postAdapter = new PostAdapter(this, interests);
 
 
 
         List<Post> reports = Post.getAllPosts(Post.TYPE.REPORT);
 
-        List<Post> postList = new ArrayList<Post>();
-
+        postList = new ArrayList<Post>();
+        friendList = ShopWithFriends.getCurrentUser().updateFriendsSync(null);
         for (Post report:reports) {
             for (Post interest:interests) {
 
-                if ((report.getItemName() == interest.getItemName()) && (report.getWorstPrice() <= interest.getWorstPrice()) && (ShopWithFriends.getCurrentUser().getFriends().contains(User.getUser(report.getUserID())))) {
+                if ((report.getItemName().equals(interest.getItemName())) && (report.getWorstPrice() <= interest.getWorstPrice()) && (friendList.contains(User.getUser(report.getUserID())))) {
                     postList.add(report);
                 }
             }
@@ -194,7 +196,7 @@ public class HomeActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Post post = ShopWithFriends.getCurrentUser().getPosts().get(getPosition());
+                    Post post = postList.get(getPosition());
                     Intent postPage = new Intent(v.getContext(), ViewPostActivity.class);
                     postPage.putExtra("post",(Parcelable) post);
 
@@ -207,7 +209,7 @@ public class HomeActivity extends ActionBarActivity {
 
                 @Override
                 public boolean onLongClick(View v) {
-                    Post post = ShopWithFriends.getCurrentUser().getPosts().get(getPosition());
+                    Post post = postList.get(getPosition());
                     Intent postPage = new Intent(v.getContext(), ViewPostActivity.class);
                     postPage.putExtra("post",(Parcelable) post);
 
