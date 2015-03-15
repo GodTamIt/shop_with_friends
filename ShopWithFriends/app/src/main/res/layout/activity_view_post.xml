@@ -42,9 +42,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/posted_by"
+        android:id="@+id/posted_by"
+        android:layout_below="@+id/location"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/item_description_prompt"
         android:id="@+id/item_description"
-        android:layout_below="@+id/location"
+        android:layout_below="@+id/posted_by"
         android:layout_alignParentStart="true"
         android:layout_marginTop="30dp"
         android:textColor="@android:color/black" />

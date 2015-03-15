@@ -73,6 +73,7 @@
 
     <!-- BEGIN: View Post -->
     <string name="title_view_post">View Post</string>
+    <string name="posted_by">Posted by</string>
     <!-- END: View Post -->
 
     <!-- BEGIN: Miscellaneous -->

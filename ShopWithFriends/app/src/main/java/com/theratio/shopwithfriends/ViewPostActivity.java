@@ -17,6 +17,7 @@ public class ViewPostActivity extends ActionBarActivity {
     private String itemName;
     private float thresholdPrice;
     private String itemDescription;
+    private String postedBy;
     private Post.TYPE itemType;
     private String itemLocation;//used for reports, hardcoded for now
 
@@ -28,21 +29,26 @@ public class ViewPostActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
 
         post = (Post) getIntent().getParcelableExtra("post");
+        user = User.getUser(post.getUserID());
         itemName = post.getItemName();
         thresholdPrice = post.getWorstPrice();
         itemDescription = post.getDescription();
         itemType = post.getPostType();
         itemLocation = post.getLocation();
+        postedBy = user.getUsername();
 
         TextView itemNameText =(TextView)findViewById(R.id.item_name);
         TextView thresholdPriceText = (TextView)findViewById(R.id.threshold_price);
+        TextView postedByText = (TextView)findViewById(R.id.posted_by);
         TextView itemDescriptionText = (TextView)findViewById(R.id.item_description);
         TextView itemLocationText = (TextView)findViewById(R.id.location);
 
         if (itemType == Post.TYPE.REPORT) {
             itemLocationText.append(": " + itemLocation);
+            postedByText.append(": " + postedBy);
         }   else {
             itemLocationText.setText("");
+            postedByText.setText("");
         }
         setTitle(itemName);
 
