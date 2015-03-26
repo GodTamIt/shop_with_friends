@@ -12,7 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
+import com.larvalabs.svgandroid.SVGParser;
 import com.theratio.ShopWithFriends;
 import com.theratio.utilities.Post;
 import com.theratio.utilities.Utility;
@@ -25,6 +27,7 @@ public class ReportSaleActivity extends ActionBarActivity {
     private EditText itemDescription;
     private EditText location;
     private Button btnPost;
+    private ImageButton btnLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class ReportSaleActivity extends ActionBarActivity {
         setContentView(R.layout.activity_report_sale);
 
         btnPost = (Button) findViewById(R.id.report_sale_btn);
+        btnLocation = (ImageButton) findViewById(R.id.report_sale_btnLocation);
         itemDescription = (EditText) findViewById(R.id.report_sale_item_description);
         itemName = (EditText) findViewById(R.id.report_sale_item_name);
         thresholdPrice = (EditText) findViewById(R.id.report_sale_threshold_price);
@@ -42,6 +46,7 @@ public class ReportSaleActivity extends ActionBarActivity {
         thresholdPrice.addTextChangedListener(textValidator);
         location.addTextChangedListener(textValidator);
 
+        btnLocation.setImageResource(R.mipmap.location);
     }
 
 
@@ -101,5 +106,21 @@ public class ReportSaleActivity extends ActionBarActivity {
                 finish();
             }
         });
+    }
+
+    public void onbtnLocation(View view) {
+        Intent i = new Intent(this, PickLocationActivity.class);
+        startActivityForResult(i, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request it is that we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                location.setText(data.getStringExtra("Location"));
+            }
+        }
     }
 }

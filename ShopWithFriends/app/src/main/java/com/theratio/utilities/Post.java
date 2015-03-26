@@ -105,10 +105,6 @@ public class Post implements Parcelable {
         return postID;
     }
 
-    /*public void setPostID(long postID) {
-        this.postID = postID;
-    }*/
-
     public String getItemName() {
         return itemName;
     }
@@ -133,7 +129,13 @@ public class Post implements Parcelable {
         this.autoPrice = autoPrice;
     }
 
-    public String getLocation() { return location; }
+    public String getLocation() {
+        return this.postType == TYPE.INTEREST ? location : null;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getDescription() {
         return description;

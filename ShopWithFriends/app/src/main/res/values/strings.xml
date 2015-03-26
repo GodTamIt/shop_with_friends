@@ -78,6 +78,8 @@
 
     <!-- BEGIN: Miscellaneous -->
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_pick_location">PickLocationActivity</string>
+    <string name="title_activity_maps">Map</string>
     <!-- END: Miscellaneous -->
 
 </resources>
