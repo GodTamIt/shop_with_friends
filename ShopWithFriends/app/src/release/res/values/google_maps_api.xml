@@ -1,7 +1,5 @@
 <resources>
     <!--
-    TODO: Before you run your application, you need a Google Maps API key.
-
     To get one, follow this link, follow the directions and press "Create" at the end:
 
 https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=89:84:1B:58:02:03:29:19:5C:E6:02:B9:8B:C0:44:8E:5A:22:35:8B%3Bcom.theratio.shopwithfriends
@@ -13,6 +11,6 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     string in this file.
     -->
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
-        YOUR_KEY_HERE
+        AIzaSyAGmvgCdEBp5rviMvdhQV4l8RxmBqRxlpE
     </string>
 </resources>
