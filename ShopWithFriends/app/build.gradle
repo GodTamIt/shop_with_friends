@@ -18,6 +18,7 @@ android {
     }
     productFlavors {
     }
+    sourceSets { main { java.srcDirs = ['src/main/java', 'src/test/java'] } }
 }
 
 dependencies {
@@ -25,4 +26,35 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.+'
     compile 'com.android.support:cardview-v7:21.0.+'
     compile 'com.android.support:recyclerview-v7:21.0.+'
+    androidTestCompile 'junit:junit:4.+'
+}
+
+task addTest {
+    description "Registers the test folder in the .iml file so Java tooling works."
+    def src = ['src/test/java']
+    def file = file("app.iml")
+
+    doLast {
+        try {
+            def parsedXml = (new XmlParser()).parse(file)
+            def node = parsedXml.component[1].content[0]
+            src.each {
+                def path = 'file://$MODULE_DIR$/' + "${it}"
+                def set = node.find { it.@url == path }
+                if (set == null) {
+                    new Node(node, 'sourceFolder',
+                        ['url': 'file://$MODULE_DIR/'+ "${it}", 'isTestSource':"true"])
+                    def writer = new StringWriter()
+                    new XmlNodePrinter(new PrintWriter(writer)).print(parsedXml)
+                    file.text = writer.toString()
+                }
+            }
+        } catch (FileNotFoundException e) {
+            //nop, iml  not found
+        }
+    }
+}
+
+gradle.projectsEvaluated {
+    preBuild.dependsOn(addTest)
 }
