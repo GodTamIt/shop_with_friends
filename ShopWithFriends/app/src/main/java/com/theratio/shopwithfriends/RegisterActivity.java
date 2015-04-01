@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.theratio.ShopWithFriends;
 import com.theratio.utilities.User;
 import com.theratio.utilities.Utility;
 
@@ -119,7 +120,8 @@ public class RegisterActivity extends ActionBarActivity {
     //region Registration
 
     private void onRegisterComplete(User.RegisterResult result) {
-        if (result == User.RegisterResult.SUCCESS) {
+        if (result.getResult() == User.RegisterResult.Result.SUCCESS) {
+            ShopWithFriends.setCurrentUser(result.getRegisteredUser());
             final Context current = this;
             Utility.showDialog(this, getResources().getString(R.string.successful_activity_register), new DialogInterface.OnClickListener() {
                 @Override
@@ -131,10 +133,10 @@ public class RegisterActivity extends ActionBarActivity {
                 }
             });
         }
-        else if (result == User.RegisterResult.EMAIL_EXISTS) {
+        else if (result.getResult() == User.RegisterResult.Result.EMAIL_EXISTS) {
             // Email already taken
         }
-        else if (result == User.RegisterResult.USERNAME_EXISTS) {
+        else if (result.getResult() == User.RegisterResult.Result.USERNAME_EXISTS) {
             // Username already taken
         }
         else {

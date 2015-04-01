@@ -636,13 +636,55 @@ public class User implements Parcelable {
                 loginUser);
     }
 
+    public static class RegisterResult {
+
+        //region Declaration
+        private User user;
+        private Result result;
+
+        /**
+         * An enumeration representing whether a login request is successful.
+         */
+        public static enum Result {
+            SUCCESS, EMAIL_EXISTS, USERNAME_EXISTS, UNKNOWN
+        }
+        //endregion
+
+        private RegisterResult(Result result) {
+            this.user = null;
+            this.result = result;
+        }
+
+        private RegisterResult(Result result, User user) {
+            this.user = user;
+            this.result = result;
+        }
+
+        /**
+         * Retrieves the result of the registration request.
+         * @return a <code>LoginResult.Result</code> enumeration value representing
+         * the success value.
+         */
+        public Result getResult() {
+            return this.result;
+        }
+
+        /**
+         * Retrieves the logged in user if the registration request is successful.
+         * @return a <code>User</code> object representing the logged in user.
+         */
+        public User getRegisteredUser() {
+            return this.user;
+        }
+
+    }
 
     /**
      * An enumeration representing whether a register request is successful.
-     */
+     *//*
     public static enum RegisterResult {
         SUCCESS, EMAIL_EXISTS, USERNAME_EXISTS, UNKNOWN
-    }
+    }*/
 
     /**
      * Attempts to register a new user with the given credentials.
@@ -664,10 +706,29 @@ public class User implements Parcelable {
         long dbInsert = db.insert(DB.USERS_TABLE.NAME, null, values);
 
         if (dbInsert < 0) {
-            return RegisterResult.UNKNOWN;
+            return new RegisterResult(RegisterResult.Result.UNKNOWN);
+        }
+        String loginType;
+        if (email.contains("@")) {
+
+            loginType = DB.USERS_TABLE.KEY_EMAIL;
+        } else {
+            loginType = DB.USERS_TABLE.KEY_USERNAME;
         }
 
-        return RegisterResult.SUCCESS;
+        String query = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
+                DB.USERS_TABLE.NAME,
+                loginType,
+                DB.USERS_TABLE.KEY_PASSWORD);
+
+        Cursor cursor = db.rawQuery(query,
+                new String[]{email, password});
+
+
+
+        User registeredUser = User.fromCursor(cursor);
+        cursor.close();
+        return new RegisterResult(RegisterResult.Result.SUCCESS,registeredUser);
     }
 
     
