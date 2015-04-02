@@ -526,8 +526,6 @@ public class User implements Parcelable {
         Post.updatePostsByUserID(this.id, results, adapterToNotify, false);
     }
 
-
-
     //endregion
 
 
@@ -708,27 +706,9 @@ public class User implements Parcelable {
         if (dbInsert < 0) {
             return new RegisterResult(RegisterResult.Result.UNKNOWN);
         }
-        String loginType;
-        if (email.contains("@")) {
 
-            loginType = DB.USERS_TABLE.KEY_EMAIL;
-        } else {
-            loginType = DB.USERS_TABLE.KEY_USERNAME;
-        }
-
-        String query = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
-                DB.USERS_TABLE.NAME,
-                loginType,
-                DB.USERS_TABLE.KEY_PASSWORD);
-
-        Cursor cursor = db.rawQuery(query,
-                new String[]{email, password});
-
-
-
-        User registeredUser = User.fromCursor(cursor);
-        cursor.close();
-        return new RegisterResult(RegisterResult.Result.SUCCESS,registeredUser);
+        User registeredUser = User.getUser(dbInsert);
+        return new RegisterResult(RegisterResult.Result.SUCCESS, registeredUser);
     }
 
     
@@ -748,6 +728,30 @@ public class User implements Parcelable {
 
 
         Log.d("User.getUser", "Retrieving user " + userID);
+
+        // Make query
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Return result
+        return User.fromCursor(cursor);
+    }
+
+    /**
+     * Retrieves a User from database, given a username.
+     * @param userName the username of the user to retrieve.
+     * @return a <code>User</code> object representing the user, or <code>null</code> if the
+     * user retrieving failed.
+     */
+    public static User getUser(String userName) {
+        SQLiteDatabase db = DB.getInstance().getReadableDatabase();
+
+        String query = String.format("SELECT * FROM %s WHERE %s=%s",
+                DB.USERS_TABLE.NAME,
+                DB.USERS_TABLE.KEY_USERNAME,
+                userName);
+
+
+        Log.d("User.getUser", "Retrieving user " + userName);
 
         // Make query
         Cursor cursor = db.rawQuery(query, null);
