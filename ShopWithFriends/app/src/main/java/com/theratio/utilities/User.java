@@ -760,6 +760,30 @@ public class User implements Parcelable {
         return User.fromCursor(cursor);
     }
 
+    /**
+     * Removes a User from database, given user ID.
+     * @param userID the ID of the user to remove.
+     * @return a <code>boolean</code> representing whether the operation was successful.
+     */
+    public static boolean removeUser(long userID)
+    {
+        SQLiteDatabase db = DB.getInstance().getWritableDatabase();
+
+        return db.delete(DB.USERS_TABLE.NAME, String.format("%s=%s",DB.USERS_TABLE.KEY_ID, userID), null) > 0;
+    }
+
+    /**
+     * Removes a User from database, given a username.
+     * @param userName the username of the user to remove.
+     * @return a <code>boolean</code> representing whether the operation was successful.
+     */
+    public static boolean removeUser(String userName)
+    {
+        SQLiteDatabase db = DB.getInstance().getWritableDatabase();
+
+        return db.delete(DB.USERS_TABLE.NAME, String.format("%s=%s",DB.USERS_TABLE.KEY_USERNAME, userName), null) > 0;
+    }
+
     //endregion
 
 }
