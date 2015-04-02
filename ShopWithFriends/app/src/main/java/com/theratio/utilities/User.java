@@ -626,6 +626,7 @@ public class User implements Parcelable {
             return new LoginResult(LoginResult.Result.WRONG);
 
         loginUser = User.fromCursor(cursor);
+        ShopWithFriends.setCurrentUser(loginUser);
 
         // Close cursor
         cursor.close();
@@ -745,16 +746,15 @@ public class User implements Parcelable {
     public static User getUser(String userName) {
         SQLiteDatabase db = DB.getInstance().getReadableDatabase();
 
-        String query = String.format("SELECT * FROM %s WHERE %s=%s",
+        String query = String.format("SELECT * FROM %s WHERE %s=?",
                 DB.USERS_TABLE.NAME,
-                DB.USERS_TABLE.KEY_USERNAME,
-                userName);
+                DB.USERS_TABLE.KEY_USERNAME);
 
 
         Log.d("User.getUser", "Retrieving user " + userName);
 
         // Make query
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {userName});
 
         // Return result
         return User.fromCursor(cursor);
